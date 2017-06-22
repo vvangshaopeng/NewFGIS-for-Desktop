@@ -1,0 +1,103 @@
+﻿<Window x:Class="DotSpatialGISManager.SQLQueryDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="SQL Query" Height="450" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Label x:Name="lblDes" Content="Layer Name：" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Width="81"/>
+            <ComboBox x:Name="cboLyrs" HorizontalAlignment="Left" Margin="95,12,0,0" VerticalAlignment="Top" Width="145" SelectionChanged="cboLyrs_SelectionChanged"/>
+        </Grid>
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="15"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1">
+                <GroupBox x:Name="groupBox" Header="Fields"  HorizontalAlignment="Center" VerticalAlignment="Top" Height="122" Width="165">
+                    <ListBox x:Name="lstFields" Margin="1,0,1,1.2"  SelectionChanged="lstFields_SelectionChanged" Height="97" VerticalAlignment="Bottom" MouseDoubleClick="lstFields_MouseDoubleClick">
+                        <ListBoxItem>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template" >
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <TextBlock HorizontalAlignment="Left" Text="{TemplateBinding Content}" Name="c1"></TextBlock>
+                                            </StackPanel>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="c1" Property="Background" Value="LightBlue" ></Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBoxItem>
+                    </ListBox>
+                </GroupBox>
+                <Grid >
+                    <Button x:Name="btnEqu" Content="=" HorizontalAlignment="Left" Height="Auto" Margin="10,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                    <Button x:Name="btnGtEqu" Content="&gt;=" HorizontalAlignment="Left" Height="Auto" Margin="64,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                    <Button x:Name="btnLtEqu" Content="&lt;=" HorizontalAlignment="Left" Height="Auto" Margin="118,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                </Grid>
+                <Grid >
+                    <Button x:Name="btnGt" Content="&gt;" HorizontalAlignment="Left" Height="Auto" Margin="10,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                    <Button x:Name="btnLt" Content="&lt;" HorizontalAlignment="Left" Height="Auto" Margin="64,5,0,0" VerticalAlignment="Top" Width="49"  Click="btnOpe_Click"/>
+                    <Button x:Name="btnNotEqu" Content="&lt;&gt;" HorizontalAlignment="Left" Height="Auto" Margin="118,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                </Grid>
+                <Grid >
+                    <Button x:Name="btnOr" Content="Or" HorizontalAlignment="Left" Height="Auto" Margin="10,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                    <Button x:Name="btnNot" Content="Not" HorizontalAlignment="Left" Height="Auto" Margin="64,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                    <Button x:Name="btnLike" Content="Like" HorizontalAlignment="Left" Height="Auto" Margin="118,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                </Grid>
+                <Grid >
+                    <Button x:Name="btnAnd" Content="And" HorizontalAlignment="Left" Height="Auto" Margin="10,5,0,0" VerticalAlignment="Top" Width="49" Click="btnOpe_Click"/>
+                    <Button x:Name="btnIs" Content="Is" HorizontalAlignment="Left" Height="Auto" Margin="64,5,0,0" VerticalAlignment="Top" Width="49"  Click="btnOpe_Click"/>
+                    <Button x:Name="btnNull" Content="Null" HorizontalAlignment="Left" Height="Auto" Margin="118,5,0,0" VerticalAlignment="Top" Width="49"  Click="btnOpe_Click"/>
+                </Grid>
+                <Label Height="8"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <ListBox x:Name="lstUniqueVal" Height="194"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="165" MouseDoubleClick="lst_MouseDoubleClick"/>
+                <Label Height="10"/>
+                <Button x:Name="btnGetUnique" Content="Get unique value" HorizontalAlignment="Center" Height="Auto"  VerticalAlignment="Top" Width="104" Click="btnGetUnique_Click"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2" >
+            <StackPanel >
+                <Label x:Name="label1" Content="SQL：" HorizontalAlignment="Left" Margin="15,0,0,0"  VerticalAlignment="Top" Width="128"/>
+                <TextBox x:Name="txtWhereClause" Height="60"  HorizontalAlignment="Center" Width="350"  TextChanged="txtWhereClause_TextChanged"/>
+                <Label Height="8"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="65"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="65"/>
+                        <ColumnDefinition Width="65"/>
+                        <ColumnDefinition Width="65"/>
+                        <ColumnDefinition Width="15"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnCheck" Content="Verify" HorizontalAlignment="Center" Height="Auto"  VerticalAlignment="Center" Width="63" Click="btnCheck_Click" Grid.Column="3" IsEnabled="False" />
+                    <Button x:Name="btnOK" Content="Apply" HorizontalAlignment="Center" Height="Auto"  VerticalAlignment="Center" Width="63" Grid.Column="4" Click="btnOK_Click" IsEnabled="False" />
+                    <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Center" Height="Auto"  VerticalAlignment="Center" Width="63" Grid.Column="1" Click="btnClear_Click" IsEnabled="False" />
+                    <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Center" Height="Auto" VerticalAlignment="Center" Width="63" Grid.Column="5" Click="btnClose_Click"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3" >
+        </Grid>
+    </Grid>
+</Window>

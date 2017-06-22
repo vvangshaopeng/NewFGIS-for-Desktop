@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSpatialGISManager", "DotSpatialGISManager\DotSpatialGISManager.csproj", "{F425F08D-1308-413D-A334-4D471C10F855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{69DD7AF3-A270-4BF0-AA9C-1A2BDCE97EBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F425F08D-1308-413D-A334-4D471C10F855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F425F08D-1308-413D-A334-4D471C10F855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F425F08D-1308-413D-A334-4D471C10F855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F425F08D-1308-413D-A334-4D471C10F855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69DD7AF3-A270-4BF0-AA9C-1A2BDCE97EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69DD7AF3-A270-4BF0-AA9C-1A2BDCE97EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69DD7AF3-A270-4BF0-AA9C-1A2BDCE97EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69DD7AF3-A270-4BF0-AA9C-1A2BDCE97EBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

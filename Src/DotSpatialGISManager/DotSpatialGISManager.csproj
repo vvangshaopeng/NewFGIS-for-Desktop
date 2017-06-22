@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F425F08D-1308-413D-A334-4D471C10F855}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DotSpatialGISManager</RootNamespace>
+    <AssemblyName>DotSpatialGISManager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells">
+      <HintPath>..\OCX\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetProjects.DataVisualization.Toolkit">
+      <HintPath>..\OCX\DotNetProjects.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetProjects.Input.Toolkit">
+      <HintPath>..\OCX\DotNetProjects.Input.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetProjects.Layout.Toolkit">
+      <HintPath>..\OCX\DotNetProjects.Layout.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetProjects.WPF.Themes">
+      <HintPath>..\OCX\DotNetProjects.WPF.Themes.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Controls, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Data.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.GeoAPI, Version=1.7.4.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.NetTopologySuite, Version=1.14.4.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections, Version=2.0.0.0, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Symbology.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Shell">
+      <HintPath>..\OCX\Microsoft.Windows.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Form\AttributeJointDlg.xaml.cs">
+      <DependentUpon>AttributeJointDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\CreatePolygonDlg.xaml.cs">
+      <DependentUpon>CreatePolygonDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\CreatePolylineDlg.xaml.cs">
+      <DependentUpon>CreatePolylineDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\CreatePointDlg.xaml.cs">
+      <DependentUpon>CreatePointDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DeleteFeatureDlg.xaml.cs">
+      <DependentUpon>DeleteFeatureDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\SpatialJointDlg.xaml.cs">
+      <DependentUpon>SpatialJointDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\SQLQueryDlg.xaml.cs">
+      <DependentUpon>SQLQueryDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\LocationQueryDlg.xaml.cs">
+      <DependentUpon>LocationQueryDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CModel.cs" />
+    <Compile Include="Form\ExportShpDlg.xaml.cs">
+      <DependentUpon>ExportShpDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\ImportExcelDlg.xaml.cs">
+      <DependentUpon>ImportExcelDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MeasureResultDlg.xaml.cs">
+      <DependentUpon>MeasureResultDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\OpenAttributeTableDlg.xaml.cs">
+      <DependentUpon>OpenAttributeTableDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\SetScaleDlg.xaml.cs">
+      <DependentUpon>SetScaleDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCBufferAnalysis.xaml.cs">
+      <DependentUpon>UCBufferAnalysis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCTopologyAnalysis.xaml.cs">
+      <DependentUpon>UCTopologyAnalysis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCOverlap.xaml.cs">
+      <DependentUpon>UCOverlap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCVectorTopologyChecking.xaml.cs">
+      <DependentUpon>UCVectorTopologyChecking.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCQuery.xaml.cs">
+      <DependentUpon>UCQuery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCMapping.xaml.cs">
+      <DependentUpon>UCMapping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCVectorDataEditing.xaml.cs">
+      <DependentUpon>UCVectorDataEditing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCLayerConnection.xaml.cs">
+      <DependentUpon>UCLayerConnection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCMapSurvying.xaml.cs">
+      <DependentUpon>UCMapSurvying.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCControls\UCFileManagement.xaml.cs">
+      <DependentUpon>UCFileManagement.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Form\AttributeJointDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\CreatePolygonDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\CreatePolylineDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\CreatePointDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\ExportShpDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\ImportExcelDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\MeasureResultDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\DeleteFeatureDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\OpenAttributeTableDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\SetScaleDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\SpatialJointDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\SQLQueryDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\LocationQueryDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="UCControls\UCBufferAnalysis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCTopologyAnalysis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCOverlap.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCVectorTopologyChecking.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCQuery.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCMapping.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCVectorDataEditing.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCLayerConnection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCMapSurvying.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UCControls\UCFileManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{69dd7af3-a270-4bf0-aa9c-1a2bdce97ebe}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,47 @@
+﻿<Window x:Class="DotSpatialGISManager.ImportExcelDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="Import Excel" Height="200" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="1.6*"/>
+            <RowDefinition Height="1.2*"/>
+            <RowDefinition Height="0.8*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Label Content="Layer Name:" Margin="10,0" VerticalAlignment="Center"/>
+            <TextBox Width="150" HorizontalAlignment="Left" Margin="100,0,0,0" Height="22" Text="New Layer" Name="txtName"/>
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <Label Content="Select Excel Path:" Margin="10,0" />
+            <WrapPanel>
+                <TextBox Margin="10,0" Width="220" HorizontalAlignment="Left" Height="22" IsReadOnly="True" Name="txtPath"/>
+                <Button Content="Open" Name="btnOpen" Height="22" Click="btnOpen_Click"/>
+            </WrapPanel>
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="58"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="58"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="X Field:" Grid.Column="1" VerticalAlignment="Center"/>
+            <ComboBox Name="cboX" Grid.Column="2" Height="22"/>
+            <Label Content="Y Field:" Grid.Column="4" VerticalAlignment="Center"/>
+            <ComboBox Name="cboY" Grid.Column="5" Height="22"/>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Button Name="btnOK" Content="OK" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,80,0" Click="btnOK_Click"/>
+            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnCancel_Click"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,47 @@
+﻿<Window x:Class="DotSpatialGISManager.MeasureResultDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="MeasureResultDlg" Height="400" Width="500"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Please choose features in the view." HorizontalAlignment="Right" Margin="0,0,10,0"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <!--<TreeView Margin="3" x:Name="trvLists" ItemsSource="{Binding TreeList}">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="True" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Nodes}">
+                        <Label Content="{Binding ID}"/>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>-->
+            </Grid>
+            <Grid Grid.Column="1">
+                <DataGrid x:Name="rgrvInfo" Style="{StaticResource DataGridStyle}" AutoGenerateColumns="False">
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Header="ID&amp;Name" Width="Auto" Binding="{Binding ID}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Layer" Width="Auto" Binding="{Binding Layer}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Shape Type" Width="Auto" Binding="{Binding Shape}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Length" Width="*" Binding="{Binding Length}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Area" Width="*" Binding="{Binding Area}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
