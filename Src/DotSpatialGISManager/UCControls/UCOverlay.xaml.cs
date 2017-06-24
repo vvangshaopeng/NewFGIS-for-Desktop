@@ -17,15 +17,16 @@ using DotSpatial.Data;
 using Microsoft.Win32;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
+using DotSpatial.Analysis;
 
 namespace DotSpatialGISManager.UCControls
 {
     /// <summary>
-    /// UCFileManagement.xaml 的交互逻辑
+    /// UCOverlay.xaml 的交互逻辑
     /// </summary>
-    public partial class UCOverlap : UserControl
+    public partial class UCOverlay : UserControl
     {
-        public UCOverlap()
+        public UCOverlay()
         {
             InitializeComponent();
             this.DataContext = this;
@@ -33,31 +34,33 @@ namespace DotSpatialGISManager.UCControls
 
         //绑定图标路径
         #region
-        public string SumPath
+        public string UnionPath
         {
             get
             {
-                return PathHelper.ResourcePath + "08.sum.png";
+                return PathHelper.ResourcePath + "08.union.png";
             }
         }
 
-        public string IntersectionPath
+        public string IntersectPath
         {
             get
             {
-                return PathHelper.ResourcePath + "08.intersection.png";
+                return PathHelper.ResourcePath + "08.intersect.png";
             }
         }
         #endregion
 
-        private void btnSum_Click(object sender, RoutedEventArgs e)
+        private void btnUnion_Click(object sender, RoutedEventArgs e)
         {
-
+            OverlayUnionDlg f = new OverlayUnionDlg();
+            f.ShowDialog();
         }
 
-        private void btnIntersection_Click(object sender, RoutedEventArgs e)
+        private void btnIntersect_Click(object sender, RoutedEventArgs e)
         {
-
+            OverlayIntersectDlg f = new OverlayIntersectDlg();
+            f.ShowDialog();
         }
     }
 }

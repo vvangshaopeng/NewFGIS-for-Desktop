@@ -17,6 +17,7 @@ using DotSpatial.Data;
 using Microsoft.Win32;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
+using DotSpatial.Analysis;
 
 namespace DotSpatialGISManager.UCControls
 {
@@ -58,31 +59,36 @@ namespace DotSpatialGISManager.UCControls
         }
         #endregion
         /// <summary>
-        /// 导出数据
+        /// 点缓冲区
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnPointBuffer_Click(object sender, RoutedEventArgs e)
         {
-
+            BufferAnalysisDlg f = new BufferAnalysisDlg();
+            f.Show();
         }
+
         /// <summary>
-        /// 导出数据
+        /// 线缓冲区
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnPolylineBuffer_Click(object sender, RoutedEventArgs e)
         {
-
+            BufferAnalysisDlg f = new BufferAnalysisDlg();
+            f.ShowDialog();
         }
+
         /// <summary>
-        /// 导出数据
+        /// 面缓冲区
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnPolygonBuffer_Click(object sender, RoutedEventArgs e)
         {
-
+            BufferAnalysisDlg f = new BufferAnalysisDlg();
+            f.ShowDialog();
         }
 
     }

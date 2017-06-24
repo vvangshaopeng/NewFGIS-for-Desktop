@@ -164,11 +164,11 @@
     <Compile Include="UCControls\UCBufferAnalysis.xaml.cs">
       <DependentUpon>UCBufferAnalysis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UCControls\UCOverlay.xaml.cs">
+      <DependentUpon>UCOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UCControls\UCTopologyAnalysis.xaml.cs">
       <DependentUpon>UCTopologyAnalysis.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UCControls\UCOverlap.xaml.cs">
-      <DependentUpon>UCOverlap.xaml</DependentUpon>
     </Compile>
     <Compile Include="UCControls\UCVectorTopologyChecking.xaml.cs">
       <DependentUpon>UCVectorTopologyChecking.xaml</DependentUpon>
@@ -271,11 +271,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UCControls\UCTopologyAnalysis.xaml">
+    <Page Include="UCControls\UCOverlay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UCControls\UCOverlap.xaml">
+    <Page Include="UCControls\UCTopologyAnalysis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

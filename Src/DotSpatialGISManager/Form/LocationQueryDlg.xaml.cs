@@ -294,12 +294,12 @@ namespace DotSpatialGISManager
                         List<int> FidList = new List<int>();
                         var tarFeaList = layer.Layer.FeatureSet.Features;
                         int tarCount = tarFeaList.Count;
-                        double pi = Math.Round((double)(90 * 1.0 / tarCount),2);
+                        double pi = Math.Round((double)(100 * 1.0 / tarCount),2);
                         p.SetProgressDescription("Querying "+layer.Layer.LegendText);
                         for(int i = 0;i< tarCount; i++)
                         {
                             p.SetProgressValue(10 + pi * (i + 1));
-                            p.SetProgressDescription2(string.Format("{0} features are queried, the remaining {1} features are being queried",i+1,tarCount-i-1));
+                            p.SetProgressDescription2(string.Format("{0} feature(s) is(are) queried, the remaining {1} feature(s) is(are) being queried",i+1,tarCount-i-1));
                             if (tarFeaList[i].Intersection(resultGeo)!=null)
                             {
                                 FidList.Add(tarFeaList[i].Fid);
