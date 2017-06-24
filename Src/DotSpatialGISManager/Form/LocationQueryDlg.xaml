@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:DotSpatialGISManager"
         xmlns:Common="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
-        Title="Location Query" Height="458" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+        Title="Location Query" Height="Auto" SizeToContent="Height" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Window.Resources>
         <Common:String2ImageConverter x:Key="ImageConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -51,11 +52,15 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
-        <StackPanel Grid.Row="4">
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <CheckBox Name="ckxUsingSelected" Content="using selected features" Margin="5,3" IsChecked="{Binding UsingSelectedFeas,Mode=TwoWay}"/>
+            <TextBlock Text="{Binding SelectedFeasInfo}" Margin="30,3,0,3"/>
+        </StackPanel>
+        <StackPanel Grid.Row="5">
             <Label Content="Spatial selection method for target layer feature(s)"/>
             <ComboBox Name="cboSelectionmethod" Margin="3" SelectionChanged="cboSelectionmethod_SelectionChanged"/>
         </StackPanel>
-        <StackPanel Grid.Row="5" Orientation="Horizontal">
+        <StackPanel Grid.Row="6" Orientation="Horizontal">
             <Label Width="155"/>
             <Button Name="btnOK" Content="OK" Width="70" Height="22" Margin="5,5,0,0" Click="btnOK_Click"/>
             <Button Name="btnApply" Content="Apply" Width="70" Height="22" Margin="5,5,0,0" Click="btnApply_Click"/>

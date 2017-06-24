@@ -50,6 +50,10 @@
     <Reference Include="DotNetProjects.WPF.Themes">
       <HintPath>..\OCX\DotNetProjects.WPF.Themes.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Analysis, Version=2.0.0.0, Culture=neutral, PublicKeyToken=df3f45fb0fe4cb0c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Analysis.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Controls, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OCX\DotSpatial.Controls.dll</HintPath>
@@ -111,6 +115,9 @@
     <Compile Include="Form\AttributeJointDlg.xaml.cs">
       <DependentUpon>AttributeJointDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\BufferAnalysisDlg.xaml.cs">
+      <DependentUpon>BufferAnalysisDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\CreatePolygonDlg.xaml.cs">
       <DependentUpon>CreatePolygonDlg.xaml</DependentUpon>
     </Compile>
@@ -122,6 +129,12 @@
     </Compile>
     <Compile Include="Form\DeleteFeatureDlg.xaml.cs">
       <DependentUpon>DeleteFeatureDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\OverlayIntersectDlg.xaml.cs">
+      <DependentUpon>OverlayIntersectDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\OverlayUnionDlg.xaml.cs">
+      <DependentUpon>OverlayUnionDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="Form\SpatialJointDlg.xaml.cs">
       <DependentUpon>SpatialJointDlg.xaml</DependentUpon>
@@ -182,6 +195,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Form\BufferAnalysisDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Form\CreatePolygonDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -211,6 +228,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Form\OpenAttributeTableDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\OverlayIntersectDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\OverlayUnionDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -36,18 +36,30 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\String2ImageConverter.cs" />
     <Compile Include="Helper\CHelp.cs" />
     <Compile Include="Helper\NotifyPropertyChanged.cs" />
     <Compile Include="Helper\PathHelper.cs" />
+    <Compile Include="Progress\FromProgressBox.xaml.cs">
+      <DependentUpon>FromProgressBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Progress\ProgressBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Progress\FromProgressBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

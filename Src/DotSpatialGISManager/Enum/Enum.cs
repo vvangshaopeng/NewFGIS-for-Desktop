@@ -18,7 +18,7 @@ namespace DotSpatialGISManager.Enum
         Select = 0,
         Add,
         Remove,
-        RempveFromSelected,
+        RemoveFromSelected,
     } 
 
     public enum SpatialMethod

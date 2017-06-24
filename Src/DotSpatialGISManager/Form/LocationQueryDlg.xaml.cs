@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using GeoAPI.Geometries;
 using System.Collections;
+using Common;
 
 namespace DotSpatialGISManager
 {
@@ -29,6 +30,8 @@ namespace DotSpatialGISManager
     {
         private SelectionMethod m_SelectionMethod;
         private SpatialMethod m_SpatialMethod;
+        private bool _UsingSelectedFeas;
+        private string _SelectedFeasInfo;
         private string m_ResourcePath = AppDomain.CurrentDomain.BaseDirectory + "../Resources/";
 
         private ObservableCollection<LocationLayerModel> _TargetLayers;
@@ -79,9 +82,49 @@ namespace DotSpatialGISManager
                 if (_SelectedSourceLayer != value)
                 {
                     _SelectedSourceLayer = value;
+                    if (_SelectedSourceLayer!=null && _SelectedSourceLayer.Layer!=null)
+                        this.SelectedFeasInfo = _SelectedSourceLayer.Layer.Selection.Count + " feature(s) selected";
                     if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("SelectedSourceLayer"));
+                    }
+                }
+            }
+        }
+
+        public bool UsingSelectedFeas
+        {
+            get
+            {
+                return _UsingSelectedFeas;
+            }
+            set
+            {
+                if (_UsingSelectedFeas!=value)
+                {
+                    _UsingSelectedFeas = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("UsingSelectedFeas"));
+                    }
+                }
+            }
+        }
+
+        public string SelectedFeasInfo
+        {
+            get
+            {
+                return _SelectedFeasInfo;
+            }
+            set
+            {
+                if (_SelectedFeasInfo != value)
+                {
+                    _SelectedFeasInfo = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("SelectedFeasInfo"));
                     }
                 }
             }
@@ -171,7 +214,7 @@ namespace DotSpatialGISManager
                     m_SelectionMethod = SelectionMethod.Remove;
                     break;
                 case 3:
-                    m_SelectionMethod = SelectionMethod.RempveFromSelected;
+                    m_SelectionMethod = SelectionMethod.RemoveFromSelected;
                     break;
             }
         }
@@ -224,22 +267,45 @@ namespace DotSpatialGISManager
                 MessageBox.Show("Please select a source layer");
                 return;
             }
+            //Union Geometry
+            ProgressBox p = new ProgressBox(0, 100, "Location query progress");
+            p.ShowPregress();
+            p.SetProgressValue(0);
+            p.SetProgressDescription("Unioning geometry...");
             IGeometry resultGeo = null;
-            foreach(var fea in SelectedSourceLayer.Layer.FeatureSet.Features)
+            IFeatureSet srcFeaset = null;
+            if (this.UsingSelectedFeas)
+                srcFeaset = SelectedSourceLayer.Layer.Selection.ToFeatureSet();
+            else
+                srcFeaset = SelectedSourceLayer.Layer.FeatureSet;
+            foreach (var fea in srcFeaset.Features)
             {
                 if (resultGeo == null)
                     resultGeo = fea.Geometry;
                 else
                     resultGeo = resultGeo.Union(fea.Geometry);
             }
+            p.SetProgressValue(10);
             switch(m_SpatialMethod)
             {
                 case SpatialMethod.Intersect:
                     foreach(var layer in TargetLayerList)
                     {
-                        var result = layer.Layer.FeatureSet.Intersection(SelectedSourceLayer.Layer.FeatureSet, FieldJoinType.LocalOnly, null);
-                        var layer2 = MainWindow.m_DotMap.Layers.Add(result);
-                        layer2.LegendText = "111";
+                        List<int> FidList = new List<int>();
+                        var tarFeaList = layer.Layer.FeatureSet.Features;
+                        int tarCount = tarFeaList.Count;
+                        double pi = Math.Round((double)(90 * 1.0 / tarCount),2);
+                        p.SetProgressDescription("Querying "+layer.Layer.LegendText);
+                        for(int i = 0;i< tarCount; i++)
+                        {
+                            p.SetProgressValue(10 + pi * (i + 1));
+                            p.SetProgressDescription2(string.Format("{0} features are queried, the remaining {1} features are being queried",i+1,tarCount-i-1));
+                            if (tarFeaList[i].Intersection(resultGeo)!=null)
+                            {
+                                FidList.Add(tarFeaList[i].Fid);
+                            }
+                        }
+                        layer.Layer.Select(FidList);
                     }
                     break;
                 case SpatialMethod.Contains:
