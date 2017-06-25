@@ -148,7 +148,7 @@
                             <ColumnDefinition Width="26"/>
                             <ColumnDefinition Width="26"/>
                         </Grid.ColumnDefinitions>
-                        <Label HorizontalAlignment="Left" Content="{TemplateBinding Title}" VerticalAlignment="Center" MouseDoubleClick="Label_MouseDoubleClick"></Label>
+                        <Label HorizontalAlignment="Left" Content="{TemplateBinding Title}" VerticalAlignment="Center"></Label>
                         <Button Content="0" FontFamily="Webdings"  Name="btnMin" Click="btnMin_Click" HorizontalAlignment="Center" Foreground="White"  Height="26" Style="{DynamicResource btnTitleMaxMin}" VerticalAlignment="Center" Grid.Column="1" />
                         <Button Content="r" FontFamily="Webdings"  Name="PART_CLOSEBTN" HorizontalAlignment="Center" Foreground="White"  Height="26" Style="{DynamicResource btnTitleClose}" VerticalAlignment="Center" Click="Button_Click"   Grid.Column="2" />
                     </Grid>

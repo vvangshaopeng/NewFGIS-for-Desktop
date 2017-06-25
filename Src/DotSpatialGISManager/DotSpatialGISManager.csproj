@@ -130,6 +130,9 @@
     <Compile Include="Form\DeleteFeatureDlg.xaml.cs">
       <DependentUpon>DeleteFeatureDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\FayingSurfaceDlg.xaml.cs">
+      <DependentUpon>FayingSurfaceDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\OverlayIntersectDlg.xaml.cs">
       <DependentUpon>OverlayIntersectDlg.xaml</DependentUpon>
     </Compile>
@@ -212,6 +215,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Form\ExportShpDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\FayingSurfaceDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -76,13 +76,14 @@ namespace DotSpatialGISManager.UCControls
 
         }
         /// <summary>
-        /// 导出数据
+        /// 重叠面检查
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnFayingSurface_Click(object sender, RoutedEventArgs e)
         {
-
+            FayingSurfaceDlg f = new FayingSurfaceDlg();
+            f.ShowDialog();
         }
 
     }
