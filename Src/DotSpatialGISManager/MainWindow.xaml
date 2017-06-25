@@ -191,7 +191,7 @@
                 <TabItem Header="Spatial query">
                     <uc:UCQuery/>
                 </TabItem>
-                <TabItem Header="Overlap">
+                <TabItem Header="Overlay">
                     <uc:UCOverlay/>
                 </TabItem>
                 <TabItem Header="Buffer analysis">

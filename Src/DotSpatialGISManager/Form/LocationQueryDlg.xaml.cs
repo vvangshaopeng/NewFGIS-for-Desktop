@@ -32,18 +32,23 @@ namespace DotSpatialGISManager
         private SpatialMethod m_SpatialMethod;
         private bool _UsingSelectedFeas;
         private string _SelectedFeasInfo;
-        private string m_ResourcePath = AppDomain.CurrentDomain.BaseDirectory + "../Resources/";
+        private string m_ResourcePath = AppDomain.CurrentDomain.BaseDirectory + "../Images/";
+        private bool hasQueried = false;
 
         private ObservableCollection<LocationLayerModel> _TargetLayers;
         public ObservableCollection<LocationLayerModel> TargetLayers
         {
             get
             {
-                return _TargetLayers??(_TargetLayers = new ObservableCollection<LocationLayerModel>());
+                return _TargetLayers ?? (_TargetLayers = new ObservableCollection<LocationLayerModel>());
             }
             set
             {
-                _TargetLayers = value;
+                if (_TargetLayers != value)
+                {
+                    _TargetLayers = value;
+                    hasQueried = false;
+                }
             }
         }
 
@@ -55,17 +60,18 @@ namespace DotSpatialGISManager
         {
             get
             {
-                return _SourceLayers??(_SourceLayers = new ObservableCollection<LocationLayerModel>());
+                return _SourceLayers ?? (_SourceLayers = new ObservableCollection<LocationLayerModel>());
             }
             set
             {
                 if (_SourceLayers != value)
                 {
                     _SourceLayers = value;
-                    if (this.PropertyChanged!=null)
+                    if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("SourceLayer"));
                     }
+                    hasQueried = false;
                 }
             }
         }
@@ -82,12 +88,13 @@ namespace DotSpatialGISManager
                 if (_SelectedSourceLayer != value)
                 {
                     _SelectedSourceLayer = value;
-                    if (_SelectedSourceLayer!=null && _SelectedSourceLayer.Layer!=null)
+                    if (_SelectedSourceLayer != null && _SelectedSourceLayer.Layer != null)
                         this.SelectedFeasInfo = _SelectedSourceLayer.Layer.Selection.Count + " feature(s) selected";
                     if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("SelectedSourceLayer"));
                     }
+                    hasQueried = false;
                 }
             }
         }
@@ -100,13 +107,14 @@ namespace DotSpatialGISManager
             }
             set
             {
-                if (_UsingSelectedFeas!=value)
+                if (_UsingSelectedFeas != value)
                 {
                     _UsingSelectedFeas = value;
                     if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("UsingSelectedFeas"));
                     }
+                    hasQueried = false;
                 }
             }
         }
@@ -182,13 +190,13 @@ namespace DotSpatialGISManager
 
         private string GetImagePath(FeatureType s)
         {
-            switch(s)
+            switch (s)
             {
                 case FeatureType.Point:
                 case FeatureType.MultiPoint:
                     return m_ResourcePath + "point.png";
                 case FeatureType.Line:
-                    return m_ResourcePath + "polylin.png";
+                    return m_ResourcePath + "polyline.png";
                 case FeatureType.Polygon:
                     return m_ResourcePath + "polygon.png";
             }
@@ -202,7 +210,9 @@ namespace DotSpatialGISManager
 
         private void cboMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch(this.cboMethod.SelectedIndex)
+            if (this.cboMethod.SelectedIndex == -1) return;
+            hasQueried = false;
+            switch (this.cboMethod.SelectedIndex)
             {
                 case 0:
                     m_SelectionMethod = SelectionMethod.Select;
@@ -211,16 +221,18 @@ namespace DotSpatialGISManager
                     m_SelectionMethod = SelectionMethod.Add;
                     break;
                 case 2:
-                    m_SelectionMethod = SelectionMethod.Remove;
+                    m_SelectionMethod = SelectionMethod.RemoveFromSelected;
                     break;
                 case 3:
-                    m_SelectionMethod = SelectionMethod.RemoveFromSelected;
+                    m_SelectionMethod = SelectionMethod.SelectFromSelected;
                     break;
             }
         }
 
         private void cboSelectionmethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.cboSelectionmethod.SelectedIndex == -1) return;
+            hasQueried = false;
             switch (this.cboSelectionmethod.SelectedIndex)
             {
                 case 0:
@@ -237,27 +249,17 @@ namespace DotSpatialGISManager
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            var TargetLayerList = (from u in TargetLayers
-                                   where u.IsChecked
-                                   select u).ToList();
-            if (TargetLayers.Count == 0)
-            {
-                MessageBox.Show("Please select at least one target layer");
-                return;
-            }
-            if (SelectedSourceLayer == null)
-            {
-                MessageBox.Show("Please select a source layer");
-                return;
-            }
+            btnApply_Click(null, null);
+            this.Close();
         }
 
         private void btnApply_Click(object sender, RoutedEventArgs e)
         {
+            if (hasQueried) return;
             var TargetLayerList = (from u in TargetLayers
                                    where u.IsChecked
                                    select u).ToList();
-            if (TargetLayers.Count == 0)
+            if (TargetLayerList.Count == 0)
             {
                 MessageBox.Show("Please select at least one target layer");
                 return;
@@ -267,57 +269,145 @@ namespace DotSpatialGISManager
                 MessageBox.Show("Please select a source layer");
                 return;
             }
-            //Union Geometry
             ProgressBox p = new ProgressBox(0, 100, "Location query progress");
             p.ShowPregress();
             p.SetProgressValue(0);
-            p.SetProgressDescription("Unioning geometry...");
-            IGeometry resultGeo = null;
-            IFeatureSet srcFeaset = null;
+            IFeatureSet srcFeaset;
             if (this.UsingSelectedFeas)
                 srcFeaset = SelectedSourceLayer.Layer.Selection.ToFeatureSet();
             else
                 srcFeaset = SelectedSourceLayer.Layer.FeatureSet;
-            foreach (var fea in srcFeaset.Features)
-            {
-                if (resultGeo == null)
-                    resultGeo = fea.Geometry;
-                else
-                    resultGeo = resultGeo.Union(fea.Geometry);
-            }
-            p.SetProgressValue(10);
-            switch(m_SpatialMethod)
+            Dictionary<IFeatureLayer, List<int>> DicFidList = new Dictionary<IFeatureLayer, List<int>>();
+            switch (m_SpatialMethod)
             {
                 case SpatialMethod.Intersect:
-                    foreach(var layer in TargetLayerList)
+                    foreach (var layer in TargetLayerList)
                     {
                         List<int> FidList = new List<int>();
-                        var tarFeaList = layer.Layer.FeatureSet.Features;
+                        var tarFeaList = GetTargetFeaList(layer.Layer);
                         int tarCount = tarFeaList.Count;
-                        double pi = Math.Round((double)(100 * 1.0 / tarCount),2);
-                        p.SetProgressDescription("Querying "+layer.Layer.LegendText);
-                        for(int i = 0;i< tarCount; i++)
+                        double pi = Math.Round((double)(100 * 1.0 / tarCount), 2);
+                        p.SetProgressDescription("Querying " + layer.Layer.LegendText);
+                        for (int i = 0; i < tarCount; i++)
                         {
-                            p.SetProgressValue(10 + pi * (i + 1));
-                            p.SetProgressDescription2(string.Format("{0} feature(s) is(are) queried, the remaining {1} feature(s) is(are) being queried",i+1,tarCount-i-1));
-                            if (tarFeaList[i].Intersection(resultGeo)!=null)
+                            p.SetProgressValue(pi * (i + 1));
+                            p.SetProgressDescription2(string.Format("{0} feature(s) is(are) queried, the remaining {1} feature(s) is(are) being queried", i + 1, tarCount - i - 1));
+                            foreach (var fea in srcFeaset.Features)
                             {
-                                FidList.Add(tarFeaList[i].Fid);
+                                if (tarFeaList[i].Geometry.Intersects(fea.Geometry))
+                                {
+                                    FidList.Add(tarFeaList[i].Fid);
+                                    break;
+                                }
                             }
                         }
-                        layer.Layer.Select(FidList);
+                        DicFidList.Add(layer.Layer, FidList);
                     }
                     break;
                 case SpatialMethod.Contains:
+                    foreach (var layer in TargetLayerList)
+                    {
+                        List<int> FidList = new List<int>();
+                        var tarFeaList = GetTargetFeaList(layer.Layer);
+                        int tarCount = tarFeaList.Count;
+                        double pi = Math.Round((double)(100 * 1.0 / tarCount), 2);
+                        p.SetProgressDescription("Querying " + layer.Layer.LegendText);
+                        for (int i = 0; i < tarCount; i++)
+                        {
+                            p.SetProgressValue(pi * (i + 1));
+                            p.SetProgressDescription2(string.Format("{0} feature(s) is(are) queried, the remaining {1} feature(s) is(are) being queried", i + 1, tarCount - i - 1));
+                            foreach (var fea in srcFeaset.Features)
+                            {
+                                if (tarFeaList[i].Geometry.Contains(fea.Geometry))
+                                {
+                                    FidList.Add(tarFeaList[i].Fid);
+                                    break;
+                                }
+                            }
+                        }
+                        DicFidList.Add(layer.Layer, FidList);
+                    }
                     break;
                 case SpatialMethod.Within:
+                    foreach (var layer in TargetLayerList)
+                    {
+                        List<int> FidList = new List<int>();
+                        var tarFeaList = GetTargetFeaList(layer.Layer);
+                        int tarCount = tarFeaList.Count;
+                        double pi = Math.Round((double)(100 * 1.0 / tarCount), 2);
+                        p.SetProgressDescription("Querying " + layer.Layer.LegendText);
+                        for (int i = 0; i < tarCount; i++)
+                        {
+                            p.SetProgressValue(pi * (i + 1));
+                            p.SetProgressDescription2(string.Format("{0} feature(s) is(are) queried, the remaining {1} feature(s) is(are) being queried", i + 1, tarCount - i - 1));
+                            foreach (var fea in srcFeaset.Features)
+                            {
+                                if (tarFeaList[i].Geometry.Within(fea.Geometry))
+                                {
+                                    FidList.Add(tarFeaList[i].Fid);
+                                    break;
+                                }
+                            }
+                        }
+                        DicFidList.Add(layer.Layer, FidList);
+                    }
                     break;
+            }
+            //select features
+            foreach (var value in DicFidList)
+            {
+                if (value.Value.Count > 0)
+                {
+                    switch (m_SelectionMethod)
+                    {
+                        case SelectionMethod.Add:
+                            value.Key.Select(value.Value);
+                            break;
+                        case SelectionMethod.RemoveFromSelected:
+                            value.Key.UnSelect(value.Value);
+                            break;
+                        case SelectionMethod.SelectFromSelected:
+                        case SelectionMethod.Select:
+                            value.Key.UnSelectAll();
+                            value.Key.Select(value.Value);
+                            break;
+                    }
+                    MainWindow.m_DotMap.Refresh();
+                }
+            }
+            p.CloseProgress();
+            hasQueried = true;
+        }
+
+        private List<IFeature> GetTargetFeaList(FeatureLayer layer)
+        {
+            switch (m_SelectionMethod)
+            {
+                case SelectionMethod.Select:
+                case SelectionMethod.Add:
+                default:
+                    return layer.FeatureSet.Features.ToList();
+                case SelectionMethod.RemoveFromSelected:
+                case SelectionMethod.SelectFromSelected:
+                    var selection = layer.Selection.ToFeatureList();
+                    List<IFeature> list = new List<IFeature>();
+                    foreach (var s in selection)
+                    {
+                        list.Add(s);
+                    }
+                    return list;
             }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedSourceLayer == null || SelectedSourceLayer.Layer == null) return;
+            this.SelectedFeasInfo = _SelectedSourceLayer.Layer.Selection.Count + " feature(s) selected";
         }
     }
 }

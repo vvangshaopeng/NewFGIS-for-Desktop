@@ -33,7 +33,7 @@ namespace DotSpatialGISManager
             get; set;
         }
 
-        public MeasureModel(string id,string layer,string length,string area,string shape)
+        public MeasureModel(string id, string layer, string length, string area, string shape)
         {
             ID = id;
             Layer = layer;
@@ -56,10 +56,10 @@ namespace DotSpatialGISManager
             }
             set
             {
-                if (_ischecked!=value)
+                if (_ischecked != value)
                 {
                     _ischecked = value;
-                    if (UCControls.UCQuery.m_LocationQueryDlg!=null)
+                    if (UCControls.UCQuery.m_LocationQueryDlg != null)
                     {
                         LocationQueryDlg f = UCControls.UCQuery.m_LocationQueryDlg;
                         f.ResetSourceLayers();

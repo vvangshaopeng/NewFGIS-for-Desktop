@@ -87,6 +87,16 @@ namespace DotSpatialGISManager
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            if (this.txtSavePath.Text == "")
+            {
+                MessageBox.Show("Please select a save path");
+                return;
+            }
+            if (this.cboX.Text == ""||this.cboY.Text == "")
+            {
+                MessageBox.Show("Please select x y field");
+                return;
+            }
             string xField = this.cboX.Text;
             string yField = this.cboY.Text;
             IFeatureSet pFeaSet = new FeatureSet(FeatureType.Point);
@@ -113,6 +123,7 @@ namespace DotSpatialGISManager
                     return;
                 }
             }
+            pFeaSet.SaveAs(this.txtSavePath.Text,true);
             ResultFeaSet = pFeaSet;
             this.DialogResult = true;
         }
@@ -121,6 +132,18 @@ namespace DotSpatialGISManager
         {
             this.DialogResult = false;
             this.Close();
+        }
+
+        private void btnSelect_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog f = new SaveFileDialog();
+            f.AddExtension = true;
+            f.Filter = "ShapeFile(*.shp)|*.shp";
+            f.Title = "Select Save Path";
+            if (f.ShowDialog() == true)
+            {
+                this.txtPath.Text = f.FileName;
+            }
         }
     }
 }

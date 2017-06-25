@@ -55,6 +55,7 @@
         <StackPanel Grid.Row="4" Orientation="Horizontal">
             <CheckBox Name="ckxUsingSelected" Content="using selected features" Margin="5,3" IsChecked="{Binding UsingSelectedFeas,Mode=TwoWay}"/>
             <TextBlock Text="{Binding SelectedFeasInfo}" Margin="30,3,0,3"/>
+            <TextBlock Text="refresh" Margin="5,3,0,3" TextDecorations="Underline" Foreground="#FF63A0E2" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown" Cursor="Hand" />
         </StackPanel>
         <StackPanel Grid.Row="5">
             <Label Content="Spatial selection method for target layer feature(s)"/>

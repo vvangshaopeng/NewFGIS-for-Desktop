@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Import Excel" Height="200" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
+        Title="Import Excel" Height="230" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.8*"/>
             <RowDefinition Height="1.6*"/>
             <RowDefinition Height="1.2*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="0.8*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -40,6 +41,18 @@
             <ComboBox Name="cboY" Grid.Column="5" Height="22"/>
         </Grid>
         <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Save Path:" Grid.Column="1" VerticalAlignment="Center"/>
+            <TextBox Name="txtSavePath" Grid.Column="2" Height="22" VerticalAlignment="Center" IsReadOnly="True"/>
+            <Button Name="btnSelect" Content="Select" Height="22" Grid.Column="3" Click="btnSelect_Click"/>
+        </Grid>
+        <Grid Grid.Row="4">
             <Button Name="btnOK" Content="OK" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,80,0" Click="btnOK_Click"/>
             <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnCancel_Click"/>
         </Grid>
