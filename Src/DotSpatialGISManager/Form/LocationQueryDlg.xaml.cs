@@ -141,6 +141,7 @@ namespace DotSpatialGISManager
         public LocationQueryDlg()
         {
             InitializeComponent();
+            this.Owner = MainWindow.m_MainWindow;
             this.DataContext = this;
             this.cboMethod.Items.Add("select features from");
             this.cboMethod.Items.Add("add to the currently features in");

@@ -189,6 +189,8 @@ namespace DotSpatialGISManager
                                 else
                                 {
                                     LineF.Features.RemoveAt(LineF.Features.Count - 1);
+                                    if (f.CoordList[0] == f.CoordList[1])
+                                        f.CoordList.RemoveAt(1);
                                     f.CoordList.Add(coord);
                                     LineString line = new LineString(f.CoordList.ToArray());
                                     IFeature lineFeature = LineF.AddFeature(line);
@@ -224,6 +226,8 @@ namespace DotSpatialGISManager
                                 else
                                 {
                                     PolygonF.Features.RemoveAt(PolygonF.Features.Count - 1);
+                                    if (f.CoordList[0] == f.CoordList[1])
+                                        f.CoordList.RemoveAt(1);
                                     //组成面的点必须形成一个闭环 因此要先把最新加入的点去掉，加入绘制点之后再加入第一个点
                                     f.CoordList.RemoveAt(f.CoordList.Count - 1);
                                     f.CoordList.Add(coord);

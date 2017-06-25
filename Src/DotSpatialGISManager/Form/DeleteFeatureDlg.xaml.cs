@@ -45,7 +45,7 @@ namespace DotSpatialGISManager
             (m_LayerList[this.cboLayer.SelectedIndex] as FeatureLayer).RemoveSelectedFeatures();
             (m_LayerList[this.cboLayer.SelectedIndex] as FeatureLayer).UnSelectAll();
             MainWindow.m_DotMap.ResetBuffer();
-            MessageBox.Show("Delete features successful");
+            MessageBox.Show("Delete features successfully");
             m_HasChanged = true;
             this.btnSave.IsEnabled = true;
         }
@@ -91,15 +91,18 @@ namespace DotSpatialGISManager
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (this.cboLayer.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a target layer");
+                return;
+            }
             if (m_HasChanged)
             {
                 try
                 {
-                    foreach (var layer in m_LayerList)
-                    {
-                        (layer as FeatureLayer).FeatureSet.Save();
-                        MessageBox.Show("Save successfully");
-                    }
+                    var layer = m_LayerList[this.cboLayer.SelectedIndex];
+                    (layer as FeatureLayer).FeatureSet.Save();
+                    MessageBox.Show("Save successfully");
                 }
                 catch (Exception ex)
                 {
@@ -125,7 +128,7 @@ namespace DotSpatialGISManager
         {
             if (sender is FeatureLayer)
             {
-                if ((sender as FeatureLayer).Selection.Count>0)
+                if ((sender as FeatureLayer).Selection.Count > 0)
                 {
                     this.btnOK.IsEnabled = true;
                 }

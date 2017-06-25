@@ -73,7 +73,8 @@ namespace DotSpatialGISManager.UCControls
         /// <param name="e"></param>
         private void btnSelfIntersection_Click(object sender, RoutedEventArgs e)
         {
-
+            SelfIntersectionDlg f = new SelfIntersectionDlg();
+            f.ShowDialog();
         }
         /// <summary>
         /// 重叠面检查
