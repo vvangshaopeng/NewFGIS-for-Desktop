@@ -1,0 +1,58 @@
+﻿<Window x:Class="DotSpatialGISManager.BufferAnalysisDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="Buffer Analysis" Height="414.117" Width="388" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="01*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Local Layer" Margin="5">
+            <StackPanel>
+                <WrapPanel Margin="5">
+                    <Label Content="Select a layer:"/>
+                    <ComboBox Name="cboLayer" Height="22" Width="250" SelectionChanged="cboLayer_SelectionChanged"/>
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Buffer Method" Margin="5" Grid.Row="1">
+            <StackPanel>
+                <WrapPanel Margin="5">
+                    <ComboBox Name="cboMethod" Height="22" Width="340" SelectionChanged="cboMethod_SelectionChanged">
+                        <ComboBoxItem IsSelected="True">All features</ComboBoxItem>
+                        <ComboBoxItem>Selected features</ComboBoxItem>
+                    </ComboBox>
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Buffer Distance" Margin="5" Grid.Row="2">
+            <StackPanel>
+                <WrapPanel Margin="5">
+                    <TextBox Name="txtBufferDis" Width="179" Height="22" />
+                    <Label Content="   spatial reference unit" Height="30" Width="160"/>
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Dissolve Type (optional)" Margin="5" Grid.Row="3">
+            <CheckBox Content="Dissolve" Margin="10" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+        </GroupBox>
+        <GroupBox Header="Save Path" Margin="5" Grid.Row="4">
+            <WrapPanel Margin="5,3">
+                <TextBox Name="txtSavePath" Width="277" Height="22" IsReadOnly="True"/>
+                <Button Name="btnSelectOutputPath" Width="60" Height="22" Content="Save" Click="btnSelectOutputPath_Click"/>
+            </WrapPanel>
+        </GroupBox>
+        <Grid Grid.Row="5">
+            <Button Name="btnOK" Content="OK" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,80,0" Click="btnOK_Click"/>
+            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,20,0" Click="btnCancel_Click"/>
+        </Grid>
+    </Grid>
+</Window>
