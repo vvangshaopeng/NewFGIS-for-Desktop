@@ -130,6 +130,9 @@
     <Compile Include="Form\DeleteFeatureDlg.xaml.cs">
       <DependentUpon>DeleteFeatureDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\SuspensionPointDlg.xaml.cs">
+      <DependentUpon>SuspensionPointDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\SelfIntersectionDlg.xaml.cs">
       <DependentUpon>SelfIntersectionDlg.xaml</DependentUpon>
     </Compile>
@@ -220,6 +223,10 @@
     <Page Include="Form\ExportShpDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Form\SuspensionPointDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Form\SelfIntersectionDlg.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,6 +1,7 @@
 ﻿using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -131,8 +132,23 @@ namespace DotSpatialGISManager
             if (this.cboLayer.SelectedIndex>=0)
             {
                 m_FealyrList[this.cboLayer.SelectedIndex].DataSet.DataTable = LayerDataTable;
-                (m_FealyrList[this.cboLayer.SelectedIndex] as FeatureLayer).FeatureSet.Save();
-                MessageBox.Show("Save successfully!");
+                try
+                {
+                    (m_FealyrList[this.cboLayer.SelectedIndex] as FeatureLayer).FeatureSet.Save();
+                    MessageBox.Show("Save successfully!");
+                }
+                catch
+                {
+                    SaveFileDialog f = new SaveFileDialog();
+                    f.AddExtension = true;
+                    f.Filter = "ShapeFile(*.shp)|*.shp";
+                    f.Title = "Select Save Path";
+                    if (f.ShowDialog() == true)
+                    {
+                        (m_FealyrList[this.cboLayer.SelectedIndex] as FeatureLayer).FeatureSet.SaveAs(f.FileName,true);
+                        MessageBox.Show("Save successfully!");
+                    }
+                }
                 m_HasChanged = false;
             }
         }

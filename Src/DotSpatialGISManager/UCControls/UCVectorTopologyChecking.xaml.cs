@@ -64,7 +64,8 @@ namespace DotSpatialGISManager.UCControls
         /// <param name="e"></param>
         private void btnSuspension_Click(object sender, RoutedEventArgs e)
         {
-
+            SuspensionPointDlg f = new SuspensionPointDlg();
+            f.ShowDialog();
         }
         /// <summary>
         /// 导出数据
