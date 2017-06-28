@@ -32,6 +32,10 @@ namespace DotSpatialGISManager
         private IFeatureSet m_InputFeaSet = null;
         private IFeatureSet m_OutputFeaSet = new FeatureSet(FeatureType.Polygon);
 
+        private string[] m_bufferMethodArr = { "All features", "Selected features" };
+
+        private string bufferMethod = "All features";
+
         private bool ifDissolve;
 
         ICancelProgressHandler cancelProgressHandler = null;
@@ -68,9 +72,11 @@ namespace DotSpatialGISManager
             }
         }
 
-        private void cboUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cboMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.cboUnit.SelectedIndex == -1) return;
+            List<string> m_bufferMethodList = new List<string>(m_bufferMethodArr);
+            if (this.cboMethod.SelectedIndex == -1) return;
+            bufferMethod = m_bufferMethodList[this.cboMethod.SelectedIndex];
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -84,6 +90,13 @@ namespace DotSpatialGISManager
             {
                 MessageBox.Show("Please select a save path");
                 return;
+            }
+
+            if (bufferMethod == "Selected features")
+            {
+                FeatureSet fs = null;
+                fs = m_CurrentFeaLyr.Selection.ToFeatureSet();
+                m_InputFeaSet = fs as IFeatureSet;
             }
 
             double bufferDistance = 0;

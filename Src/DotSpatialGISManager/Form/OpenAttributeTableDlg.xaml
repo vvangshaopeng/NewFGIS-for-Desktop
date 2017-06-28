@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Aattribute Table"  Height="480" Width="600"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+        Title="Aattribute Table"  Height="480" Width="620"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -14,6 +14,7 @@
         <Grid>
             <Label VerticalAlignment="Center" Margin="10,0" Content="Select Layer:"/>
             <ComboBox Name="cboLayer"  Width="150" Height="22" Margin="100,0,0,0" HorizontalAlignment="Left" ItemsSource="{Binding LayerList}" SelectionChanged="cboLayer_SelectionChanged"/>
+            <Button Name="btnFieldCalculator" Width="100" Content="Field Calculator" Height="22" HorizontalAlignment="Right" Margin="0,0,250,0" Click="btnFieldCalculator_Click"/>
             <Button Name="btnStartEdit" Width="80" Content="Start Edit" Height="22" HorizontalAlignment="Right" Margin="0,0,170,0" Click="btnStartEdit_Click"/>
             <Button Name="btnStopEdit" Width="80" Content="Stop Edit" Height="22" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnStopEdit_Click" IsEnabled="False"/>
             <Button Name="btnSaveEdit" Width="80" Content="Save Edit" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnSaveEdit_Click"/>

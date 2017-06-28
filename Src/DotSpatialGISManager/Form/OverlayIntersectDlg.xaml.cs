@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using DotSpatial.Data;
 using DotSpatial.Analysis;
+using Common;
 
 namespace DotSpatialGISManager
 {
@@ -30,8 +31,6 @@ namespace DotSpatialGISManager
         private List<ILayer> m_LayerList = null;
         private IFeatureSet m_SourceFeaSet = null;
         private IFeatureSet m_TargetFeaSet = null;
-
-        ICancelProgressHandler cancelProgressHandler = null;
 
         public OverlayIntersectDlg()
         {
@@ -92,14 +91,62 @@ namespace DotSpatialGISManager
                 return;
             }
 
-            var m_OutputFeaSet = Overlay.IntersectFeatures(m_TargetFeaSet, m_SourceFeaSet, cancelProgressHandler);
-            m_OutputFeaSet.Name = System.IO.Path.GetFileNameWithoutExtension(this.txtSavePath.Text);
-            m_OutputFeaSet.SaveAs(this.txtSavePath.Text, true);
-            m_OutputFeaSet.Projection = MainWindow.m_DotMap.Projection;
+            var m_OutputFeaSet = IntersectFeatures(m_TargetFeaSet, m_SourceFeaSet);
+            if (m_OutputFeaSet != null)
+            {
+                m_OutputFeaSet.Name = System.IO.Path.GetFileNameWithoutExtension(this.txtSavePath.Text);
+                m_OutputFeaSet.SaveAs(this.txtSavePath.Text, true);
+                m_OutputFeaSet.Projection = MainWindow.m_DotMap.Projection;
 
-            MainWindow.m_DotMap.Layers.Add(m_OutputFeaSet);
-            MessageBox.Show("Successfully");
+                MainWindow.m_DotMap.Layers.Add(m_OutputFeaSet);
+                MessageBox.Show("Successfully");
+            }
+            else
+            {
+                MessageBox.Show("Failed");
+            }
             this.Close();
+        }
+
+        private FeatureSet IntersectFeatures(IFeatureSet targetFeatures, IFeatureSet sourceFeatures)
+        {
+            if (targetFeatures == null || sourceFeatures == null)
+            {
+                return null;
+            }
+            FeatureSet resultFeatures = new FeatureSet(); // the resulting featureset
+            resultFeatures.CopyTableSchema(targetFeatures); // set up the data table in the new feature set
+
+            ProgressBox p = new ProgressBox(0, 100, "Self intersection check progress");
+            p.ShowPregress();
+            p.SetProgressValue(0);
+            p.SetProgressDescription("Overlay Intersect...");
+            double pi = Math.Round((double)(1.0 * 100 / targetFeatures.Features.Count), 2);
+
+            for (int i = 0; i < targetFeatures.Features.Count ; i++)
+            {
+                p.SetProgressValue(i * pi + pi);
+                p.SetProgressDescription2(string.Format("{0} feature(s) is(are) checked, the remaining {1} feature(s) is(are) being queried", i + 1, targetFeatures.Features.Count - i - 1));
+                var tf = targetFeatures.GetFeature(i); // get the full undifferenced feature
+                for (int j = 0; j < sourceFeatures.Features.Count ; j++)
+                {
+                    var sf = sourceFeatures.GetFeature(j);
+                    if (sf.Geometry.Intersects(tf.Geometry))
+                    {
+                        tf = tf.Intersection(sf.Geometry); // clip off any pieces of SF that overlap FR
+                    }
+                    if (tf == null)
+                    {
+                        break;
+                    }
+                }
+                if (tf != null)
+                {
+                    resultFeatures.AddFeature(tf.Geometry).CopyAttributes(targetFeatures.GetFeature(i));
+                }
+            }
+            p.CloseProgress();
+            return resultFeatures;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

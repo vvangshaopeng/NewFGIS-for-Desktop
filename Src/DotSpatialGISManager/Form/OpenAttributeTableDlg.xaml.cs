@@ -1,7 +1,6 @@
 ﻿using DotSpatial.Controls;
 using DotSpatial.Data;
 using DotSpatial.Symbology;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +27,8 @@ namespace DotSpatialGISManager
         public event PropertyChangedEventHandler PropertyChanged;
         private IMapFeatureLayer[] m_FealyrList = null;
         private bool m_HasChanged = false;
+
+        public static FieldCalculatorDlg m_FieldCalculatorDlg = null;
 
         private List<string> _layerlist;
         public List<string>LayerList
@@ -132,24 +133,18 @@ namespace DotSpatialGISManager
             if (this.cboLayer.SelectedIndex>=0)
             {
                 m_FealyrList[this.cboLayer.SelectedIndex].DataSet.DataTable = LayerDataTable;
-                try
-                {
-                    (m_FealyrList[this.cboLayer.SelectedIndex] as FeatureLayer).FeatureSet.Save();
-                    MessageBox.Show("Save successfully!");
-                }
-                catch
-                {
-                    SaveFileDialog f = new SaveFileDialog();
-                    f.AddExtension = true;
-                    f.Filter = "ShapeFile(*.shp)|*.shp";
-                    f.Title = "Select Save Path";
-                    if (f.ShowDialog() == true)
-                    {
-                        (m_FealyrList[this.cboLayer.SelectedIndex] as FeatureLayer).FeatureSet.SaveAs(f.FileName,true);
-                        MessageBox.Show("Save successfully!");
-                    }
-                }
+                (m_FealyrList[this.cboLayer.SelectedIndex] as FeatureLayer).FeatureSet.Save();
+                MessageBox.Show("Save successfully!");
                 m_HasChanged = false;
+            }
+        }
+
+        private void btnFieldCalculator_Click(object sender, RoutedEventArgs e)
+        {
+            if (m_FieldCalculatorDlg == null)
+            {
+                FieldCalculatorDlg f = new FieldCalculatorDlg();
+                f.Show();
             }
         }
     }
