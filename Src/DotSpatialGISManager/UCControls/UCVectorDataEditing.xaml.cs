@@ -49,6 +49,14 @@ namespace DotSpatialGISManager.UCControls
             }
         }
 
+        public string StartEditingPath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "02.start editing.png";
+            }
+        }
+
         public string CreatePointPath
         {
             get
@@ -78,6 +86,54 @@ namespace DotSpatialGISManager.UCControls
             get
             {
                 return PathHelper.ResourcePath + "02.delete feature.png";
+            }
+        }
+
+        public string MoveFeaturePath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "02.move feature.png";
+            }
+        }
+
+        public string RotateFeaturePath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "02.rotate feature.png";
+            }
+        }
+
+        public string MoveNodePath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "02.move node.png";
+            }
+        }
+
+        public string MergeFeaturePath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "02.feature combination.png";
+            }
+        }
+
+        public string SplitFeaturePath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "02.feature depart.png";
+            }
+        }
+
+        public string SaveEditsPath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "02.save edits.png";
             }
         }
         #endregion
@@ -128,6 +184,41 @@ namespace DotSpatialGISManager.UCControls
                 m_CreatePolygonDlg = new CreatePolygonDlg();
                 m_CreatePolygonDlg.Show();
             }
+        }
+
+        private void btnStartEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnMoveFeature_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnRotateFeature_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnMoveNode_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnMergeFeature_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSplitFeature_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSaveEdits_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
