@@ -73,26 +73,8 @@ namespace DotSpatialGISManager.UCControls
         /// <param name="e"></param>
         private void btnAddLayer_Click(object sender, RoutedEventArgs e)
         {
-            ////支持多选
-            //OpenFileDialog f = new OpenFileDialog();
-            //f.CheckFileExists = true;
-            //f.Title = "Select ShapeFile";
-            //f.Multiselect = true;
-            //f.Filter = "ShapeFile(*.shp)|*.shp";
-            //if (f.ShowDialog() == true)
-            //{
-            //    foreach(string path  in f.FileNames)
-            //    {
-            //        string shpPath = path;
-            //        var pLayer = Shapefile.OpenFile(shpPath);
-            //        if (pLayer!=null)
-            //            MainWindow.m_DotMap.Layers.Add(pLayer);
-            //    }
-            //    MainWindow.m_DotMap.ZoomToMaxExtent();
-            //}
-            MainWindow.m_DotMap.AddLayers();
+            var layers = MainWindow.m_DotMap.AddLayers();
             MainWindow.m_DotMap.ZoomToMaxExtent();
-            var layer = MainWindow.m_DotMap.Layers[0];
         }
 
         /// <summary>

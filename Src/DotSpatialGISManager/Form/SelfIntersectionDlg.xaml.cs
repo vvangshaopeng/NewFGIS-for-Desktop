@@ -104,60 +104,67 @@ namespace DotSpatialGISManager
         private List<LineString> GetLinesFromGeometry(GeoAPI.Geometries.IGeometry polyline)
         {
             List<LineString> resultLineList = new List<LineString>();//确定为不自相交的折线的几何
-            if (polyline.GeometryType != "LineString") return resultLineList;
-            int count = polyline.Coordinates.Count();
-            List<LineString> tempLineList = new List<LineString>();
-            for (int i = 0; i < count; i++)
+            if (polyline.GeometryType != "LineString" && polyline.GeometryType!= "MultiLineString")
             {
-                if (i + 1 < count)
-                {
-                    List<Coordinate> temp = new List<Coordinate>() { polyline.Coordinates[i], polyline.Coordinates[i + 1] };
-                    LineString line = new LineString(temp.ToArray());
-                    tempLineList.Add(line);
-                }
+                return resultLineList;
             }
-            if (tempLineList.Count < 1) return resultLineList;
-            LineString referenceLine = tempLineList[0];//参照线
-            Coordinate start = referenceLine.Coordinates[0];
-            Coordinate end = referenceLine.Coordinates[1];
-            List<Coordinate> tempCoorList = new List<Coordinate>() { start, end };
-            for (int i = 0; i < tempLineList.Count; i++)
+            for(int s = 0;s<polyline.NumGeometries;s++)
             {
-                if (i + 1 < tempLineList.Count)
+                var partLine = polyline.GetGeometryN(s);
+                int count = partLine.Coordinates.Count();
+                List<LineString> tempLineList = new List<LineString>();
+                for (int i = 0; i < count; i++)
                 {
-                    double xr = referenceLine.Coordinates[1].X - referenceLine.Coordinates[0].X;
-                    double yr = referenceLine.Coordinates[1].Y - referenceLine.Coordinates[0].Y;
-                    double x1 = tempLineList[i].Coordinates[1].X - tempLineList[i].Coordinates[0].X;
-                    double y1 = tempLineList[i].Coordinates[1].Y - tempLineList[i].Coordinates[0].Y;
-                    double x2 = tempLineList[i + 1].Coordinates[1].X - tempLineList[i + 1].Coordinates[0].X;
-                    double y2 = tempLineList[i + 1].Coordinates[1].Y - tempLineList[i + 1].Coordinates[0].Y;
-                    if ((x1 == 0&&y1 == 0)||( xr == 0 && yr == 0)||(x2 == 0&&y2 == 0))
+                    if (i + 1 < count)
                     {
-                        end = tempLineList[i + 1].Coordinates[1];
-                        tempCoorList.Add(end);
-                        referenceLine = new LineString(new List<Coordinate>() { start, end }.ToArray());
-                        continue;
+                        List<Coordinate> temp = new List<Coordinate>() { partLine.Coordinates[i], partLine.Coordinates[i + 1] };
+                        LineString line = new LineString(temp.ToArray());
+                        tempLineList.Add(line);
                     }
-                    //余弦值>0视为同方向
-                    if ((double)(1.0 * (x1 * x2 + y1 * y2) / (Math.Sqrt(x1 * x1 + y1 * y1) * Math.Sqrt(x2 * x2 + y2 * y2))) > 0 &&
-                        (double)(1.0 * (xr * x2 + yr * y2) / (Math.Sqrt(xr * xr + yr * yr) * Math.Sqrt(x2 * x2 + y2 * y2))) > 0)
+                }
+                if (tempLineList.Count < 1) return resultLineList;
+                LineString referenceLine = tempLineList[0];//参照线
+                Coordinate start = referenceLine.Coordinates[0];
+                Coordinate end = referenceLine.Coordinates[1];
+                List<Coordinate> tempCoorList = new List<Coordinate>() { start, end };
+                for (int i = 0; i < tempLineList.Count; i++)
+                {
+                    if (i + 1 < tempLineList.Count)
                     {
-                        end = tempLineList[i + 1].Coordinates[1];
-                        tempCoorList.Add(end);
-                        referenceLine = new LineString(new List<Coordinate>() { start, end }.ToArray());
+                        double xr = referenceLine.Coordinates[1].X - referenceLine.Coordinates[0].X;
+                        double yr = referenceLine.Coordinates[1].Y - referenceLine.Coordinates[0].Y;
+                        double x1 = tempLineList[i].Coordinates[1].X - tempLineList[i].Coordinates[0].X;
+                        double y1 = tempLineList[i].Coordinates[1].Y - tempLineList[i].Coordinates[0].Y;
+                        double x2 = tempLineList[i + 1].Coordinates[1].X - tempLineList[i + 1].Coordinates[0].X;
+                        double y2 = tempLineList[i + 1].Coordinates[1].Y - tempLineList[i + 1].Coordinates[0].Y;
+                        if ((x1 == 0 && y1 == 0) || (xr == 0 && yr == 0) || (x2 == 0 && y2 == 0))
+                        {
+                            end = tempLineList[i + 1].Coordinates[1];
+                            tempCoorList.Add(end);
+                            referenceLine = new LineString(new List<Coordinate>() { start, end }.ToArray());
+                            continue;
+                        }
+                        //余弦值>0视为同方向
+                        if ((double)(1.0 * (x1 * x2 + y1 * y2) / (Math.Sqrt(x1 * x1 + y1 * y1) * Math.Sqrt(x2 * x2 + y2 * y2))) > 0 &&
+                            (double)(1.0 * (xr * x2 + yr * y2) / (Math.Sqrt(xr * xr + yr * yr) * Math.Sqrt(x2 * x2 + y2 * y2))) > 0)
+                        {
+                            end = tempLineList[i + 1].Coordinates[1];
+                            tempCoorList.Add(end);
+                            referenceLine = new LineString(new List<Coordinate>() { start, end }.ToArray());
+                        }
+                        else
+                        {
+                            resultLineList.Add(new LineString(tempCoorList.ToArray()));
+                            referenceLine = tempLineList[i + 1];
+                            start = referenceLine.Coordinates[0];
+                            end = referenceLine.Coordinates[1];
+                            tempCoorList = new List<Coordinate>() { start, end };
+                        }
                     }
                     else
                     {
                         resultLineList.Add(new LineString(tempCoorList.ToArray()));
-                        referenceLine = tempLineList[i + 1];
-                        start = referenceLine.Coordinates[0];
-                        end = referenceLine.Coordinates[1];
-                        tempCoorList = new List<Coordinate>() { start, end };
                     }
-                }
-                else
-                {
-                    resultLineList.Add(new LineString(tempCoorList.ToArray()));
                 }
             }
             return resultLineList;
