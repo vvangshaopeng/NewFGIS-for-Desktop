@@ -19,6 +19,13 @@
                     </ControlTemplate>
                 </ToggleButton.Template>
             </ToggleButton>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Start editing" Name="btnStartEdit" Click="btnStartEdit_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding StartEditingPath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
             <Button Style="{StaticResource btnMainMenu}" ToolTip="Create Point" Name="btnCreatePoint" Click="btnCreatePoint_Click">
                 <Button.Template>
                     <ControlTemplate>
@@ -47,6 +54,48 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Move Feature" Name="btnMoveFeature" Click="btnMoveFeature_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding MoveFeaturePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Rotate Feature" Name="btnRotateFeature" Click="btnRotateFeature_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding RotateFeaturePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Move Node" Name="btnMoveNode" Click="btnMoveNode_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding MoveNodePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Merge Feature" Name="btnMergeFeature" Click="btnMergeFeature_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding MergeFeaturePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Split Feature" Name="btnSplitFeature" Click="btnSplitFeature_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding SplitFeaturePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Save edits" Name="btnSaveEdits" Click="btnSaveEdits_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding SaveEditsPath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>           
         </WrapPanel>
     </Grid>
 </UserControl>
