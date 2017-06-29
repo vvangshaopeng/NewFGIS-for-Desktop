@@ -45,6 +45,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\Bool2Visibility.cs" />
     <Compile Include="Converters\String2ImageConverter.cs" />
     <Compile Include="Helper\CHelp.cs" />
     <Compile Include="Helper\NotifyPropertyChanged.cs" />

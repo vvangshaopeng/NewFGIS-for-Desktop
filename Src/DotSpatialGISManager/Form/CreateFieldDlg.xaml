@@ -1,0 +1,28 @@
+﻿<Window x:Class="DotSpatialGISManager.CreateFieldDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="Faying Surface" Height="Auto" SizeToContent="Height" Width="270" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Label Content="Field name:" Margin="5,3"/>
+            <TextBox Name="txtFieldName" Margin="5" Width="155"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Label Content="Field type:" Margin="5,3"/>
+            <ComboBox Name="cboType" Margin="11,5" Width="155"/>
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Button Name="btnOK" Content="OK" Width="70" Height="22" HorizontalAlignment="Right" Margin="0,5,75,5" Click="btnOK_Click"/>
+            <Button Name="btnCancel" Content="Cancel" Width="70" Height="22" HorizontalAlignment="Right" Margin="0,5,5,5" Click="btnCancel_Click"/>
+        </Grid>
+    </Grid>
+</Window>

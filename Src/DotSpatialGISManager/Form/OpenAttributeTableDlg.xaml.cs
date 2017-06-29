@@ -22,16 +22,14 @@ namespace DotSpatialGISManager
     /// <summary>
     /// SetScaleDlg.xaml 的交互逻辑
     /// </summary>
-    public partial class OpenAttributeTableDlg : Window,INotifyPropertyChanged
+    public partial class OpenAttributeTableDlg : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private IMapFeatureLayer[] m_FealyrList = null;
         private bool m_HasChanged = false;
 
-        public static FieldCalculatorDlg m_FieldCalculatorDlg = null;
-
         private List<string> _layerlist;
-        public List<string>LayerList
+        public List<string> LayerList
         {
             get
             {
@@ -52,15 +50,15 @@ namespace DotSpatialGISManager
             }
             set
             {
-                if (_layerdatatable!=value)
+                if (_layerdatatable != value)
                 {
                     _layerdatatable = value;
-                    if (this.PropertyChanged!=null)
+                    if (this.PropertyChanged != null)
                     {
                         this.PropertyChanged(this, new PropertyChangedEventArgs("LayerDataTable"));
                     }
                 }
-               
+
             }
         }
 
@@ -69,7 +67,7 @@ namespace DotSpatialGISManager
             MainWindow.m_OpenAttributeTableDlg = null;
             if (m_HasChanged)
             {
-                if (MessageBox.Show("Save changes?", "",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Save changes?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     btnSaveEdit_Click(null, null);
                 }
@@ -83,7 +81,7 @@ namespace DotSpatialGISManager
             this.Owner = MainWindow.m_MainWindow;
             m_FealyrList = MainWindow.m_DotMap.GetFeatureLayers();
             List<string> LyrNameList = new List<string>();
-            foreach(var layer in m_FealyrList)
+            foreach (var layer in m_FealyrList)
             {
                 LyrNameList.Add(layer.LegendText);
             }
@@ -97,14 +95,14 @@ namespace DotSpatialGISManager
             if (this.cboLayer.SelectedIndex == -1 || m_FealyrList == null) return;
             DataTable dt = m_FealyrList[this.cboLayer.SelectedIndex].DataSet.DataTable;
             DataTable copydt = new DataTable();
-            for (int i = 0;i< dt.Columns.Count;i++)
+            for (int i = 0; i < dt.Columns.Count; i++)
             {
                 copydt.Columns.Add(dt.Columns[i].ColumnName);
             }
-            for(int i = 0;i<dt.Rows.Count;i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 DataRow row = copydt.NewRow();
-                for(int j= 0;j<dt.Columns.Count;j++)
+                for (int j = 0; j < dt.Columns.Count; j++)
                 {
                     row[j] = dt.Rows[i][j].ToString();
                 }
@@ -130,7 +128,7 @@ namespace DotSpatialGISManager
 
         private void btnSaveEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (this.cboLayer.SelectedIndex>=0)
+            if (this.cboLayer.SelectedIndex >= 0)
             {
                 m_FealyrList[this.cboLayer.SelectedIndex].DataSet.DataTable = LayerDataTable;
                 (m_FealyrList[this.cboLayer.SelectedIndex] as FeatureLayer).FeatureSet.Save();
@@ -141,9 +139,9 @@ namespace DotSpatialGISManager
 
         private void btnFieldCalculator_Click(object sender, RoutedEventArgs e)
         {
-            if (m_FieldCalculatorDlg == null)
+            if (this.cboLayer.SelectedIndex >= 0)
             {
-                FieldCalculatorDlg f = new FieldCalculatorDlg();
+                FieldCalculatorDlg f = new FieldCalculatorDlg(m_FealyrList[this.cboLayer.SelectedIndex] as IFeatureLayer);
                 f.Show();
             }
         }

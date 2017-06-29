@@ -3,6 +3,7 @@ using DotSpatial.Data;
 using DotSpatial.Symbology;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -14,66 +15,131 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using DotSpatialGISManager.Enum;
+using Common;
 
 namespace DotSpatialGISManager
 {
     /// <summary>
     /// FieldCalculatorDlg.xaml 的交互逻辑
     /// </summary>
-    public partial class FieldCalculatorDlg : Window
+    public partial class FieldCalculatorDlg : Window, INotifyPropertyChanged
     {
-        private List<IMapFeatureLayer> m_LayerList = null;
         private IFeatureSet m_CurrentFeaSet;
-        private List<DataColumn> m_FieldList = null;
-        //需要进行计算的字段
-        private DataColumn m_CurrentCalField;
-        //选择的参与计算的字段
-        private DataColumn m_CurrentField;
-        //计算后的字段
-        private DataColumn m_ResultField;
-        public FieldCalculatorDlg()
-        {
-            InitializeComponent();
-            m_LayerList = MainWindow.m_DotMap.GetFeatureLayers().ToList();
-            m_CurrentFeaSet = (m_LayerList[0] as FeatureLayer).FeatureSet;
+        private FieldType m_FieldType;
+        private string m_NewFieldName = null;
 
-            this.lstFields.Items.Clear();
-            foreach (DataColumn col in m_CurrentFeaSet.DataTable.Columns)
+        #region 绑定
+        private ObservableCollection<string> _FieldsList;
+        public ObservableCollection<string> FieldsList
+        {
+            get
             {
-                try
+                return _FieldsList ?? (_FieldsList = new ObservableCollection<string>());
+            }
+            set
+            {
+                if (_FieldsList != value)
                 {
-                    this.cboCalFields.Items.Add(col.ColumnName);
-                    this.lstFields.Items.Add(col.ColumnName);
-                    m_FieldList.Add(col);
-                }
-                catch
-                {
-                    Console.WriteLine("The current layer have no field, you should change a layer.");
+                    _FieldsList = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(FieldsList)));
+                    }
                 }
             }
-            if (this.cboCalFields.Items.Count > 0)
+        }
+        public ObservableCollection<string> FunctionsList
+        {
+            get
             {
-                this.cboCalFields.SelectedIndex = 0;
+                return new ObservableCollection<string>() { "Abs(  )", "Atn(  )" };
             }
         }
 
-        private void cboCalFields_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private string _SelectFunction;
+        public string SelectFunction
         {
-            if (this.cboCalFields.SelectedIndex == -1) return;
-            try
+            get
             {
-                m_CurrentCalField = m_FieldList[this.cboCalFields.SelectedIndex];
+                return _SelectFunction;
             }
-            catch
+            set
             {
-                Console.WriteLine("The current layer have no field.");
+                if (_SelectFunction != value)
+                {
+                    _SelectFunction = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectFunction)));
+                    }
+                }
+            }
+        }
+
+        private string _SelectedField;
+        public string SelectedField
+        {
+            get
+            {
+                return _SelectFunction;
+            }
+            set
+            {
+                if (_SelectedField != value)
+                {
+                    _SelectedField = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedField)));
+                    }
+                }
+            }
+        }
+
+        private string _CalculateField;
+        public string CalculateField
+        {
+            get
+            {
+                return _CalculateField;
+            }
+            set
+            {
+                if (_CalculateField != value)
+                {
+                    _CalculateField = value;
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(CalculateField)));
+                    }
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        public FieldCalculatorDlg(IFeatureLayer pFeaLayer)
+        {
+            InitializeComponent();
+            this.DataContext = this;
+            m_CurrentFeaSet = (pFeaLayer as FeatureLayer).FeatureSet;
+            foreach (DataColumn col in m_CurrentFeaSet.DataTable.Columns)
+            {
+                FieldsList.Add(col.ColumnName);
             }
         }
 
         private void btnOpe_Click(object sender, RoutedEventArgs e)
         {
             string pBtnContent = (sender as Button).Content.ToString();
-            this.txtExpression.Text += pBtnContent + " ";
+            string srcText = this.txtExpression.Text;
+            int current = this.txtExpression.SelectionStart;
+            this.txtExpression.Text = srcText.Substring(0, current) + pBtnContent + srcText.Substring(current, srcText.Length - current);
+            this.txtExpression.SelectionStart = current + pBtnContent.Length;
+            this.txtExpression.Focus();
         }
 
         private void txtExpression_TextChanged(object sender, TextChangedEventArgs e)
@@ -98,10 +164,17 @@ namespace DotSpatialGISManager
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (m_ResultField != null)
+            if (string.IsNullOrEmpty(this.CalculateField))
             {
-                m_CurrentCalField = m_ResultField;
+                MessageBox.Show("Please select a calculate field");
+                return;
             }
+
+            ProgressBox p = new ProgressBox(0, 100, "Faying surface check progress");
+            p.ShowPregress();
+            p.SetProgressValue(0);
+            p.SetProgressDescription("calculate...");
+            double pi = Math.Round((double)(1.0 * 100 / m_CurrentFeaSet.Features.Count));
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -117,19 +190,63 @@ namespace DotSpatialGISManager
         private void lstFields_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (this.lstFields.SelectedItem == null) return;
-            this.txtExpression.Text += ("[" + this.lstFields.SelectedItem.ToString() + "] ");
             this.btnClear.IsEnabled = true;
+            string text = ("[" + this.lstFields.SelectedItem.ToString() + "]");
+            string srcText = this.txtExpression.Text;
+            int current = this.txtExpression.SelectionStart;
+            this.txtExpression.Text = srcText.Substring(0, current) + text + srcText.Substring(current, srcText.Length - current);
+            this.txtExpression.SelectionStart = current + text.Length;
+            this.txtExpression.Focus();
         }
 
         private void lstFunctions_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (this.lstFunctions.SelectedItem == null) return;
-            this.txtExpression.Text += (this.lstFunctions.SelectedItem.ToString());
             this.btnClear.IsEnabled = true;
+            string text = this.lstFunctions.SelectedItem.ToString();
+            string srcText = this.txtExpression.Text;
+            int current = this.txtExpression.SelectionStart;
+            this.txtExpression.Text = srcText.Substring(0, current) + text + srcText.Substring(current, srcText.Length - current);
+            this.txtExpression.SelectionStart = current + text.Length-2;
+            this.txtExpression.Focus();
         }
-        private void Window_Closed(object sender, EventArgs e)
+
+        private void btnCreateField_Click(object sender, RoutedEventArgs e)
         {
-            OpenAttributeTableDlg.m_FieldCalculatorDlg = null;
+            CreateFieldDlg f = new CreateFieldDlg(new List<string>(this.FieldsList));
+            {
+                if (f.ShowDialog() == true)
+                {
+                    m_NewFieldName = f.FieldName;
+                    m_FieldType = f.Fieldtype;
+                    this.btnCreateField.Content = m_NewFieldName;
+                    this.CalculateField = m_NewFieldName;
+                }
+            }
+        }
+
+        private void ckxCreate_Checked(object sender, RoutedEventArgs e)
+        {
+            this.cboCalFields.IsEnabled = false;
+            if (!string.IsNullOrEmpty(this.m_NewFieldName))
+                this.CalculateField = m_NewFieldName;
+            else
+                this.CalculateField = "";
+        }
+
+        private void ckxCreate_Unchecked(object sender, RoutedEventArgs e)
+        {
+            this.cboCalFields.IsEnabled = true;
+            this.CalculateField = this.cboCalFields.Text;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.FieldsList.Count > 0)
+            {
+                this.cboCalFields.SelectedIndex = 0;
+                this.CalculateField = this.cboCalFields.Text;
+            }
         }
     }
 }

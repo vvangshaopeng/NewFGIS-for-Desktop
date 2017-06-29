@@ -27,4 +27,10 @@ namespace DotSpatialGISManager.Enum
         Contains,
         Within,
     }
+
+    public enum FieldType
+    {
+        String = 0,
+        Double,
+    }
 }

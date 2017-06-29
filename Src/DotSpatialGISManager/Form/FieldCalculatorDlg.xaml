@@ -4,21 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
+        xmlns:Common="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
-        Title="Field Calculator" Height="463" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+        Title="Field Calculator" Height="Auto" SizeToContent="Height" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Common:Bool2Visibility x:Key="bool2visibility"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Label x:Name="lblFields" Content="Select a Field to Be Calculated：" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Width="193"/>
-            <ComboBox x:Name="cboCalFields" HorizontalAlignment="Left" Margin="213,12,0,0" VerticalAlignment="Top" Width="88" SelectionChanged="cboCalFields_SelectionChanged"/>
-            <Label x:Name="lblEqual" Content=" = " HorizontalAlignment="Right" Margin="0,10,0,0" VerticalAlignment="Top" Width="84"/>
-        </Grid>
-        <Grid Grid.Row="1" >
+        <GroupBox Header="Select a Field to Be Calculated：" Margin="23,2">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="cboCalFields" Margin="10" Width="140"
+                          ItemsSource="{Binding FieldsList}" SelectedItem="{Binding SelectedField,Mode=TwoWay}"/>
+                <CheckBox Name="ckxCreate" Content="Create a new field" Margin="12" Checked="ckxCreate_Checked" Unchecked="ckxCreate_Unchecked"/>
+            </StackPanel>
+        </GroupBox>
+        <Button Name="btnCreateField" Visibility="{Binding IsChecked,ElementName=ckxCreate,Converter={StaticResource bool2visibility}}" Margin="25,5"
+                Content="Create a new field" Grid.Row="1" Click="btnCreateField_Click"/>
+            <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="15"/>
                 <ColumnDefinition Width="*"/>
@@ -27,69 +35,48 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1">
                 <GroupBox x:Name="groupBoxFields" Header="Fields"  HorizontalAlignment="Center" VerticalAlignment="Top" Height="231" Width="164" Margin="8,0">
-                    <ListBox x:Name="lstFields" Margin="1,0,1,1" Height="198" VerticalAlignment="Bottom" MouseDoubleClick="lstFields_MouseDoubleClick">
-                        <ListBoxItem>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="Template" >
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                <TextBlock HorizontalAlignment="Left" Text="{TemplateBinding Content}" Name="c1"></TextBlock>
-                                            </StackPanel>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter TargetName="c1" Property="Background" Value="LightBlue" ></Setter>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBoxItem>
+                    <ListBox x:Name="lstFields" ItemsSource="{Binding FieldsList}" Margin="1" Height="198" VerticalAlignment="Bottom" MouseDoubleClick="lstFields_MouseDoubleClick">
                     </ListBox>
                 </GroupBox>
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <GroupBox x:Name="groupBoxFunctions" Header="Functions"  HorizontalAlignment="Center" VerticalAlignment="Top" Height="191" Width="164" Margin="8,0">
-                    <ListBox x:Name="lstFunctions" Margin="1,0,1,1" Height="158" VerticalAlignment="Bottom" MouseDoubleClick="lstFunctions_MouseDoubleClick">
-                        <ListBoxItem Name="Abs">Abs( )</ListBoxItem>
-                        <ListBoxItem Name="Cos">Cos( )</ListBoxItem>
-                        <ListBoxItem Name="Sin">Sin( )</ListBoxItem>
-                        <ListBoxItem Name="Sqr">Sqr( )</ListBoxItem>
-                        <ListBoxItem Name="Tan">Tan( )</ListBoxItem>
+                    <ListBox x:Name="lstFunctions" Margin="1,0,1,1" Height="158" VerticalAlignment="Bottom" MouseDoubleClick="lstFunctions_MouseDoubleClick"
+                             ItemsSource="{Binding FunctionsList}" SelectedItem="{Binding SelectFunction}">
                     </ListBox>
                 </GroupBox>
                 <Grid >
-                    <Button x:Name="btnAdd" Content="+" HorizontalAlignment="Left" Height="Auto" Margin="10,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
-                    <Button x:Name="btnSubtract" Content="-" HorizontalAlignment="Left" Height="Auto" Margin="52,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
-                    <Button x:Name="btnMultiply" Content="*" HorizontalAlignment="Left" Height="Auto" Margin="94,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
-                    <Button x:Name="btnDivide" Content="/" HorizontalAlignment="Left" Height="Auto" Margin="136,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
+                    <Button x:Name="btnAdd" Content=" + " HorizontalAlignment="Left" Height="Auto" Margin="10,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
+                    <Button x:Name="btnSubtract" Content=" - " HorizontalAlignment="Left" Height="Auto" Margin="52,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
+                    <Button x:Name="btnMultiply" Content=" * " HorizontalAlignment="Left" Height="Auto" Margin="94,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
+                    <Button x:Name="btnDivide" Content=" / " HorizontalAlignment="Left" Height="Auto" Margin="136,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
                 </Grid>
                 <Label Height="8"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="2" >
+        <Grid Grid.Row="3" >
             <StackPanel >
-                <Label x:Name="label1" Content="Computational expression：" HorizontalAlignment="Left" Margin="15,0,0,0"  VerticalAlignment="Top" Width="170"/>
+                <WrapPanel>
+                    <Label Content="{Binding CalculateField}" Margin="25,0,10,0"/>
+                    <Label Content="="></Label>
+                </WrapPanel>
                 <TextBox x:Name="txtExpression" Height="60"  HorizontalAlignment="Center" Width="350"  TextChanged="txtExpression_TextChanged"/>
                 <Label Height="8"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="65"/>
-                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="btnOK" Content="Apply" HorizontalAlignment="Center" Height="Auto"  VerticalAlignment="Center" Width="63" Grid.Column="4" Click="btnOK_Click" IsEnabled="False" />
+                    <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Center" Height="Auto"  VerticalAlignment="Center" Width="63" Grid.Column="4" Click="btnOK_Click" IsEnabled="False" />
                     <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Center" Height="Auto"  VerticalAlignment="Center" Width="63" Grid.Column="1" Click="btnClear_Click" IsEnabled="False" />
                     <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Center" Height="Auto" VerticalAlignment="Center" Width="63" Grid.Column="5" Click="btnClose_Click"/>
                 </Grid>
             </StackPanel>
-        </Grid>
-        <Grid Grid.Row="3" >
         </Grid>
     </Grid>
 </Window>

@@ -12,11 +12,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common.Helper;
-
 using DotSpatial.Data;
 using Microsoft.Win32;
 using DotSpatial.Controls;
 using DotSpatial.Symbology;
+using DotSpatial.Symbology.Forms;
 
 namespace DotSpatialGISManager.UCControls
 {
@@ -102,8 +102,10 @@ namespace DotSpatialGISManager.UCControls
         /// <param name="e"></param>
         private void btnExportData_Click(object sender, RoutedEventArgs e)
         {
-            ExportShpDlg f = new ExportShpDlg();
-            f.ShowDialog();
+            AttributeCalculator f = new AttributeCalculator();
+            f.Show();
+            //ExportShpDlg f = new ExportShpDlg();
+            //f.ShowDialog();
         }
     }
 }
