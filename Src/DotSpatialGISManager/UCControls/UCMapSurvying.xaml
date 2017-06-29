@@ -19,6 +19,13 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Hand Measure" Name="btnHandMeasure" Click="btnHandMeasure_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding HandMeasurePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>            
         </WrapPanel>
     </Grid>
 </UserControl>

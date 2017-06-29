@@ -40,7 +40,13 @@ namespace DotSpatialGISManager.UCControls
                 return PathHelper.ResourcePath + "06.surveying.png";
             }
         }
-
+        public string HandMeasurePath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "06.hand_surveying.png";
+            }
+        }
         #endregion
 
         private void btnMeasure_Click(object sender, RoutedEventArgs e)
@@ -53,6 +59,11 @@ namespace DotSpatialGISManager.UCControls
             m_MeasureResultDlg.Init();
             m_MeasureResultDlg.Show();
             MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+        }
+
+        private void btnHandMeasure_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
