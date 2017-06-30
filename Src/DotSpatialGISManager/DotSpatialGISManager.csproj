@@ -86,6 +86,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OCX\DotSpatial.Symbology.Forms.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="Microsoft.Vsa, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Windows.Shell">
       <HintPath>..\OCX\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>

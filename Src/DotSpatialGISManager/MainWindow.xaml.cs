@@ -22,6 +22,7 @@ using DotSpatialGISManager.Enum;
 using GeoAPI.Geometries;
 using DotSpatial.Symbology;
 using NetTopologySuite.Geometries;
+using System.Data;
 
 namespace DotSpatialGISManager
 {

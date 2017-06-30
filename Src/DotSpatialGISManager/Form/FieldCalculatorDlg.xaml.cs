@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using DotSpatialGISManager.Enum;
 using Common;
+using Microsoft.Win32;
 
 namespace DotSpatialGISManager
 {
@@ -54,7 +55,7 @@ namespace DotSpatialGISManager
         {
             get
             {
-                return new ObservableCollection<string>() { "Abs(  )", "Atn(  )" };
+                return new ObservableCollection<string>() { "Math.E", "Math.PI", "Math.abs()", "Math.ceil()", "Math.floor()", "Math.round()", "Math.sqrt()", "Math.sin()", "Math.cos()", "Math.tan()", "Math.exp()", "Math.log()", "Math.random()", "Math.pow(,)", "Math.max(,)", "Math.min(,)" };
             }
         }
 
@@ -169,12 +170,95 @@ namespace DotSpatialGISManager
                 MessageBox.Show("Please select a calculate field");
                 return;
             }
-
-            ProgressBox p = new ProgressBox(0, 100, "Faying surface check progress");
+            string filter = this.txtExpression.Text.Replace(" ", "");
+            List<object> Result = new List<object>();
+            Dictionary<string, string> DicFields = new Dictionary<string, string>();
+            while (filter.Contains("[") && filter.Contains("]"))
+            {
+                string temp = filter.Substring(filter.IndexOf("["), filter.IndexOf("]") - filter.IndexOf("[") + 1);
+                filter = filter.Replace(temp, "");
+                DicFields.Add(temp, temp.Replace("[", "").Replace("]", ""));
+            }
+            foreach (var value in DicFields)
+            {
+                if (!m_CurrentFeaSet.DataTable.Columns.Contains(value.Value))
+                {
+                    MessageBox.Show("Fields " + value.Key + " is not exits");
+                    return;
+                }
+            }
+            ProgressBox p = new ProgressBox(0, 100, "Field calculate");
             p.ShowPregress();
             p.SetProgressValue(0);
             p.SetProgressDescription("calculate...");
-            double pi = Math.Round((double)(1.0 * 100 / m_CurrentFeaSet.Features.Count));
+            double pi = Math.Round((double)(1.0 * 100 / m_CurrentFeaSet.Features.Count), 2);
+            for (int i = 0; i < m_CurrentFeaSet.Features.Count; i++)
+            {
+                p.SetProgressValue(pi + pi * i);
+                p.SetProgressDescription2(string.Format("{0} feature(s) is(are) calculated, the remaining {1} feature(s) is(are) being calculated", i + 1, m_CurrentFeaSet.Features.Count - i - 1));
+                string resultFilter = this.txtExpression.Text.Replace(" ", "");
+                foreach (var value in DicFields)
+                {
+                    string str = m_CurrentFeaSet.Features[i].DataRow[value.Value].ToString();
+                    if (resultFilter.Contains(value.Key))
+                        resultFilter = resultFilter.Replace(value.Key, str);
+                }
+                try
+                {
+                    Result.Add(Eval(resultFilter));
+                }
+                catch
+                {
+                    p.CloseProgress();
+                    MessageBox.Show("something seems to have gone wrong");
+                    return;
+                }
+            }
+            p.SetProgressDescription2("save data to field now,it should take a few seconds");
+            if (this.ckxCreate.IsChecked == true)
+            {
+                if (this.m_FieldType == FieldType.String)
+                {
+                    m_CurrentFeaSet.DataTable.Columns.Add(this.m_NewFieldName, typeof(String));
+                    for (int i = 0; i < m_CurrentFeaSet.Features.Count; i++)
+                    {
+                        m_CurrentFeaSet.Features[i].DataRow[this.m_NewFieldName] = Result[i].ToString();
+                    }
+                }
+                else if (this.m_FieldType == FieldType.Double)
+                {
+                    m_CurrentFeaSet.DataTable.Columns.Add(this.m_NewFieldName, typeof(Double));
+                    for (int i = 0; i < m_CurrentFeaSet.Features.Count; i++)
+                    {
+                        m_CurrentFeaSet.Features[i].DataRow[this.m_NewFieldName] = Convert.ToDouble(Result[i]);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < m_CurrentFeaSet.Features.Count; i++)
+                {
+                    m_CurrentFeaSet.Features[i].DataRow[this.CalculateField] = Result[i];
+                }
+            }
+            p.CloseProgress();
+            try
+            {
+                m_CurrentFeaSet.Save();
+            }
+            catch
+            {
+                SaveFileDialog f = new SaveFileDialog();
+                f.AddExtension = true;
+                f.Filter = "ShapeFile(*.shp)|*.shp";
+                f.Title = "Select Save Path";
+                if (f.ShowDialog() == true)
+                {
+                    m_CurrentFeaSet.SaveAs(f.FileName, true);
+                }
+            }
+            MessageBox.Show("Successfully");
+            this.DialogResult = true;
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -184,7 +268,7 @@ namespace DotSpatialGISManager
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
 
         private void lstFields_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -207,7 +291,7 @@ namespace DotSpatialGISManager
             string srcText = this.txtExpression.Text;
             int current = this.txtExpression.SelectionStart;
             this.txtExpression.Text = srcText.Substring(0, current) + text + srcText.Substring(current, srcText.Length - current);
-            this.txtExpression.SelectionStart = current + text.Length-2;
+            this.txtExpression.SelectionStart = current + text.Length - 1;
             this.txtExpression.Focus();
         }
 
@@ -247,6 +331,18 @@ namespace DotSpatialGISManager
                 this.cboCalFields.SelectedIndex = 0;
                 this.CalculateField = this.cboCalFields.Text;
             }
+        }
+
+        public object Eval(string s)
+        {
+            Microsoft.JScript.Vsa.VsaEngine ve = Microsoft.JScript.Vsa.VsaEngine.CreateEngine();
+            return Microsoft.JScript.Eval.JScriptEvaluate(s, ve);
+        }
+
+        private void cboCalFields_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.cboCalFields.SelectedValue == null) return;
+            this.CalculateField = this.cboCalFields.SelectedValue.ToString();
         }
     }
 }

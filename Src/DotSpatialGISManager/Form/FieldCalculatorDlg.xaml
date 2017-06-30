@@ -20,7 +20,7 @@
         <GroupBox Header="Select a Field to Be Calculated：" Margin="23,2">
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="cboCalFields" Margin="10" Width="140"
-                          ItemsSource="{Binding FieldsList}" SelectedItem="{Binding SelectedField,Mode=TwoWay}"/>
+                          ItemsSource="{Binding FieldsList}" SelectedItem="{Binding SelectedField,Mode=TwoWay}" SelectionChanged="cboCalFields_SelectionChanged"/>
                 <CheckBox Name="ckxCreate" Content="Create a new field" Margin="12" Checked="ckxCreate_Checked" Unchecked="ckxCreate_Unchecked"/>
             </StackPanel>
         </GroupBox>
@@ -45,12 +45,13 @@
                              ItemsSource="{Binding FunctionsList}" SelectedItem="{Binding SelectFunction}">
                     </ListBox>
                 </GroupBox>
-                <Grid >
-                    <Button x:Name="btnAdd" Content=" + " HorizontalAlignment="Left" Height="Auto" Margin="10,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
-                    <Button x:Name="btnSubtract" Content=" - " HorizontalAlignment="Left" Height="Auto" Margin="52,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
-                    <Button x:Name="btnMultiply" Content=" * " HorizontalAlignment="Left" Height="Auto" Margin="94,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
-                    <Button x:Name="btnDivide" Content=" / " HorizontalAlignment="Left" Height="Auto" Margin="136,5,0,0" VerticalAlignment="Top" Width="35" Click="btnOpe_Click"/>
-                </Grid>
+                <WrapPanel  Margin="7">
+                    <Button x:Name="btnAdd" Content=" + " HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="32" Click="btnOpe_Click"/>
+                    <Button x:Name="btnSubtract" Content=" - " HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="32" Click="btnOpe_Click"/>
+                    <Button x:Name="btnMultiply" Content=" * " HorizontalAlignment="Left" Height="Auto"  VerticalAlignment="Top" Width="32" Click="btnOpe_Click"/>
+                    <Button x:Name="btnDivide" Content=" / " HorizontalAlignment="Left" Height="Auto"  VerticalAlignment="Top" Width="32" Click="btnOpe_Click"/>
+                    <Button x:Name="btn" Content=" % " HorizontalAlignment="Left" Height="Auto"  VerticalAlignment="Top" Width="32" Click="btnOpe_Click"/>
+                </WrapPanel>
                 <Label Height="8"/>
             </StackPanel>
         </Grid>
