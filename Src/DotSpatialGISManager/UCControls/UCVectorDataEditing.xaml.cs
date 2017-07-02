@@ -36,6 +36,8 @@ namespace DotSpatialGISManager.UCControls
             InitializeComponent();
             this.DataContext = this;
             m_btnSelect = this.btnSelectFeature;
+
+            disableButton();
         }
 
         //绑定图标路径
@@ -188,7 +190,7 @@ namespace DotSpatialGISManager.UCControls
 
         private void btnStartEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            enableButton();
         }
 
         private void btnMoveFeature_Click(object sender, RoutedEventArgs e)
@@ -218,7 +220,73 @@ namespace DotSpatialGISManager.UCControls
 
         private void btnSaveEdits_Click(object sender, RoutedEventArgs e)
         {
+            disableButton();
+        }
 
+        private void disableButton()
+        {
+            btnDeleteFeature.IsEnabled = false;
+            btnDeleteFeature.Opacity = 0.5;
+
+            btnCreatePoint.IsEnabled = false;
+            btnCreatePoint.Opacity = 0.5;
+
+            btnCreatePolyline.IsEnabled = false;
+            btnCreatePolyline.Opacity = 0.5;
+
+            btnCreatePolygon.IsEnabled = false;
+            btnCreatePolygon.Opacity = 0.5;
+
+            btnMoveFeature.IsEnabled = false;
+            btnMoveFeature.Opacity = 0.5;
+
+            btnRotateFeature.IsEnabled = false;
+            btnRotateFeature.Opacity = 0.5;
+
+            btnMoveNode.IsEnabled = false;
+            btnMoveNode.Opacity = 0.5;
+
+            btnMergeFeature.IsEnabled = false;
+            btnMergeFeature.Opacity = 0.5;
+
+            btnSplitFeature.IsEnabled = false;
+            btnSplitFeature.Opacity = 0.5;
+
+            btnSaveEdits.IsEnabled = false;
+            btnSaveEdits.Opacity = 0.5;
+        }
+
+        private void enableButton()
+        {
+            btnDeleteFeature.IsEnabled = true;
+            btnDeleteFeature.Opacity = 1;
+
+            btnCreatePoint.IsEnabled = true;
+            btnCreatePoint.Opacity = 1;
+
+            btnCreatePolyline.IsEnabled = true;
+            btnCreatePolyline.Opacity = 1;
+
+            btnCreatePolygon.IsEnabled = true;
+            btnCreatePolygon.Opacity = 1;
+
+            btnMoveFeature.IsEnabled = true;
+            btnMoveFeature.Opacity = 1;
+
+            btnRotateFeature.IsEnabled = true;
+            btnRotateFeature.Opacity = 1;
+
+            btnMoveNode.IsEnabled = true;
+            btnMoveNode.Opacity = 1;
+
+            btnMergeFeature.IsEnabled = true;
+            btnMergeFeature.Opacity = 1;
+
+            btnSplitFeature.IsEnabled = true;
+            btnSplitFeature.Opacity = 1;
+
+            btnSaveEdits.IsEnabled = true;
+            btnSaveEdits.Opacity = 1;
         }
     }
 }
