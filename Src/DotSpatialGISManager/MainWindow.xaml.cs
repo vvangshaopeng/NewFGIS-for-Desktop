@@ -248,6 +248,26 @@ namespace DotSpatialGISManager
                             }
                         }
                         break;
+                    case FeaType.UCPoint:
+                        {
+                            bool ShouldAdd = true;
+                            UCTopologyAnalysis uc = UCTopologyAnalysis.GetIntance();
+                            if (uc.ClickIndex >= 1)
+                            {
+                                m_AddFeaType = FeaType.None;
+                                uc.ClickIndex = 0;
+                                ShouldAdd = false;
+                                m_DotMap.Cursor = System.Windows.Forms.Cursors.Default;
+                            }
+                            var layer = uc.m_PointLayer;
+                            IFeatureSet PointF = (layer as FeatureLayer).FeatureSet;
+                            GeoAPI.Geometries.IPoint pPoint = new NetTopologySuite.Geometries.Point(coord);
+                            IFeature currentFeature = PointF.AddFeature(pPoint);
+                            m_DotMap.ResetBuffer();
+                            if (ShouldAdd)
+                                uc.ClickIndex++;
+                        }
+                        break;
                 }
             }
         }
