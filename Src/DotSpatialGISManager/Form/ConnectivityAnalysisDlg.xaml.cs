@@ -157,7 +157,7 @@ namespace DotSpatialGISManager
                     i++;
                 }
             }
-            MessageBox.Show("not connective!");
+            MessageBox.Show("Not connective!");
             this.Close();
         }
 

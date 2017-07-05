@@ -210,7 +210,7 @@ namespace DotSpatialGISManager
                 catch
                 {
                     p.CloseProgress();
-                    MessageBox.Show("something seems to have gone wrong");
+                    MessageBox.Show("Something seems to have gone wrong");
                     return;
                 }
             }

@@ -82,7 +82,7 @@ namespace DotSpatialGISManager
             }
             if (this.txtFilePath.Text.Trim() == "")
             {
-                MessageBox.Show("Please select a remot file");
+                MessageBox.Show("Please select a remote file");
                 return;
             }
             if (this.txtSavePath.Text.Trim() == "")
