@@ -156,7 +156,7 @@ namespace DotSpatialGISManager
             }
             else
             {
-                MessageBox.Show("Please input an number");
+                MessageBox.Show("Please input a number");
                 return;
             }
             this.Close();
@@ -177,7 +177,7 @@ namespace DotSpatialGISManager
             }
             else
             {
-                MessageBox.Show("Please input an number");
+                MessageBox.Show("Please input a number");
                 return;
             }
         }

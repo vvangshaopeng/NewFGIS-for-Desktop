@@ -61,7 +61,7 @@ namespace DotSpatialGISManager
                 }
                 if (cells.MaxColumn<1)
                 {
-                    MessageBox.Show("This excel file should have 2 columns at least");
+                    MessageBox.Show("This Excel file should have 2 columns at least");
                     return;
                 }
                 //字段名列表
@@ -119,7 +119,7 @@ namespace DotSpatialGISManager
                 }
                 else
                 {
-                    MessageBox.Show("第"+(i+1)+"行中X或Y坐标不是数值");
+                    MessageBox.Show("The x or y value in row" + (i+1)+ "is not number");
                     return;
                 }
             }

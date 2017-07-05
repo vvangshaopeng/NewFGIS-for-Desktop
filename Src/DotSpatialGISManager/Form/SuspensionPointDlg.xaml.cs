@@ -46,10 +46,10 @@ namespace DotSpatialGISManager
             }
             IFeatureLayer layer = m_Layers[this.cboLayer.SelectedIndex];
             IFeatureSet feaset = (layer as FeatureLayer).FeatureSet;
-            ProgressBox p = new ProgressBox(0, 100, "Faying surface check progress");
+            ProgressBox p = new ProgressBox(0, 100, "Suspension point check progress");
             p.ShowPregress();
             p.SetProgressValue(0);
-            p.SetProgressDescription("Checking faying surface...");
+            p.SetProgressDescription("Checking suspension point...");
             Dictionary<int, List<GeoAPI.Geometries.IPoint>> AllPoints = new Dictionary<int, List<GeoAPI.Geometries.IPoint>>();//线图层所有端点
             for (int i = 0; i < feaset.Features.Count; i++)
             {

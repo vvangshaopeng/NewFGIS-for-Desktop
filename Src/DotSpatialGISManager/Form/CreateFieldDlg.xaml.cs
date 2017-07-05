@@ -55,7 +55,7 @@ namespace DotSpatialGISManager
             }
             if (m_FieldList.Contains(this.txtFieldName.Text))
             {
-                MessageBox.Show("The field is already exists");
+                MessageBox.Show("The field already exists");
                 return;
             }
             this.FieldName = this.txtFieldName.Text;

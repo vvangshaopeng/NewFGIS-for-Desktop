@@ -121,15 +121,15 @@ namespace DotSpatialGISManager
         {
             if (this.m_IsRight)
             {
-                MessageBox.Show("correct!");
+                MessageBox.Show("Correct!");
             }
             else if (this.checkSql())
             {
-                MessageBox.Show("correct!");
+                MessageBox.Show("Correct!");
             }
             else
             {
-                MessageBox.Show("error!");
+                MessageBox.Show("Error!");
             }
         }
 
@@ -151,7 +151,7 @@ namespace DotSpatialGISManager
         {
             if (!checkSql())
             {
-                MessageBox.Show("error!");
+                MessageBox.Show("Error!");
                 return;
             }
             else
