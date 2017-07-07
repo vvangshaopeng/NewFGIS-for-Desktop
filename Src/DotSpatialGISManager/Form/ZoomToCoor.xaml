@@ -1,0 +1,28 @@
+﻿<Window x:Class="DotSpatialGISManager.ZoomToCoorDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="Zoom To Coordinates"  Height="278" Width="302"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Label  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10" Content="Please enter the desired coordinates: "/>
+            <Label  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,73,0,0" Content="Latitude: "/>
+            <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Top" Margin="102,79,0,102" Width="150"  Height="22" Name="d1" />
+            <Label  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="257,42,0,0" Content="。" Width="20" FontSize="30" Height="50"/>
+            <Label  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,50" Content="Longitude:"/>
+            <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Bottom" Height="22" Margin="102,125,0,56" Width="150" Name="d2"/>
+            <Label  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="257,0,0,65" Content="。" Width="20" RenderTransformOrigin="0.55,-1.346" FontSize="30" Height="50"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Button Name="btnOK" Content="OK" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,70,0" Click="btnOK_Click"/>
+            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnCancel_Click"/>
+        </Grid>
+    </Grid>
+</Window>

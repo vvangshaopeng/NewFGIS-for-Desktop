@@ -17,6 +17,13 @@ using DotSpatial.Data;
 using Microsoft.Win32;
 using DotSpatial.Controls;
 using System.Windows.Controls.Primitives;
+using DotSpatialGISManager.Enum;
+using DotSpatial.Symbology;
+using Aspose.Cells;
+using System.Data;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using DotSpatial.Analysis;
 
 namespace DotSpatialGISManager.UCControls
 {
@@ -30,6 +37,9 @@ namespace DotSpatialGISManager.UCControls
         public static CreatePolygonDlg m_CreatePolygonDlg = null;
         public static DeleteFeatureDlg m_DeleteFeatureDlg = null;
         public static ToggleButton m_btnSelect = null;
+        public static MoveFeatureDlg m_MoveFeatureDlg = null;
+        //public static DeleteFeatureDlg m_DeleteFeatureDlg = null;
+        //public static DeleteFeatureDlg m_DeleteFeatureDlg = null;
 
         public UCVectorDataEditing()
         {
@@ -195,31 +205,35 @@ namespace DotSpatialGISManager.UCControls
 
         private void btnMoveFeature_Click(object sender, RoutedEventArgs e)
         {
-            if (this.btnMoveFeature.IsChecked == true)
+            if (m_MoveFeatureDlg == null)
             {
-                MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
-            }
-            else
-            {
-                MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
+                MainWindow.m_DotMap.Refresh();
+                IFeatureLayer[] m_FeaLyrList = MainWindow.m_DotMap.GetFeatureLayers();
+                for (int i = 0; i < MainWindow.m_DotMap.Layers.Count; i++)
+                {
+                    m_FeaLyrList[i].ClearSelection();
+                }
+                m_MoveFeatureDlg = new MoveFeatureDlg();
+                m_MoveFeatureDlg.Show();
             }
         }
 
         private void btnRotateFeature_Click(object sender, RoutedEventArgs e)
         {
-            if (this.btnRotateFeature.IsChecked == true)
-            {
-                MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
-            }
-            else
-            {
-                MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
-            }
+            //if (m_CreatePolygonDlg == null)
+            //{
+            //    m_CreatePolygonDlg = new CreatePolygonDlg();
+            //    m_CreatePolygonDlg.Show();
+            //}
         }
 
         private void btnMoveNode_Click(object sender, RoutedEventArgs e)
         {
-
+        //    if (m_CreatePolygonDlg == null)
+        //    {
+        //        m_CreatePolygonDlg = new CreatePolygonDlg();
+        //        m_CreatePolygonDlg.Show();
+        //    }
         }
 
         private void btnMergeFeature_Click(object sender, RoutedEventArgs e)

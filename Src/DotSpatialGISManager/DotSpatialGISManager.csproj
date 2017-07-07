@@ -78,6 +78,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OCX\DotSpatial.Projections.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Serialization, Version=2.0.0.0, Culture=neutral, PublicKeyToken=441f200f827611e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OCX\DotSpatial.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Symbology, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OCX\DotSpatial.Symbology.dll</HintPath>
@@ -120,6 +124,9 @@
     <Compile Include="Form\BufferAnalysisDlg.xaml.cs">
       <DependentUpon>BufferAnalysisDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\MoveFeatureDlg.xaml.cs">
+      <DependentUpon>MoveFeatureDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\CreatePolygonDlg.xaml.cs">
       <DependentUpon>CreatePolygonDlg.xaml</DependentUpon>
     </Compile>
@@ -137,6 +144,9 @@
     </Compile>
     <Compile Include="Form\FieldCalculatorDlg.xaml.cs">
       <DependentUpon>FieldCalculatorDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\ZoomToCoor.xaml.cs">
+      <DependentUpon>ZoomToCoor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Form\SuspensionPointDlg.xaml.cs">
       <DependentUpon>SuspensionPointDlg.xaml</DependentUpon>
@@ -216,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Form\MoveFeatureDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Form\CreatePolygonDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -237,6 +251,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Form\FieldCalculatorDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\ZoomToCoor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

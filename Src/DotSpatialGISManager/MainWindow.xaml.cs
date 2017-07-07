@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WPF.Themes;
 using DotSpatial.Controls;
 using DotSpatial.Data;
@@ -22,7 +11,6 @@ using DotSpatialGISManager.Enum;
 using GeoAPI.Geometries;
 using DotSpatial.Symbology;
 using NetTopologySuite.Geometries;
-using System.Data;
 
 namespace DotSpatialGISManager
 {
@@ -35,9 +23,11 @@ namespace DotSpatialGISManager
         public static Map m_DotMap = null;
         public static Legend m_DotLegend = null;
         public static SetScaleDlg m_SetScaleDlg = null;
+        public static ZoomToCoorDlg m_ZoomToCoorDlg = null;
         public static MainWindow m_MainWindow = null;
         public static OpenAttributeTableDlg m_OpenAttributeTableDlg = null;
         public static FeaType m_AddFeaType = FeaType.None;
+
         public string ZoomInImage
         {
             get
@@ -153,103 +143,103 @@ namespace DotSpatialGISManager
 
         private void M_DotMap_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            //if (m_AddFeaType != FeaType.None)
-            //{
-            //    Coordinate coord = m_DotMap.PixelToProj(e.Location);//点击的屏幕未知转换成坐标系中的点
-            //    switch (m_AddFeaType)
-            //    {
-            //        case FeaType.Point:
-            //            {
-            //                CreatePointDlg f = UCVectorDataEditing.m_CreatePointDlg;
-            //                if (f == null) return;
-            //                var layer = f.m_PointLayer;
-            //                IFeatureSet PointF = (layer as FeatureLayer).FeatureSet;
-            //                GeoAPI.Geometries.IPoint pPoint = new NetTopologySuite.Geometries.Point(coord);
-            //                IFeature currentFeature = PointF.AddFeature(pPoint);
-            //                PointF.InitializeVertices();
-            //                m_DotMap.ResetBuffer();
-            //            }
-            //            break;
-            //        case FeaType.Polyline:
-            //            {
-            //                CreatePolylineDlg f = UCVectorDataEditing.m_CreatePolylineDlg;
-            //                if (f == null) return;
-            //                var layer = f.m_PolylineLayer;
-            //                IFeatureSet LineF = (layer as FeatureLayer).FeatureSet;
-            //                if (e.Button == System.Windows.Forms.MouseButtons.Left)
-            //                {
-            //                    if (f.IsFirstPoint)
-            //                    {
-            //                        一开始就要加入至少两个点
-            //                        f.CoordList.Add(coord);
-            //                        f.CoordList.Add(coord);
-            //                        LineString line = new LineString(f.CoordList.ToArray());
-            //                        IFeature lineFeature = LineF.AddFeature(line);
-            //                        f.IsFirstPoint = false;
-            //                    }
-            //                    else
-            //                    {
-            //                        LineF.Features.RemoveAt(LineF.Features.Count - 1);
-            //                        if (f.CoordList[0] == f.CoordList[1])
-            //                            f.CoordList.RemoveAt(1);
-            //                        f.CoordList.Add(coord);
-            //                        LineString line = new LineString(f.CoordList.ToArray());
-            //                        IFeature lineFeature = LineF.AddFeature(line);
-            //                        m_DotMap.ResetBuffer();
-            //                    }
-            //                }
-            //                else if (e.Button == System.Windows.Forms.MouseButtons.Right)
-            //                {
-            //                    LineF.InitializeVertices();
-            //                    f.IsFirstPoint = true;
-            //                    f.CoordList.Clear();
-            //                    m_DotMap.ResetBuffer();
-            //                }
-            //            }
-            //            break;
-            //        case FeaType.Polygon:
-            //            {
-            //                CreatePolygonDlg f = UCVectorDataEditing.m_CreatePolygonDlg;
-            //                if (f == null) return;
-            //                var layer = f.m_PolygonLayer;
-            //                IFeatureSet PolygonF = (layer as FeatureLayer).FeatureSet;
-            //                if (e.Button == System.Windows.Forms.MouseButtons.Left)
-            //                {
-            //                    if (f.IsFirstPoint)
-            //                    {
-            //                        for (int i = 0; i < 4; i++)
-            //                            f.CoordList.Add(coord);
-            //                        ILinearRing LineRing = new LinearRing(f.CoordList.ToArray());
-            //                        NetTopologySuite.Geometries.Polygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
-            //                        IFeature polygonFeature = PolygonF.AddFeature(pPolygon);
-            //                        f.IsFirstPoint = false;
-            //                    }
-            //                    else
-            //                    {
-            //                        PolygonF.Features.RemoveAt(PolygonF.Features.Count - 1);
-            //                        if (f.CoordList[0] == f.CoordList[1])
-            //                            f.CoordList.RemoveAt(1);
-            //                        组成面的点必须形成一个闭环 因此要先把最新加入的点去掉，加入绘制点之后再加入第一个点
-            //                        f.CoordList.RemoveAt(f.CoordList.Count - 1);
-            //                        f.CoordList.Add(coord);
-            //                        f.CoordList.Add(f.CoordList[0]);
-            //                        ILinearRing LineRing = new LinearRing(f.CoordList.ToArray());
-            //                        NetTopologySuite.Geometries.Polygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
-            //                        IFeature lineFeature = PolygonF.AddFeature(pPolygon);
-            //                        m_DotMap.ResetBuffer();
-            //                    }
-            //                }
-            //                else if (e.Button == System.Windows.Forms.MouseButtons.Right)
-            //                {
-            //                    PolygonF.InitializeVertices();
-            //                    f.IsFirstPoint = true;
-            //                    f.CoordList.Clear();
-            //                    m_DotMap.ResetBuffer();
-            //                }
-            //            }
-            //            break;
-            //    }
-            //}
+          if (m_AddFeaType != FeaType.None)
+            {
+                Coordinate coord = m_DotMap.PixelToProj(e.Location);//点击的屏幕未知转换成坐标系中的点
+                switch (m_AddFeaType)
+                {
+                    case FeaType.Point:
+                        {
+                            CreatePointDlg f = UCVectorDataEditing.m_CreatePointDlg;
+                            if (f == null) return;
+                            var layer = f.m_PointLayer;
+                            IFeatureSet PointF = (layer as FeatureLayer).FeatureSet;
+                            GeoAPI.Geometries.IPoint pPoint = new NetTopologySuite.Geometries.Point(coord);
+                            IFeature currentFeature = PointF.AddFeature(pPoint);
+                            PointF.InitializeVertices();
+                            m_DotMap.ResetBuffer();
+                        }
+                        break;
+                    case FeaType.Polyline:
+                        {
+                            CreatePolylineDlg f = UCVectorDataEditing.m_CreatePolylineDlg;
+                            if (f == null) return;
+                            var layer = f.m_PolylineLayer;
+                            IFeatureSet LineF = (layer as FeatureLayer).FeatureSet;
+                            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                            {
+                                if (f.IsFirstPoint)
+                                {
+                                    //一开始就要加入至少两个点
+                                    f.CoordList.Add(coord);
+                                    f.CoordList.Add(coord);
+                                    LineString line = new LineString(f.CoordList.ToArray());
+                                    IFeature lineFeature = LineF.AddFeature(line);
+                                    f.IsFirstPoint = false;
+                                }
+                                else
+                                {
+                                    LineF.Features.RemoveAt(LineF.Features.Count - 1);
+                                    if (f.CoordList[0] == f.CoordList[1])
+                                        f.CoordList.RemoveAt(1);
+                                    f.CoordList.Add(coord);
+                                    LineString line = new LineString(f.CoordList.ToArray());
+                                    IFeature lineFeature = LineF.AddFeature(line);
+                                    m_DotMap.ResetBuffer();
+                                }
+                            }
+                            else if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                            {
+                                LineF.InitializeVertices();
+                                f.IsFirstPoint = true;
+                                f.CoordList.Clear();
+                                m_DotMap.ResetBuffer();
+                            }
+                        }
+                        break;
+                    case FeaType.Polygon:
+                        {
+                            CreatePolygonDlg f = UCVectorDataEditing.m_CreatePolygonDlg;
+                            if (f == null) return;
+                            var layer = f.m_PolygonLayer;
+                            IFeatureSet PolygonF = (layer as FeatureLayer).FeatureSet;
+                            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                            {
+                                if (f.IsFirstPoint)
+                                {
+                                    for (int i = 0; i < 4; i++)
+                                        f.CoordList.Add(coord);
+                                    ILinearRing LineRing = new LinearRing(f.CoordList.ToArray());
+                                    NetTopologySuite.Geometries.Polygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
+                                    IFeature polygonFeature = PolygonF.AddFeature(pPolygon);
+                                    f.IsFirstPoint = false;
+                                }
+                                else
+                                {
+                                    PolygonF.Features.RemoveAt(PolygonF.Features.Count - 1);
+                                    if (f.CoordList[0] == f.CoordList[1])
+                                        f.CoordList.RemoveAt(1);
+                                    //组成面的点必须形成一个闭环 因此要先把最新加入的点去掉，加入绘制点之后再加入第一个点
+                                    f.CoordList.RemoveAt(f.CoordList.Count - 1);
+                                    f.CoordList.Add(coord);
+                                    f.CoordList.Add(f.CoordList[0]);
+                                    ILinearRing LineRing = new LinearRing(f.CoordList.ToArray());
+                                    NetTopologySuite.Geometries.Polygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
+                                    IFeature lineFeature = PolygonF.AddFeature(pPolygon);
+                                    m_DotMap.ResetBuffer();
+                                }
+                            }
+                            else if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                            {
+                                PolygonF.InitializeVertices();
+                                f.IsFirstPoint = true;
+                                f.CoordList.Clear();
+                                m_DotMap.ResetBuffer();
+                            }
+                        }
+                        break;
+                }
+            }
         }
 
         private void M_DotMap_FunctionModeChanged(object sender, EventArgs e)
@@ -329,8 +319,13 @@ namespace DotSpatialGISManager
                     }
                     break;
                 case "btnCenter":
-                    ZoomToCoordinatesDialog f = new ZoomToCoordinatesDialog(m_DotMap);
-                    f.ShowDialog();
+                    if (m_ZoomToCoorDlg == null)
+                    {
+                        m_ZoomToCoorDlg = new ZoomToCoorDlg();
+                        m_ZoomToCoorDlg.Owner = this;
+                        //m_ZoomToCoorDlg.Init();
+                        m_ZoomToCoorDlg.Show();
+                    }
                     break;
                 case "btnAttribute":
                     if (m_OpenAttributeTableDlg == null)

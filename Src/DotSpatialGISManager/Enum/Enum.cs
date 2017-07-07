@@ -33,4 +33,12 @@ namespace DotSpatialGISManager.Enum
         String = 0,
         Double,
     }
+
+    public enum EditType
+    {
+        None = 0,
+        Move,
+        Rotate,
+        MoveNode,
+    }
 }

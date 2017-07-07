@@ -54,20 +54,20 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <ToggleButton Style="{StaticResource btnMainMenu_Toggle}" ToolTip="Move Feature" Name="btnMoveFeature" Click="btnMoveFeature_Click">
-                <ToggleButton.Template>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Move Feature" Name="btnMoveFeature" Click="btnMoveFeature_Click">
+                <Button.Template>
                     <ControlTemplate>
                         <Image Source="{Binding MoveFeaturePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
                     </ControlTemplate>
-                </ToggleButton.Template>
-            </ToggleButton>
-            <ToggleButton Style="{StaticResource btnMainMenu_Toggle}" ToolTip="Rotate Feature" Name="btnRotateFeature" Click="btnRotateFeature_Click">
-                <ToggleButton.Template>
+                </Button.Template>
+            </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Rotate Feature" Name="btnRotateFeature" Click="btnRotateFeature_Click">
+                <Button.Template>
                     <ControlTemplate>
                         <Image Source="{Binding RotateFeaturePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
                     </ControlTemplate>
-                </ToggleButton.Template>
-            </ToggleButton>
+                </Button.Template>
+            </Button>
             <Button Style="{StaticResource btnMainMenu}" ToolTip="Move Node" Name="btnMoveNode" Click="btnMoveNode_Click">
                 <Button.Template>
                     <ControlTemplate>
