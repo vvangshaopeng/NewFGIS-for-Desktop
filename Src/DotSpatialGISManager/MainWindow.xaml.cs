@@ -38,6 +38,9 @@ namespace DotSpatialGISManager
         public static MainWindow m_MainWindow = null;
         public static OpenAttributeTableDlg m_OpenAttributeTableDlg = null;
         public static FeaType m_AddFeaType = FeaType.None;
+
+        ////添加一个结点编辑要用到的辅助变量
+        //public static int isMoveNodes = 0;
         public string ZoomInImage
         {
             get
@@ -155,6 +158,7 @@ namespace DotSpatialGISManager
         {
             if (m_AddFeaType != FeaType.None)
             {
+
                 Coordinate coord = m_DotMap.PixelToProj(e.Location);//点击的屏幕未知转换成坐标系中的点
                 switch (m_AddFeaType)
                 {
@@ -266,6 +270,57 @@ namespace DotSpatialGISManager
                             m_DotMap.ResetBuffer();
                             if (ShouldAdd)
                                 uc.ClickIndex++;
+                        }
+                        break;
+                    case FeaType.MovePoint:
+                        {
+                            GeoAPI.Geometries.IPoint pPoint = new NetTopologySuite.Geometries.Point(coord);
+                            var defaultIntance = MoveNodesDlg.GetInstance();
+                            var pointlayer = defaultIntance.AllPointLayer;
+                            var selectFea = defaultIntance.selectFea;
+                            var selectFeaLyr = defaultIntance.m_CurrentFeaLyr;
+                            var PointList = defaultIntance.Points;
+                            if (pointlayer?.Selection.Count == 0 || PointList?.Count == 0 || selectFea == null || selectFeaLyr == null) return;
+                            var pointFeaSet = (pointlayer as FeatureLayer).FeatureSet;
+                            var selectFeaSet = (selectFeaLyr as FeatureLayer).FeatureSet;
+                            foreach (var fea in pointlayer.Selection.ToFeatureList())
+                            {
+                                pointFeaSet.Features.Remove(fea);
+                                IFeature resFea = pointFeaSet.AddFeature(pPoint);
+                                resFea.DataRow = fea.DataRow;
+                                for(int i = 0;i<PointList.Count;i++)
+                                {
+                                    if (PointList[i].Intersects(fea.Geometry))
+                                    {
+                                        PointList[i] = pPoint;
+                                        break;
+                                    }
+                                }
+                            }
+                            List<Coordinate> temp = new List<Coordinate>();
+                            IFeature resultFeature = null;
+                            foreach(var point in PointList)
+                            {
+                                temp.Add(new Coordinate(point.X, point.Y));
+                            }
+                            if (selectFea.FeatureType == FeatureType.Line)
+                            {
+                                LineString line = new LineString(temp.ToArray());
+                                resultFeature = selectFeaSet.AddFeature(line);
+                                resultFeature.DataRow = selectFea.DataRow;
+                            }
+                            else if (selectFea.FeatureType == FeatureType.Polygon)
+                            {
+                                ILinearRing LineRing = new LinearRing(temp.ToArray());
+                                NetTopologySuite.Geometries.Polygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
+                                resultFeature = selectFeaSet.AddFeature(pPolygon);
+                                resultFeature.DataRow = selectFea.DataRow;
+                            }
+                            selectFeaLyr.UnSelect(selectFea);
+                            selectFeaSet.Features.Remove(selectFea);
+                            selectFeaLyr.Select(resultFeature);
+                            m_DotMap.ResetBuffer();
+                            m_DotMap.Refresh();
                         }
                         break;
                 }

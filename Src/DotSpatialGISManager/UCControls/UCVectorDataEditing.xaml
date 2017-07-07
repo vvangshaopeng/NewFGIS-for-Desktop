@@ -68,7 +68,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Style="{StaticResource btnMainMenu}" ToolTip="Move Node" Name="btnMoveNode" Click="btnMoveNode_Click">
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="Move Nodes" Name="btnMoveNodes" Click="btnMoveNodes_Click">
                 <Button.Template>
                     <ControlTemplate>
                         <Image Source="{Binding MoveNodePath, Converter={StaticResource ImageConverter}}" Margin="3"/>

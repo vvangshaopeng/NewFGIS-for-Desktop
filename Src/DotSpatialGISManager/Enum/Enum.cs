@@ -12,6 +12,7 @@ namespace DotSpatialGISManager.Enum
         Polyline,
         Polygon,
         UCPoint,
+        MovePoint,
     }
 
     public enum SelectionMethod
