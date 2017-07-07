@@ -195,12 +195,26 @@ namespace DotSpatialGISManager.UCControls
 
         private void btnMoveFeature_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.btnMoveFeature.IsChecked == true)
+            {
+                MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+            }
+            else
+            {
+                MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
+            }
         }
 
         private void btnRotateFeature_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.btnRotateFeature.IsChecked == true)
+            {
+                MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+            }
+            else
+            {
+                MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
+            }
         }
 
         private void btnMoveNode_Click(object sender, RoutedEventArgs e)
