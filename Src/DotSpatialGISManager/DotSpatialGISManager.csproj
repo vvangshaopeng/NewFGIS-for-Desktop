@@ -141,6 +141,9 @@
     <Compile Include="Form\FieldCalculatorDlg.xaml.cs">
       <DependentUpon>FieldCalculatorDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\MoveNodesDlg.xaml.cs">
+      <DependentUpon>MoveNodesDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\SuspensionPointDlg.xaml.cs">
       <DependentUpon>SuspensionPointDlg.xaml</DependentUpon>
     </Compile>
@@ -244,6 +247,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Form\FieldCalculatorDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\MoveNodesDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

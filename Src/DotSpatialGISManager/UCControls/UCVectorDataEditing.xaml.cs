@@ -30,6 +30,7 @@ namespace DotSpatialGISManager.UCControls
         public static CreatePolygonDlg m_CreatePolygonDlg = null;
         public static DeleteFeatureDlg m_DeleteFeatureDlg = null;
         public static ToggleButton m_btnSelect = null;
+        public static MoveNodesDlg m_MoveNodeDlg = null;
 
         public UCVectorDataEditing()
         {
@@ -201,9 +202,13 @@ namespace DotSpatialGISManager.UCControls
 
         }
 
-        private void btnMoveNode_Click(object sender, RoutedEventArgs e)
+        private void btnMoveNodes_Click(object sender, RoutedEventArgs e)
         {
-
+            if (m_MoveNodeDlg == null)
+            {
+                m_MoveNodeDlg = new MoveNodesDlg();
+                m_MoveNodeDlg.Show();
+            }
         }
 
         private void btnMergeFeature_Click(object sender, RoutedEventArgs e)

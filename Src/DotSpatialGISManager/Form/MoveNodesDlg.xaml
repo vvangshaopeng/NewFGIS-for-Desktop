@@ -1,0 +1,35 @@
+﻿<Window x:Class="DotSpatialGISManager.MoveNodesDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="Move Node" Height="Auto" Width="310" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="1">
+            <DataGrid Name="Datagrid" Style="{StaticResource DataGridStyle}" ItemsSource="{Binding PointList}" AutoGenerateColumns="False" Margin="6,5,3.8,4.6" Height="200" Visibility="{Binding IsVisibility}" SelectionMode="Single" SelectionChanged="Datagrid_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Width="Auto" Binding="{Binding ID}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="X" Width="*" Binding="{Binding X}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Y" Width="*" Binding="{Binding Y}" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Button Name="btnOK" Content="Select Feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,200,0" Click="btnOK_Click"/>
+            <Button Name="btnStartEditNode" Content="Select editing node" Width="120" Height="22" HorizontalAlignment="Right" Margin="0,0,75,0" Click="btnStartEditNode_Click" />
+            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnCancel_Click" />
+        </Grid>
+    </Grid>
+</Window>

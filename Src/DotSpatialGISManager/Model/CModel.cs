@@ -1,4 +1,6 @@
-﻿using DotSpatial.Symbology;
+﻿using DotSpatial.Data;
+using DotSpatial.Symbology;
+using GeoAPI.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,5 +73,13 @@ namespace DotSpatialGISManager
         public string LayerName { get; set; }
 
         public FeatureLayer Layer { get; set; }
+    }
+
+    public class Nodes
+    {
+        public string ID { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public IFeature Feature { get; set; }
     }
 }
