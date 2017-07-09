@@ -274,53 +274,14 @@ namespace DotSpatialGISManager
                         break;
                     case FeaType.MovePoint:
                         {
-                            GeoAPI.Geometries.IPoint pPoint = new NetTopologySuite.Geometries.Point(coord);
-                            var defaultIntance = MoveNodesDlg.GetInstance();
-                            var pointlayer = defaultIntance.AllPointLayer;
-                            var selectFea = defaultIntance.selectFea;
-                            var selectFeaLyr = defaultIntance.m_CurrentFeaLyr;
-                            var PointList = defaultIntance.Points;
-                            if (pointlayer?.Selection.Count == 0 || PointList?.Count == 0 || selectFea == null || selectFeaLyr == null) return;
-                            var pointFeaSet = (pointlayer as FeatureLayer).FeatureSet;
-                            var selectFeaSet = (selectFeaLyr as FeatureLayer).FeatureSet;
-                            foreach (var fea in pointlayer.Selection.ToFeatureList())
+                            if (e.Button == System.Windows.Forms.MouseButtons.Right)
                             {
-                                pointFeaSet.Features.Remove(fea);
-                                IFeature resFea = pointFeaSet.AddFeature(pPoint);
-                                resFea.DataRow = fea.DataRow;
-                                for(int i = 0;i<PointList.Count;i++)
+                                var defaultIntance = MoveNodesDlg.GetInstance();
+                                if (defaultIntance!=null)
                                 {
-                                    if (PointList[i].Intersects(fea.Geometry))
-                                    {
-                                        PointList[i] = pPoint;
-                                        break;
-                                    }
+                                    defaultIntance.MoveNode(coord);
                                 }
                             }
-                            List<Coordinate> temp = new List<Coordinate>();
-                            IFeature resultFeature = null;
-                            foreach(var point in PointList)
-                            {
-                                temp.Add(new Coordinate(point.X, point.Y));
-                            }
-                            if (selectFea.FeatureType == FeatureType.Line)
-                            {
-                                LineString line = new LineString(temp.ToArray());
-                                resultFeature = selectFeaSet.AddFeature(line);
-                                resultFeature.DataRow = selectFea.DataRow;
-                            }
-                            else if (selectFea.FeatureType == FeatureType.Polygon)
-                            {
-                                ILinearRing LineRing = new LinearRing(temp.ToArray());
-                                NetTopologySuite.Geometries.Polygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
-                                resultFeature = selectFeaSet.AddFeature(pPolygon);
-                                resultFeature.DataRow = selectFea.DataRow;
-                            }
-                            selectFeaLyr.UnSelect(selectFea);
-                            selectFeaSet.Features.Remove(selectFea);
-                            selectFeaLyr.Select(resultFeature);
-                            m_DotMap.ResetBuffer();
-                            m_DotMap.Refresh();
                         }
                         break;
                 }
