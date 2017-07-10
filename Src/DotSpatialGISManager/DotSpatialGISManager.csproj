@@ -114,6 +114,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Form\ZoomToCoorDlg.xaml.cs">
+      <DependentUpon>ZoomToCoorDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\RotateFeatureDlg.xaml.cs">
+      <DependentUpon>RotateFeatureDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MoveFeatureDlg.xaml.cs">
+      <DependentUpon>MoveFeatureDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MergeDlg.xaml.cs">
+      <DependentUpon>MergeDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\AttributeJointDlg.xaml.cs">
       <DependentUpon>AttributeJointDlg.xaml</DependentUpon>
     </Compile>
@@ -214,6 +226,22 @@
     <Compile Include="UCControls\UCFileManagement.xaml.cs">
       <DependentUpon>UCFileManagement.xaml</DependentUpon>
     </Compile>
+    <Page Include="Form\ZoomToCoorDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\RotateFeatureDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\MoveFeatureDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Form\MergeDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Form\AttributeJointDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,38 @@
+﻿<Window x:Class="DotSpatialGISManager.RotateFeatureDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="Rotate Feature" Height="331.687" Width="311"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Input Rotate Angle:" Grid.Row="1" Margin="3" Name="groupAngle">
+            <StackPanel Orientation="Horizontal">
+                <Label Margin="10,14" Width="90">Rotate Angle:</Label>
+                <TextBox Name="txtAngle" Width="151" Margin="0,15,10,15"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Save Path:" Grid.Row="2" Margin="3" Name="groupPath">
+            <StackPanel Orientation="Horizontal">
+                <TextBox Margin="10,0,0,0" Height="22" Width="218" Name="txtPath" IsReadOnly="True"/>
+                <Button Name="btnSelect" Content="Select" Height="22" Click="btnSelect_Click"/>
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="3">
+            <Button Name="btnOK" Content="OK" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,70,0" Click="btnOK_Click"/>
+            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnCancel_Click" />
+        </Grid>
+    </Grid>
+</Window>
