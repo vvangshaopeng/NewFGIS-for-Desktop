@@ -19,6 +19,7 @@ using System.Data;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace DotSpatialGISManager
 {
@@ -28,15 +29,16 @@ namespace DotSpatialGISManager
     public partial class MoveNodesDlg : Window, INotifyPropertyChanged
     {
         private IFeatureLayer[] m_FeaLyrList = new IFeatureLayer[] { };
-        public IFeatureLayer m_CurrentFeaLyr = null;
-        private IFeatureSet m_InputFeaSet = null;
+        private FeatureLayer m_CurrentFeaLyr = null;
+        private FeatureSet m_InputFeaSet = null;
         private List<IMapLineLayer> m_Layers = new List<IMapLineLayer>();
-        public List<IPoint> Points = new List<IPoint>();
-        public IFeatureLayer AllPointLayer = null;
-        public IFeature selectFea = null;
+        private List<IPoint> Points = new List<IPoint>();
+        private FeatureLayer AllPointLayer = null;
+        private IFeature selectFea = null;
+        private string TempPath = AppDomain.CurrentDomain.BaseDirectory + "Temp/" + Guid.NewGuid().ToString() + "temp.shp";
 
         private static MoveNodesDlg _defaultIntance = null;
-        
+
         public static MoveNodesDlg GetInstance()
         {
             if (_defaultIntance == null)
@@ -44,7 +46,7 @@ namespace DotSpatialGISManager
                 _defaultIntance = new MoveNodesDlg();
             }
             return _defaultIntance;
-        } 
+        }
 
         private ObservableCollection<Nodes> _PointList;
 
@@ -93,6 +95,7 @@ namespace DotSpatialGISManager
         public MoveNodesDlg()
         {
             InitializeComponent();
+            this.btnStartEditNode.IsEnabled = false;
             this.Owner = MainWindow.m_MainWindow;
             this.DataContext = this;
             _defaultIntance = this;
@@ -112,8 +115,8 @@ namespace DotSpatialGISManager
         private void cboLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.cboLayer.SelectedIndex == -1) return;
-            m_CurrentFeaLyr = m_FeaLyrList[this.cboLayer.SelectedIndex];
-            m_InputFeaSet = (m_CurrentFeaLyr as FeatureLayer).FeatureSet;
+            m_CurrentFeaLyr = m_FeaLyrList[this.cboLayer.SelectedIndex] as FeatureLayer;
+            m_InputFeaSet = (m_CurrentFeaLyr as FeatureLayer).FeatureSet as FeatureSet;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -126,6 +129,7 @@ namespace DotSpatialGISManager
             }
             this.btnOK.IsEnabled = false;
             ////右键结束选择 写在mainwindow里
+            //注册事件
             m_CurrentFeaLyr.SelectionChanged += M_CurrentFeaLyr_SelectionChanged;
 
             MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
@@ -140,14 +144,17 @@ namespace DotSpatialGISManager
                 m_CurrentFeaLyr.UnSelectAll();
                 return;
             }
-            IFeature pFeature = m_CurrentFeaLyr.Selection.ToFeatureList()[0];
+            this.btnStartEditNode.IsEnabled = true;
+            var pFeature = m_CurrentFeaLyr.Selection.ToFeatureList().FirstOrDefault(); ;
+            ////保证FID 不发生变化
+            //selectFea = pFeature.Copy();
             selectFea = (from u in (m_CurrentFeaLyr as FeatureLayer).FeatureSet.Features
-                         where u.Geometry.Intersects(pFeature.Geometry)
+                         where u.Geometry.Covers(pFeature.Geometry)
                          select u).FirstOrDefault();
             int i = 1;
             List<Nodes> temp = new List<Nodes>();
             Points.Clear();
-            foreach (var coor in pFeature.Geometry.Coordinates)
+            foreach (var coor in selectFea.Geometry.Coordinates)
             {
                 IPoint pPoint = new NetTopologySuite.Geometries.Point(coor);
                 temp.Add(new Nodes { ID = i.ToString(), X = coor.X, Y = coor.Y });
@@ -171,16 +178,20 @@ namespace DotSpatialGISManager
         private void btnStartEditNode_Click(object sender, RoutedEventArgs e)
         {
             //显示选中要素的结点列表，并提示用户选择需编辑结点
-            if (btnStartEditNode.Content.ToString() == "Select editing node")
-            {
-                MessageBox.Show("Please select the nodes thet you want to edit!");
-
-                MainWindow.m_AddFeaType = Enum.FeaType.None;
-                MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
-                MainWindow.m_DotMap.Cursor = System.Windows.Forms.Cursors.Default;
-
+            //if (btnStartEditNode.Content.ToString() == "Select editing node")
+            //{
+            MessageBox.Show("Please select the nodes that you want to edit,left button to select,right button to move");
+            //注销事件
+            m_CurrentFeaLyr.SelectionChanged -= M_CurrentFeaLyr_SelectionChanged;
+            MainWindow.m_AddFeaType = Enum.FeaType.MovePoint;
+            MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+            MainWindow.m_DotMap.Cursor = System.Windows.Forms.Cursors.Cross;
+            if (m_CurrentFeaLyr.Selection.Count > 0)
                 m_CurrentFeaLyr.ZoomToSelectedFeatures();
-                //复制结点图层
+            //复制结点图层
+            AllPointLayer = MainWindow.m_DotMap.Layers.Where(t => t.LegendText == "AllNodes").FirstOrDefault() as FeatureLayer;
+            if (AllPointLayer == null)
+            {
                 FeatureSet PointSet = new FeatureSet(FeatureType.Point);
                 for (int i = 0; i < Points.Count; i++)
                 {
@@ -189,22 +200,26 @@ namespace DotSpatialGISManager
                 }
                 PointSet.Name = "AllNodes";
                 PointSet.Projection = MainWindow.m_DotMap.Projection;
-                AllPointLayer = MainWindow.m_DotMap.Layers.Add(PointSet);
+                AllPointLayer = MainWindow.m_DotMap.Layers.Add(PointSet) as FeatureLayer;
                 PointSymbolizer symbol = new PointSymbolizer(System.Drawing.Color.Red, DotSpatial.Symbology.PointShape.Ellipse, 5);
                 AllPointLayer.Symbolizer = symbol;
-
-                //切换按钮显示文本
-                btnStartEditNode.Content = "Start editing node";
+                PointSet.SaveAs(TempPath, true);
             }
-
-            //编辑结点
-            else if (btnStartEditNode.Content.ToString() == "Start editing node")
-            {
-                MainWindow.m_AddFeaType = Enum.FeaType.MovePoint;
-                MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
-                MainWindow.m_DotMap.Cursor = System.Windows.Forms.Cursors.Cross;
-                btnStartEditNode.Content = "Select editing node";
-            }
+            btnStartEditNode.IsEnabled = false;
+            //}
+            //else//保存
+            //{
+            //    (m_CurrentFeaLyr as FeatureLayer).FeatureSet.Save();
+            //    MessageBox.Show("Save successfully!");
+            //    btnStartEditNode.Content = "Select editing node";
+            //    MainWindow.m_AddFeaType = Enum.FeaType.None;
+            //    MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
+            //    MainWindow.m_DotMap.Cursor = System.Windows.Forms.Cursors.Default;
+            //    var layer = MainWindow.m_DotMap.Layers.Where(u => u.LegendText == "AllNodes").FirstOrDefault();
+            //    if (layer != null)
+            //        MainWindow.m_DotMap.Layers.Remove(layer);
+            //    this.Close();
+            //}
         }
 
         private void Datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -214,6 +229,128 @@ namespace DotSpatialGISManager
             AllPointLayer.UnSelectAll();
             AllPointLayer.Select(node.Feature);
             AllPointLayer.ZoomToSelectedFeatures();
+        }
+
+        public void MoveNode(Coordinate coord)
+        {
+            GeoAPI.Geometries.IPoint pPoint = new NetTopologySuite.Geometries.Point(coord);
+            //确保目标图层只选中编辑的那一个要素，因为后面会把选中要素移除
+            m_CurrentFeaLyr.UnSelectAll();
+            m_CurrentFeaLyr.Selection.Clear();
+            m_CurrentFeaLyr.Select(selectFea);
+            if (AllPointLayer?.Selection.Count == 0 || Points?.Count == 0 || selectFea == null || m_CurrentFeaLyr == null) return;
+
+            //移除点图层选中要素，并用pPoint替换选中点
+            IFeature resFea = AllPointLayer.FeatureSet.AddFeature(pPoint);
+            bool hasAdd = false;
+            foreach (var fea in AllPointLayer.Selection.ToFeatureList())
+            {
+                for (int i = 0; i < Points.Count; i++)
+                {
+                    if (Points[i].Intersects(fea.Geometry))
+                    {
+                        Points[i] = pPoint;
+                        hasAdd = true;
+                        break;
+                    }
+                }
+                if (hasAdd) break;
+            }
+            AllPointLayer.RemoveSelectedFeatures();
+            //AllPointLayer.UnSelectAll();
+            //AllPointLayer.Selection.Clear();
+            AllPointLayer.FeatureSet.Save();
+
+            List<Coordinate> temp = new List<Coordinate>();
+            IFeature resultFeature = null;
+            foreach (var point in Points)
+            {
+                temp.Add(new Coordinate(point.X, point.Y));
+            }
+            if (selectFea.FeatureType == FeatureType.Line)
+            {
+                LineString line = new LineString(temp.ToArray());
+                try
+                {
+                    resultFeature = m_InputFeaSet.AddFeature(line);
+                }
+                catch
+                {
+                    resultFeature = m_InputFeaSet.AddFeature(line);
+                }
+                resultFeature.DataRow.BeginEdit();
+                for (int i = 0; i < resultFeature.DataRow.ItemArray.Count(); i++)
+                {
+                    resultFeature.DataRow[i] = selectFea.DataRow[i];
+                }
+                resultFeature.DataRow.EndEdit();
+            }
+            else if (selectFea.FeatureType == FeatureType.Polygon)
+            {
+                ILinearRing LineRing = new LinearRing(temp.ToArray());
+                NetTopologySuite.Geometries.Polygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
+                try
+                {
+                    resultFeature = m_InputFeaSet.AddFeature(pPolygon);
+                }
+                catch
+                {
+                    resultFeature = m_InputFeaSet.AddFeature(pPolygon);
+                }
+                resultFeature.DataRow.BeginEdit();
+                for (int i = 0; i < resultFeature.DataRow.ItemArray.Count(); i++)
+                {
+                    resultFeature.DataRow[i] = selectFea.DataRow[i];
+                }
+                resultFeature.DataRow.EndEdit();
+            }
+            m_CurrentFeaLyr.RemoveSelectedFeatures();
+
+            //this.selectFea = resultFeature;
+            //this.ReBinding();
+
+            //m_CurrentFeaLyr.Select(selectFea);
+            MainWindow.m_DotMap.ResetBuffer();
+            MainWindow.m_DotMap.Refresh();
+
+
+            if (MessageBox.Show("Save edit?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                m_CurrentFeaLyr.FeatureSet.Save();
+                MessageBox.Show("Save successfully!");
+            }
+            //移除图层重新加载，因为底层bug  移动节点之后选择要素会报错。
+            MainWindow.m_AddFeaType = Enum.FeaType.None;
+            MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
+            MainWindow.m_DotMap.Cursor = System.Windows.Forms.Cursors.Default;
+            var layer = MainWindow.m_DotMap.Layers.Where(u => u.LegendText == "AllNodes").FirstOrDefault();
+            if (layer != null)
+                MainWindow.m_DotMap.Layers.Remove(layer);
+            string shpPath = m_CurrentFeaLyr.FeatureSet.FilePath;
+            string name = m_CurrentFeaLyr.LegendText;
+            var symbol = m_CurrentFeaLyr.Symbolizer;
+            var extent = m_CurrentFeaLyr.Extent;
+            IFeatureSet s = Shapefile.Open(shpPath);
+            MainWindow.m_DotMap.Layers.Remove(m_CurrentFeaLyr as IMapLayer);
+            var result = MainWindow.m_DotMap.Layers.Add(s);
+            result.Symbolizer = symbol;
+            result.Projection = MainWindow.m_DotMap.Projection;
+            result.LegendText = name;
+            result.Select((result as FeatureLayer).FeatureSet.Features[(result as FeatureLayer).FeatureSet.Features.Count - 1]);
+            result.ZoomToSelectedFeatures();
+            this.Close();
+        }
+
+        private void ReBinding()
+        {
+            List<Nodes> temp = new List<Nodes>();
+            int i = 1;
+            foreach (var fea in (AllPointLayer as FeatureLayer).FeatureSet.Features)
+            {
+                temp.Add(new Nodes { ID = i.ToString(), X = fea.Geometry.Coordinate.X, Y = fea.Geometry.Coordinate.Y, Feature = fea });
+                i++;
+            }
+            PointList = new ObservableCollection<Nodes>(temp);
         }
     }
 }
