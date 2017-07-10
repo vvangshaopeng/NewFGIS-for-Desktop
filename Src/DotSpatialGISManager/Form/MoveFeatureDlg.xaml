@@ -1,0 +1,39 @@
+﻿<Window x:Class="DotSpatialGISManager.MoveFeatureDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        mc:Ignorable="d"
+        Title="Move Feature" Height="381.431" Width="311"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="1">
+            <Label Height="35" Margin="10,7,10,106" FontSize="18">Input move parameter:</Label>
+            <Label Width="50" Height="35" Margin="20,56,226,55" FontSize="18">X:</Label>
+            <TextBox Name="txtMoveX" Width="150" Height="25" Margin="60,61,10,62"/>
+            <Label  Width="50" Height="35" HorizontalAlignment="Left" Margin="20,88,0,23" FontSize="18">Y:</Label>
+            <TextBox Name="txtMoveY" Width="150" Height="25" Margin="60,92,10,30"/>
+        </Grid>
+        <GroupBox Header="Save Path:" Grid.Row="2" Margin="3" Name="groupPath">
+            <StackPanel Orientation="Horizontal">
+                <TextBox Margin="10,0,0,0" Height="22" Width="218" Name="txtPath" IsReadOnly="True"/>
+                <Button Name="btnSelect" Content="Select" Height="22" Click="btnSelect_Click"/>
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="4">
+            <Button Name="btnOK" Content="OK" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,70,0" Click="btnOK_Click"/>
+            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnCancel_Click" />
+        </Grid>
+    </Grid>
+</Window>

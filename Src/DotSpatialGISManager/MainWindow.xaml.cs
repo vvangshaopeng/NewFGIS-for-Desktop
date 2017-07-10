@@ -35,6 +35,7 @@ namespace DotSpatialGISManager
         public static Map m_DotMap = null;
         public static Legend m_DotLegend = null;
         public static SetScaleDlg m_SetScaleDlg = null;
+        public static ZoomToCoorDlg m_ZoomToCoorDlg = null;
         public static MainWindow m_MainWindow = null;
         public static OpenAttributeTableDlg m_OpenAttributeTableDlg = null;
         public static FeaType m_AddFeaType = FeaType.None;
