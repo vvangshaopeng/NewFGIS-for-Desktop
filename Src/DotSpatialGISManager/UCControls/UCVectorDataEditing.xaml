@@ -82,13 +82,6 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Style="{StaticResource btnMainMenu}" ToolTip="Split Feature" Name="btnSplitFeature" Click="btnSplitFeature_Click">
-                <Button.Template>
-                    <ControlTemplate>
-                        <Image Source="{Binding SplitFeaturePath, Converter={StaticResource ImageConverter}}" Margin="3"/>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
             <Button Style="{StaticResource btnMainMenu}" ToolTip="Save edits" Name="btnSaveEdits" Click="btnSaveEdits_Click">
                 <Button.Template>
                     <ControlTemplate>

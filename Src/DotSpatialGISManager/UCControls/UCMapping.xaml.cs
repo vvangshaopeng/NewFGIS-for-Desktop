@@ -40,6 +40,14 @@ namespace DotSpatialGISManager.UCControls
                 return PathHelper.ResourcePath + "11.mapping.png";
             }
         }
+        public string UploadMapPath
+        {
+            get
+            {
+                return PathHelper.ResourcePath + "11.upload map.png";
+            }
+        }
+
 
         #endregion
 
@@ -47,6 +55,12 @@ namespace DotSpatialGISManager.UCControls
         {
             LayoutForm f = new LayoutForm();
             f.MapControl = MainWindow.m_DotMap;
+            f.Show();
+        }
+
+        private void btnUploadMap_Click(object sender, RoutedEventArgs e)
+        {
+            UploadMapDlg f = new UploadMapDlg();
             f.Show();
         }
     }

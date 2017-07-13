@@ -94,6 +94,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -114,6 +115,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Form\UploadMapDlg.xaml.cs">
+      <DependentUpon>UploadMapDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\ZoomToCoorDlg.xaml.cs">
       <DependentUpon>ZoomToCoorDlg.xaml</DependentUpon>
     </Compile>
@@ -226,6 +230,10 @@
     <Compile Include="UCControls\UCFileManagement.xaml.cs">
       <DependentUpon>UCFileManagement.xaml</DependentUpon>
     </Compile>
+    <Page Include="Form\UploadMapDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Form\ZoomToCoorDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
