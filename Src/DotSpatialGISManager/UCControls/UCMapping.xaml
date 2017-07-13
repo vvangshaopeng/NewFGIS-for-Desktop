@@ -19,6 +19,13 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
+            <Button Style="{StaticResource btnMainMenu}" ToolTip="UploadMap" Name="btnUploadMap" Click="btnUploadMap_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="{Binding UploadMapPath, Converter={StaticResource ImageConverter}}" Margin="3"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </WrapPanel>
     </Grid>
 </UserControl>

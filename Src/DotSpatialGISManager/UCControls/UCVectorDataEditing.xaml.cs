@@ -233,10 +233,6 @@ namespace DotSpatialGISManager.UCControls
             }
         }
 
-        private void btnSplitFeature_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void btnSaveEdits_Click(object sender, RoutedEventArgs e)
         {
@@ -269,9 +265,6 @@ namespace DotSpatialGISManager.UCControls
             btnMergeFeature.IsEnabled = false;
             btnMergeFeature.Opacity = 0.5;
 
-            btnSplitFeature.IsEnabled = false;
-            btnSplitFeature.Opacity = 0.5;
-
             btnSaveEdits.IsEnabled = false;
             btnSaveEdits.Opacity = 0.5;
         }
@@ -300,9 +293,6 @@ namespace DotSpatialGISManager.UCControls
 
             btnMergeFeature.IsEnabled = true;
             btnMergeFeature.Opacity = 1;
-
-            btnSplitFeature.IsEnabled = true;
-            btnSplitFeature.Opacity = 1;
 
             btnSaveEdits.IsEnabled = true;
             btnSaveEdits.Opacity = 1;
