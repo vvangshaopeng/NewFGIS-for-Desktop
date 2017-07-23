@@ -366,8 +366,11 @@ namespace DotSpatialGISManager
                     }
                     break;
                 case "btnCenter":
-                    ZoomToCoordinatesDialog f = new ZoomToCoordinatesDialog(m_DotMap);
-                    f.ShowDialog();
+                    if (m_ZoomToCoorDlg == null)
+                    {
+                        m_ZoomToCoorDlg = new ZoomToCoorDlg();
+                        m_ZoomToCoorDlg.Show();
+                    }
                     break;
                 case "btnAttribute":
                     if (m_OpenAttributeTableDlg == null)
