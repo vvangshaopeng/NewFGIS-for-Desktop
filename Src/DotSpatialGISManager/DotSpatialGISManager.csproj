@@ -451,6 +451,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Main.ico" />
     <Resource Include="Main.ico" />
     <Content Include="Resources\Images\01.add layer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -609,9 +610,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\polyline.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Main.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
