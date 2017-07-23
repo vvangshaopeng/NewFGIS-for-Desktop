@@ -17,7 +17,7 @@ namespace Common.Helper
         {
             get
             {
-                return SystemBasePath + "../Images/";
+                return SystemBasePath + "Resources/Images/";
             }
         }
     }

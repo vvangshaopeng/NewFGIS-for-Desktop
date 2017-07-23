@@ -1,8 +1,11 @@
-﻿using System;
+﻿
+using Common;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -92,6 +95,25 @@ namespace DotSpatialGISManager
                 return;
             }
             win.WindowState = System.Windows.WindowState.Maximized;
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            //验证License
+            if (!StartWin.CanStart())
+            {
+                this.Shutdown();
+            }
+            //检查上传地图服务器信息是否配置
+            HostConfig.InitHostConfig();
+            //启动界面
+            CircleProgressBox f = new CircleProgressBox();
+            f.ShowPregress();
+            f.SetDefaultDescription();
+            //Thread.Sleep(3000);//3秒后进入系统
+            f.CloseProgress();
+            base.OnStartup(e);
         }
     }
 }
