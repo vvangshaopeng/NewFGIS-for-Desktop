@@ -9,7 +9,7 @@
         xmlns:uc="clr-namespace:DotSpatialGISManager.UCControls"
         xmlns:Common="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
-        Title="  MainWindow" Height="760" Width="1000" 
+        Title="  FGIS" Height="760" Width="1000" 
         AllowsTransparency="False" Style="{StaticResource CustomWindowChrome}" 
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closed="Window_Closed">
     <shell:WindowChrome.WindowChrome>
