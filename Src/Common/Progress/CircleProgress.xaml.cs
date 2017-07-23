@@ -24,6 +24,7 @@ namespace Common
         public CircleProgress()
         {
             InitializeComponent();
+            this.ShowInTaskbar = false;
         }
 
         private delegate void ShowDefaultDelegate(string value);
