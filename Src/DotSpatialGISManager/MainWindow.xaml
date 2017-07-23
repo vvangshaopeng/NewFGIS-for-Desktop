@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         Title="  MainWindow" Height="760" Width="1000" 
         AllowsTransparency="False" Style="{StaticResource CustomWindowChrome}" 
-        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closed="Window_Closed">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome GlassFrameThickness="1" ResizeBorderThickness="0" 
                             CaptionHeight="5" CornerRadius="10"></shell:WindowChrome>

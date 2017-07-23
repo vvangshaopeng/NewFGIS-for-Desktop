@@ -48,15 +48,24 @@
     <Compile Include="Converters\Bool2Visibility.cs" />
     <Compile Include="Converters\String2ImageConverter.cs" />
     <Compile Include="Helper\CHelp.cs" />
+    <Compile Include="Helper\MD5Encryption.cs" />
     <Compile Include="Helper\NotifyPropertyChanged.cs" />
     <Compile Include="Helper\PathHelper.cs" />
+    <Compile Include="Progress\CircleProgress.xaml.cs">
+      <DependentUpon>CircleProgress.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Progress\FromProgressBox.xaml.cs">
       <DependentUpon>FromProgressBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Progress\CircleProgressBox.cs" />
     <Compile Include="Progress\ProgressBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Progress\CircleProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Progress\FromProgressBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

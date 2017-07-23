@@ -18,6 +18,7 @@ using System.Web;
 using System.Net;
 using System.IO;
 using System.Drawing;
+using System.Xml;
 
 namespace DotSpatialGISManager
 {
@@ -26,7 +27,7 @@ namespace DotSpatialGISManager
     /// </summary>
     public partial class UploadMapDlg : Window
     {
-
+        private string xmlPath = Common.Helper.PathHelper.SystemBasePath + "Config/ServerConfig.xml";
         public UploadMapDlg()
         {
             InitializeComponent();
@@ -48,11 +49,58 @@ namespace DotSpatialGISManager
 
         private void btnOK_Click(object sender, RoutedEventArgs e)   //上传地图图片
         {
-            //post函数参数
-            string url = "http://139.129.166.245:8069/uploadMap";
+            if (!System.IO.File.Exists(xmlPath))
+            {
+                ServerConfigDlg f = new ServerConfigDlg();
+                if (f.ShowDialog() == false)
+                    return;
+            }
 
-            string name = "name";
-            string pwd = "sddsdsf";
+            //post函数参数
+            string url = "";
+            string name = "";
+            string pwd = "";
+            //string url = "http://139.129.166.245:8069/uploadMap";
+            //string name = "name";
+            //string pwd = "sddsdsf";
+
+            try
+            {
+                //解析XML
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(xmlPath);
+                //查找<Root>  
+                XmlNode root = xmlDoc.SelectSingleNode("Root");
+                //获取到所有<Root>的子节点  
+                XmlNodeList nodeList = root.ChildNodes;
+                //遍历所有子节点  
+                foreach (XmlNode xn in nodeList)
+                {
+                    switch(xn.Name.ToLower())
+                    {
+                        case "url":
+                            url = xn.InnerText;
+                            break;
+                        case "user":
+                            name = xn.InnerText;
+                            break;
+                        case "password":
+                            pwd = xn.InnerText;
+                            break;
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error");
+                return;
+            }
+
+            if (url == ""||name=="")
+            {
+                MessageBox.Show("url is empty or name is empty");
+                return;
+            }
 
             string filePath = this.txtPath.Text;
             string fileName = System.IO.Path.GetFileName(filePath);
