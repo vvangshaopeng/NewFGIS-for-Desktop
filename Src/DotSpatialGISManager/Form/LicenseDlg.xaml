@@ -1,0 +1,35 @@
+﻿<Window x:Class="DotSpatialGISManager.LicenseDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotSpatialGISManager"
+        xmlns:common="clr-namespace:Common.Converters;assembly=Common"
+        mc:Ignorable="d"
+        Title="LicenseDlg" Height="Auto" SizeToContent="Height" Width="300" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <common:String2ImageConverter x:Key="imgconverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Label Content="Register code:" Margin="5,3"/>
+            <Grid Margin="5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Name="txtFieldName" Margin="3" TextChanged="txtFieldName_TextChanged"/>
+                <Image Height="20" Width="20" Source="{Binding image,Converter={StaticResource imgconverter}}" Visibility="{Binding visibility}" ToolTip="{Binding toolTip}" Grid.Column="1"/>
+            </Grid>
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Button Name="btnOK" Content="OK" Width="70" Height="22" HorizontalAlignment="Right"  Margin="0,5,75,5" Click="btnOK_Click" IsEnabled="{Binding IsCorrect}"/>
+            <Button Name="btnCancel" Content="Cancel" Width="70" Height="22" HorizontalAlignment="Right" Margin="0,5,5,5" Click="btnCancel_Click"/>
+        </Grid>
+    </Grid>
+</Window>
