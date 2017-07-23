@@ -12,12 +12,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid>
-            <Label VerticalAlignment="Center" Margin="10,0" Content="Select Layer:"/>
+            <Label VerticalAlignment="Center" Margin="10,0" Content="Select a layer:"/>
             <ComboBox Name="cboLayer"  Width="150" Height="22" Margin="100,0,0,0" HorizontalAlignment="Left" ItemsSource="{Binding LayerList}" SelectionChanged="cboLayer_SelectionChanged"/>
-            <Button Name="btnFieldCalculator" Width="100" Content="Field Calculator" Height="22" HorizontalAlignment="Right" Margin="0,0,250,0" Click="btnFieldCalculator_Click"/>
-            <Button Name="btnStartEdit" Width="80" Content="Start Edit" Height="22" HorizontalAlignment="Right" Margin="0,0,170,0" Click="btnStartEdit_Click"/>
-            <Button Name="btnStopEdit" Width="80" Content="Stop Edit" Height="22" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnStopEdit_Click" IsEnabled="False"/>
-            <Button Name="btnSaveEdit" Width="80" Content="Save Edit" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnSaveEdit_Click"/>
+            <Button Name="btnFieldCalculator" Width="100" Content="Field calculator" Height="22" HorizontalAlignment="Right" Margin="0,0,250,0" Click="btnFieldCalculator_Click"/>
+            <Button Name="btnStartEdit" Width="80" Content="Start editing" Height="22" HorizontalAlignment="Right" Margin="0,0,170,0" Click="btnStartEdit_Click"/>
+            <Button Name="btnStopEdit" Width="80" Content="Stop editing" Height="22" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnStopEdit_Click" IsEnabled="False"/>
+            <Button Name="btnSaveEdit" Width="80" Content="Save edits" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnSaveEdit_Click"/>
         </Grid>
         <Grid Grid.Row="1">
             <DataGrid Name="dataGrid" Margin="5" Style="{StaticResource DataGridStyle}" ItemsSource="{Binding LayerDataTable,Mode=TwoWay}" IsReadOnly="True"/>

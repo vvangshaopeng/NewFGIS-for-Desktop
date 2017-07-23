@@ -105,6 +105,9 @@ namespace DotSpatialGISManager
             string filePath = this.txtPath.Text;
             string fileName = System.IO.Path.GetFileName(filePath);
 
+            //图名参数
+            string mapName = this.txtName.Text;
+
             //转二进制
             FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             byte[] fileContentByte = new byte[fs.Length]; // 二进制文件
