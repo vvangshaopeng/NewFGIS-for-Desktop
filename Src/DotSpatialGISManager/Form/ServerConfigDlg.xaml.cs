@@ -51,12 +51,12 @@ namespace DotSpatialGISManager
             node.InnerText = this.txtPassword.Password;
             root.AppendChild(node);
             doc.Save(ServerPath);
-            this.Close();
+            this.DialogResult = true;
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
     }
 }
