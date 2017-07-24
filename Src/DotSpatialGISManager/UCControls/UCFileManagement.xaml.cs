@@ -102,10 +102,8 @@ namespace DotSpatialGISManager.UCControls
         /// <param name="e"></param>
         private void btnExportData_Click(object sender, RoutedEventArgs e)
         {
-            AttributeCalculator f = new AttributeCalculator();
-            f.Show();
-            //ExportShpDlg f = new ExportShpDlg();
-            //f.ShowDialog();
+            ExportShpDlg f = new ExportShpDlg();
+            f.ShowDialog();
         }
     }
 }
