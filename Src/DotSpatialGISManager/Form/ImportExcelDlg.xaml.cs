@@ -142,7 +142,7 @@ namespace DotSpatialGISManager
             f.Title = "Select Save Path";
             if (f.ShowDialog() == true)
             {
-                this.txtPath.Text = f.FileName;
+                this.txtSavePath.Text = f.FileName;
             }
         }
     }
