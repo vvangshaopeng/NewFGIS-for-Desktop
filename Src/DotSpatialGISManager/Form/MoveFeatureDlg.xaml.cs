@@ -2,7 +2,6 @@
 using DotSpatial.Data;
 using DotSpatial.Symbology;
 using GeoAPI.Geometries;
-using Microsoft.Win32;
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
@@ -21,12 +20,25 @@ namespace DotSpatialGISManager
     public partial class MoveFeatureDlg : Window, INotifyPropertyChanged
     {
         private IFeatureLayer[] m_FeaLyrList = new IFeatureLayer[] { };
-        private IFeatureLayer m_CurrentFeaLyr = null;
-        private IFeatureSet m_CurrentFeaSet = null;
-        private IFeatureSet m_ResultFeaset = null;
-        private IFeature feaMove = null;
+        private FeatureLayer m_CurrentFeaLyr = null;
+        private FeatureSet m_InputFeaSet = null;
+        private List<IMapLineLayer> m_Layers = new List<IMapLineLayer>();
+        private IFeature selectFea = null;
+        private IFeature lFeaM = null;
 
-        #region 绑定
+        private static MoveFeatureDlg _defaultIntance = null;
+
+        public static MoveFeatureDlg GetInstance()
+        {
+            if (_defaultIntance == null)
+            {
+                _defaultIntance = new MoveFeatureDlg();
+            }
+            return _defaultIntance;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private List<Coordinate> _CoordList;
         public List<Coordinate> CoordList
         {
@@ -40,36 +52,82 @@ namespace DotSpatialGISManager
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private Visibility _IsVisibility = Visibility.Collapsed;
+        public Visibility IsVisibility
+        {
+            get
+            {
+                return _IsVisibility;
+            }
+            set
+            {
+                if (_IsVisibility != value)
+                {
+                    _IsVisibility = value;
+                    if (PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsVisibility)));
+                    }
+                }
+            }
+        }
 
-        #endregion
 
         public MoveFeatureDlg()
         {
             InitializeComponent();
+            this.Owner = MainWindow.m_MainWindow;
             this.DataContext = this;
+            _defaultIntance = this;
+            //获取视图中图层列表
             m_FeaLyrList = MainWindow.m_DotMap.GetFeatureLayers();
-
             foreach (ILayer layer in m_FeaLyrList)
             {
                 if (layer is IFeatureLayer)
                     this.cboLayer.Items.Add((layer as FeatureLayer).Name);
             }
             if (this.cboLayer.Items.Count > 0)
-            {
                 this.cboLayer.SelectedIndex = 0;
-            }
         }
+
+
 
         private void cboLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.cboLayer.SelectedIndex == -1) return;
-            m_CurrentFeaLyr = m_FeaLyrList[this.cboLayer.SelectedIndex];
-            //直接 m_CurrentFeaLyr as IFeatureSet; Wrong!
-            m_CurrentFeaSet = (m_CurrentFeaLyr as FeatureLayer).FeatureSet;
-            MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+            m_CurrentFeaLyr = m_FeaLyrList[this.cboLayer.SelectedIndex] as FeatureLayer;
+            m_InputFeaSet = (m_CurrentFeaLyr as FeatureLayer).FeatureSet as FeatureSet;
         }
 
+        private void M_CurrentFeaLyr_SelectionChanged(object sender, EventArgs e)
+        {
+            if (m_CurrentFeaLyr.Selection.Count == 0) return;
+            if (m_CurrentFeaLyr.Selection.Count > 1)
+            {
+                MessageBox.Show("Please select one feature");
+                m_CurrentFeaLyr.UnSelectAll();
+                return;
+            }
+            this.btnStartMoveFeature.IsEnabled = true;
+            var pFeature = m_CurrentFeaLyr.Selection.ToFeatureList().FirstOrDefault(); ;
+            ////保证FID 不发生变化
+            //selectFea = pFeature.Copy();
+            selectFea = (from u in (m_CurrentFeaLyr as FeatureLayer).FeatureSet.Features
+                         where u.Geometry.Covers(pFeature.Geometry)
+                         select u).FirstOrDefault();
+
+            this.IsVisibility = Visibility.Visible;
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            UCControls.UCVectorDataEditing.m_MoveFeatureDlg = null;
+        }
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             //若未选择图层
@@ -78,186 +136,116 @@ namespace DotSpatialGISManager
                 MessageBox.Show("Please select a layer！");
                 return;
             }
-            if (m_CurrentFeaLyr.Selection.Count == 0 || m_CurrentFeaLyr.Selection.Count > 1)
-            {
-                MessageBox.Show("Please select one feature");
-                m_CurrentFeaLyr.UnSelectAll();
-                return;
-            }
+            this.btnOK.IsEnabled = false;
+            ////右键结束选择 写在mainwindow里
+            //注册事件
+            m_CurrentFeaLyr.SelectionChanged += M_CurrentFeaLyr_SelectionChanged;
 
-            IFeature pFeature = m_CurrentFeaLyr.Selection.ToFeatureList()[0];
-            feaMove = (from u in (m_CurrentFeaLyr as FeatureLayer).FeatureSet.Features
-                       where u.Geometry.Intersects(pFeature.Geometry)
-                       select u).FirstOrDefault();
+            MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+        }
 
-            double moveX = 0;
-            double moveY = 0;
-            try
-            {
-                moveX = Convert.ToDouble(this.txtMoveX.Text);
-                moveY = Convert.ToDouble(this.txtMoveY.Text);
-            }
-            catch
-            {
-                MessageBox.Show("input a number");
-            }
+        private void btnStartMoveFeature_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Right button to move");
+            //注销事件
+            m_CurrentFeaLyr.SelectionChanged -= M_CurrentFeaLyr_SelectionChanged;
+            MainWindow.m_AddFeaType = Enum.FeaType.MoveFeature;
+
+            btnStartMoveFeature.IsEnabled = false;
+        }
+
+        public void MoveFeature(Coordinate coord)
+        {
+            if (selectFea == null || m_CurrentFeaLyr == null) return;
+
+            //确保目标图层只选中编辑的那一个要素，因为后面会把选中要素移除
+            m_CurrentFeaLyr.UnSelectAll();
+            m_CurrentFeaLyr.Selection.Clear();
+            m_CurrentFeaLyr.Select(selectFea);
+
+            //move
+
             Coordinate moveCoord = new Coordinate();
-            moveCoord.X = moveX;
-            moveCoord.Y = moveY;
-            Coordinate resultCoord = new Coordinate();
-            if (feaMove.FeatureType == FeatureType.Point)
+            moveCoord.X = coord.X - selectFea.Geometry.Coordinates[0].X;
+            moveCoord.Y = coord.Y - selectFea.Geometry.Coordinates[0].Y;
+            if (selectFea.FeatureType == FeatureType.Point)
             {
-                m_ResultFeaset = new FeatureSet(FeatureType.Line);
-                foreach (DataColumn column in m_CurrentFeaSet.DataTable.Columns)
-                {
-                    DataColumn col = new DataColumn(column.ColumnName, column.DataType);
-                    m_ResultFeaset.DataTable.Columns.Add(col);
-                }
-
+                Coordinate resultCoord = new Coordinate();
                 //move
-                resultCoord.X = feaMove.Geometry.Coordinate.X + moveCoord.X;
-                resultCoord.Y = feaMove.Geometry.Coordinate.Y + moveCoord.Y;
+                resultCoord.X = selectFea.Geometry.Coordinate.X + moveCoord.X;
+                resultCoord.Y = selectFea.Geometry.Coordinate.Y + moveCoord.Y;
                 IPoint pPoint = new NetTopologySuite.Geometries.Point(resultCoord);
-                IFeature lFeaM = m_ResultFeaset.AddFeature(pPoint);
-                for (int i = 0; i < feaMove.DataRow.ItemArray.Count(); i++)
+                lFeaM = m_InputFeaSet.AddFeature(pPoint);
+                for (int i = 0; i < selectFea.DataRow.ItemArray.Count(); i++)
                 {
-                    lFeaM.DataRow[i] = feaMove.DataRow[i];
+                    lFeaM.DataRow[i] = selectFea.DataRow[i];
                 }
-
-                m_CurrentFeaSet.Features.Remove(feaMove);
-                foreach (var fea in m_CurrentFeaSet.Features)
-                {
-                    IFeature lFea = m_ResultFeaset.AddFeature(fea.Geometry);
-                    for (int i = 0; i < fea.DataRow.ItemArray.Count(); i++)
-                    {
-                        lFea.DataRow[i] = fea.DataRow[i];
-                    }
-                }
-                m_ResultFeaset.InitializeVertices();
-                MainWindow.m_DotMap.ResetBuffer();
-                m_CurrentFeaSet.AddFeature(feaMove.Geometry);
-
-                m_ResultFeaset.Projection = MainWindow.m_DotMap.Projection;
-                m_ResultFeaset.Name = m_CurrentFeaSet.Name;
-                m_CurrentFeaLyr = MainWindow.m_DotMap.Layers.Add(m_ResultFeaset);
-                m_CurrentFeaLyr.LegendText = m_ResultFeaset.Name + "_copy";
-                CoordList.Clear();
             }
-            else if (feaMove.FeatureType == FeatureType.Line)
+            else if (selectFea.FeatureType == FeatureType.Line)
             {
-                //create a new featureset
-                m_ResultFeaset = new FeatureSet(FeatureType.Line);
-                foreach (DataColumn column in m_CurrentFeaSet.DataTable.Columns)
-                {
-                    DataColumn col = new DataColumn(column.ColumnName, column.DataType);
-                    m_ResultFeaset.DataTable.Columns.Add(col);
-                }
-
                 //move
-                for (int i = 0; i < feaMove.Geometry.NumPoints; i++)
+                for (int i = 0; i < selectFea.Geometry.NumPoints; i++)
                 {
-                    feaMove.Geometry.Coordinates[i].X += moveCoord.X;
-                    feaMove.Geometry.Coordinates[i].Y += moveCoord.Y;
-                    CoordList.Add(feaMove.Geometry.Coordinates[i]);
+                    Coordinate resultCoord = new Coordinate();
+                    resultCoord.X = selectFea.Geometry.Coordinates[i].X + moveCoord.X;
+                    resultCoord.Y = selectFea.Geometry.Coordinates[i].Y + moveCoord.Y;
+                    CoordList.Add(resultCoord);
                 }
                 ILineString pLine = new LineString(CoordList.ToArray());
 
-                IFeature lFeaM = m_ResultFeaset.AddFeature(pLine);
-                for (int i = 0; i < feaMove.DataRow.ItemArray.Count(); i++)
+                lFeaM = m_InputFeaSet.AddFeature(pLine);
+                for (int i = 0; i < selectFea.DataRow.ItemArray.Count(); i++)
                 {
-                    lFeaM.DataRow[i] = feaMove.DataRow[i];
+                    lFeaM.DataRow[i] = selectFea.DataRow[i];
                 }
-
-                m_CurrentFeaLyr.InvertSelection();
-                IFeatureSet fs = m_CurrentFeaLyr.Selection.ToFeatureSet();
-                foreach (var fea in fs.Features)
-                {
-                    IFeature lFea = m_ResultFeaset.AddFeature(fea.Geometry);
-                    for (int i = 0; i < fea.DataRow.ItemArray.Count(); i++)
-                    {
-                        lFea.DataRow[i] = fea.DataRow[i];
-                    }
-                }
-                m_ResultFeaset.InitializeVertices();
-                MainWindow.m_DotMap.ResetBuffer();
-
-                m_ResultFeaset.Projection = MainWindow.m_DotMap.Projection;
-                m_ResultFeaset.Name = m_CurrentFeaSet.Name;
-                m_CurrentFeaLyr = MainWindow.m_DotMap.Layers.Add(m_ResultFeaset);
-                m_CurrentFeaLyr.LegendText = m_ResultFeaset.Name + "_copy";
                 CoordList.Clear();
             }
-            else if (feaMove.FeatureType == FeatureType.Polygon)
+            else if (selectFea.FeatureType == FeatureType.Polygon)
             {
-                //create a new featureset
-                m_ResultFeaset = new FeatureSet(FeatureType.Line);
-                foreach (DataColumn column in m_CurrentFeaSet.DataTable.Columns)
-                {
-                    DataColumn col = new DataColumn(column.ColumnName, column.DataType);
-                    m_ResultFeaset.DataTable.Columns.Add(col);
-                }
-
                 //move
-                for (int i = 0; i < feaMove.Geometry.NumPoints; i++)
+                for (int i = 0; i < selectFea.Geometry.NumPoints; i++)
                 {
-                    feaMove.Geometry.Coordinates[i].X += moveCoord.X;
-                    feaMove.Geometry.Coordinates[i].Y += moveCoord.Y;
-                    CoordList.Add(feaMove.Geometry.Coordinates[i]);
+                    Coordinate resultCoord = new Coordinate();
+                    resultCoord.X = selectFea.Geometry.Coordinates[i].X + moveCoord.X;
+                    resultCoord.Y = selectFea.Geometry.Coordinates[i].Y + moveCoord.Y;
+                    CoordList.Add(resultCoord);
                 }
                 ILinearRing LineRing = new LinearRing(CoordList.ToArray());
                 IPolygon pPolygon = new NetTopologySuite.Geometries.Polygon(LineRing);
-                IFeature lFeaM = m_ResultFeaset.AddFeature(pPolygon);
-                for (int i = 0; i < feaMove.DataRow.ItemArray.Count(); i++)
+                lFeaM = m_InputFeaSet.AddFeature(pPolygon);
+                for (int i = 0; i < selectFea.DataRow.ItemArray.Count(); i++)
                 {
-                    lFeaM.DataRow[i] = feaMove.DataRow[i];
+                    lFeaM.DataRow[i] = selectFea.DataRow[i];
                 }
-
-                m_CurrentFeaLyr.InvertSelection();
-                IFeatureSet fs = m_CurrentFeaLyr.Selection.ToFeatureSet();
-                foreach (var fea in fs.Features)
-                {
-                    IFeature lFea = m_ResultFeaset.AddFeature(fea.Geometry);
-                    for (int i = 0; i < fea.DataRow.ItemArray.Count(); i++)
-                    {
-                        lFea.DataRow[i] = fea.DataRow[i];
-                    }
-                }
-                m_ResultFeaset.InitializeVertices();
-                MainWindow.m_DotMap.ResetBuffer();
-
-                m_ResultFeaset.Projection = MainWindow.m_DotMap.Projection;
-                m_ResultFeaset.Name = m_CurrentFeaSet.Name;
-                m_CurrentFeaLyr = MainWindow.m_DotMap.Layers.Add(m_ResultFeaset);
-                m_CurrentFeaLyr.LegendText = m_ResultFeaset.Name + "_copy";
                 CoordList.Clear();
             }
+            //m_CurrentFeaLyr.FeatureSet.AddFeature(lFeaM.Geometry);
+            m_CurrentFeaLyr.RemoveSelectedFeatures();
+
+            MainWindow.m_DotMap.ResetBuffer();
             MainWindow.m_DotMap.Refresh();
-            IFeatureLayer[] m_FeaLyrList = MainWindow.m_DotMap.GetFeatureLayers();
-            for (int i = 0; i < MainWindow.m_DotMap.Layers.Count; i++)
-            {
-                m_FeaLyrList[i].ClearSelection();
-            }
-            this.Close();
-        }
-        private void btnSelect_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog f = new SaveFileDialog();
-            f.AddExtension = true;
-            f.Filter = "ShapeFile(*.shp)|*.shp";
-            f.Title = "Select Save Path";
-            if (f.ShowDialog() == true)
-            {
-                this.txtPath.Text = f.FileName;
-            }
-        }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            UCControls.UCVectorDataEditing.m_MoveFeatureDlg = null;
-        }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
+            if (MessageBox.Show("Save edit?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                m_CurrentFeaLyr.FeatureSet.Save();
+                MessageBox.Show("Save successfully!");
+            }
+            //移除图层重新加载，因为底层bug 移动节点之后选择要素会报错。
+            MainWindow.m_AddFeaType = Enum.FeaType.None;
+            MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
+            MainWindow.m_DotMap.Cursor = System.Windows.Forms.Cursors.Default;
+            string shpPath = m_CurrentFeaLyr.FeatureSet.FilePath;
+            string name = m_CurrentFeaLyr.LegendText;
+            var symbol = m_CurrentFeaLyr.Symbolizer;
+            var extent = m_CurrentFeaLyr.Extent;
+            IFeatureSet s = Shapefile.Open(shpPath);
+            MainWindow.m_DotMap.Layers.Remove(m_CurrentFeaLyr as IMapLayer);
+            var result = MainWindow.m_DotMap.Layers.Add(s);
+            result.Symbolizer = symbol;
+            result.Projection = MainWindow.m_DotMap.Projection;
+            result.LegendText = name;
+            result.Select((result as FeatureLayer).FeatureSet.Features[(result as FeatureLayer).FeatureSet.Features.Count - 1]);
             this.Close();
         }
     }
