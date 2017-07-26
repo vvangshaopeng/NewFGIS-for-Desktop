@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DotSpatialGISManager"
         xmlns:Common="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
-        Title="Field Calculator" Height="Auto" SizeToContent="Height" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+        Title="Field calculator" Height="Auto" SizeToContent="Height" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
         <Common:Bool2Visibility x:Key="bool2visibility"/>
     </Window.Resources>
@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Select a Field to Be Calculated：" Margin="23,2">
+        <GroupBox Header="Select a field to be calculated：" Margin="23,2">
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="cboCalFields" Margin="10" Width="140"
                           ItemsSource="{Binding FieldsList}" SelectedItem="{Binding SelectedField,Mode=TwoWay}" SelectionChanged="cboCalFields_SelectionChanged"/>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="MeasureResultDlg" Height="400" Width="500"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+        Title="Measuring result" Height="400" Width="500"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -36,7 +36,7 @@
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="ID&amp;Name" Width="Auto" Binding="{Binding ID}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Layer" Width="Auto" Binding="{Binding Layer}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Shape Type" Width="Auto" Binding="{Binding Shape}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Shape type" Width="Auto" Binding="{Binding Shape}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Length" Width="*" Binding="{Binding Length}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Area" Width="*" Binding="{Binding Area}" IsReadOnly="True"/>
                     </DataGrid.Columns>

@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Delete Features"  Height="170" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+        Title="Delete features"  Height="170" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label Content="Select features and delete them" HorizontalContentAlignment="Right"/>
+        <Label Content="Select features and delete them" HorizontalContentAlignment="Left"/>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <GroupBox Header="Target Layer:">
+            <GroupBox Header="Target layer:">
                 <StackPanel Margin="5">
                     <ComboBox Margin="5,10" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
                 </StackPanel>

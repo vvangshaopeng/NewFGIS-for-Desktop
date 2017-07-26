@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Buffer Analysis" Height="414.117" Width="388" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
+        Title="Buffer analysis" Height="414.117" Width="388" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -23,7 +23,7 @@
                 </WrapPanel>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Buffer Method" Margin="5" Grid.Row="1">
+        <GroupBox Header="Buffer method" Margin="5" Grid.Row="1">
             <StackPanel>
                 <WrapPanel Margin="5">
                     <ComboBox Name="cboMethod" Height="22" Width="340" SelectionChanged="cboMethod_SelectionChanged">
@@ -33,7 +33,7 @@
                 </WrapPanel>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Buffer Distance" Margin="5" Grid.Row="2">
+        <GroupBox Header="Buffer distance" Margin="5" Grid.Row="2">
             <StackPanel>
                 <WrapPanel Margin="5">
                     <TextBox Name="txtBufferDis" Width="179" Height="22" />
@@ -41,10 +41,10 @@
                 </WrapPanel>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Dissolve Type (optional)" Margin="5" Grid.Row="3">
+        <GroupBox Header="Dissolve type (optional)" Margin="5" Grid.Row="3">
             <CheckBox Content="Dissolve" Margin="10" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
         </GroupBox>
-        <GroupBox Header="Save Path" Margin="5" Grid.Row="4">
+        <GroupBox Header="Save path" Margin="5" Grid.Row="4">
             <WrapPanel Margin="5,3">
                 <TextBox Name="txtSavePath" Width="277" Height="22" IsReadOnly="True"/>
                 <Button Name="btnSelectOutputPath" Width="60" Height="22" Content="Save" Click="btnSelectOutputPath_Click"/>

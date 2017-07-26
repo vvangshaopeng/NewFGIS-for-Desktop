@@ -17,12 +17,12 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
+        <GroupBox Header="Select a layer:" Grid.Row="0" Margin="3" Name="groupLayer">
             <StackPanel Orientation="Horizontal">
                 <ComboBox Margin="10,24,10,22" Height="22" Width="257" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Save Path:" Grid.Row="1" Margin="3" Name="groupPath">
+        <GroupBox Header="Save path:" Grid.Row="1" Margin="3" Name="groupPath">
             <StackPanel Orientation="Horizontal">
                 <TextBox Margin="10,0,0,0" Height="22" Width="218" Name="txtPath" IsReadOnly="True"/>
                 <Button Name="btnSelect" Content="Select" Height="22" Click="btnSelect_Click"/>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="SQL Query" Height="450" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+        Title="SQL query" Height="450" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
@@ -14,7 +14,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label x:Name="lblDes" Content="Layer Name：" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Width="81"/>
+            <Label x:Name="lblDes" Content="Layer name：" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Width="81"/>
             <ComboBox x:Name="cboLyrs" HorizontalAlignment="Left" Margin="95,12,0,0" VerticalAlignment="Top" Width="145" SelectionChanged="cboLyrs_SelectionChanged"/>
         </Grid>
         <Grid Grid.Row="1" >

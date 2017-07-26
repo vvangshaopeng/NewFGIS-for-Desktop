@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DotSpatialGISManager"
         xmlns:Common="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
-        Title="Location Query" Height="Auto" SizeToContent="Height" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+        Title="Location query" Height="Auto" SizeToContent="Height" Width="405" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Window.Resources>
         <Common:String2ImageConverter x:Key="ImageConverter"/>
     </Window.Resources>

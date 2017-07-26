@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Suspension point check" Height="140" Width="300" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
+        Title="Suspension point checking" Height="140" Width="300" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -16,7 +16,7 @@
             <ComboBox Name="cboLayer" Margin="5"/>
         </StackPanel>
         <Grid Grid.Row="1">
-            <Button Name="btnOK" Content="Start check" Width="70" Height="22" HorizontalAlignment="Right" Margin="0,0,75,0" Click="btnOK_Click"/>
+            <Button Name="btnOK" Content="Start checking" Width="70" Height="22" HorizontalAlignment="Right" Margin="0,0,75,0" Click="btnOK_Click"/>
             <Button Name="btnCancel" Content="Cancel" Width="70" Height="22" HorizontalAlignment="Right" Margin="0,0,5,0" Click="btnCancel_Click"/>
         </Grid>
     </Grid>

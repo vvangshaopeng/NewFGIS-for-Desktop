@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Import Excel" Height="230" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
+        Title="Import excel" Height="230" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.8*"/>
@@ -15,11 +15,11 @@
             <RowDefinition Height="0.8*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label Content="Layer Name:" Margin="10,0" VerticalAlignment="Center"/>
-            <TextBox Width="150" HorizontalAlignment="Left" Margin="100,0,0,0" Height="22" Text="New Layer" Name="txtName"/>
+            <Label Content="Layer name:" Margin="10,0" VerticalAlignment="Center"/>
+            <TextBox Width="150" HorizontalAlignment="Left" Margin="100,0,0,0" Height="22" Text="New layer" Name="txtName"/>
         </Grid>
         <StackPanel Grid.Row="1">
-            <Label Content="Select Excel Path:" Margin="10,0" />
+            <Label Content="Select excel file:" Margin="10,0" />
             <WrapPanel>
                 <TextBox Margin="10,0" Width="220" HorizontalAlignment="Left" Height="22" IsReadOnly="True" Name="txtPath"/>
                 <Button Content="Open" Name="btnOpen" Height="22" Click="btnOpen_Click"/>
@@ -35,9 +35,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
-            <Label Content="X Field:" Grid.Column="1" VerticalAlignment="Center"/>
+            <Label Content="X field:" Grid.Column="1" VerticalAlignment="Center"/>
             <ComboBox Name="cboX" Grid.Column="2" Height="22"/>
-            <Label Content="Y Field:" Grid.Column="4" VerticalAlignment="Center"/>
+            <Label Content="Y field:" Grid.Column="4" VerticalAlignment="Center"/>
             <ComboBox Name="cboY" Grid.Column="5" Height="22"/>
         </Grid>
         <Grid Grid.Row="3">
@@ -48,7 +48,7 @@
                 <ColumnDefinition Width="55"/>
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Save Path:" Grid.Column="1" VerticalAlignment="Center"/>
+            <Label Content="Save path:" Grid.Column="1" VerticalAlignment="Center"/>
             <TextBox Name="txtSavePath" Grid.Column="2" Height="22" VerticalAlignment="Center" IsReadOnly="True"/>
             <Button Name="btnSelect" Content="Select" Height="22" Grid.Column="3" Click="btnSelect_Click"/>
         </Grid>

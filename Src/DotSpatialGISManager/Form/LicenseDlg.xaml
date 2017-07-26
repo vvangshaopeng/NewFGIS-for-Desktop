@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DotSpatialGISManager"
         xmlns:common="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
-        Title="LicenseDlg" Height="Auto" SizeToContent="Height" Width="300" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
+        Title="License checking" Height="Auto" SizeToContent="Height" Width="300" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <common:String2ImageConverter x:Key="imgconverter"/>
     </Window.Resources>

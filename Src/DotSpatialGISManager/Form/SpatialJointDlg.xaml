@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Spatial Joint" Height="320" Width="400" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
+        Title="Spatial joint" Height="320" Width="400" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -13,13 +13,13 @@
             <RowDefinition Height="0.8*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Local Layer" Margin="5">
+        <GroupBox Header="Local layer" Margin="5">
             <WrapPanel Margin="5,10">
                 <Label Content="Select a layer:"/>
                 <ComboBox Name="cboLayer" Height="22" Width="250" SelectionChanged="cboLayer_SelectionChanged"/>
             </WrapPanel>
         </GroupBox>
-        <GroupBox Header="Remote File" Margin="5" Grid.Row="1">
+        <GroupBox Header="Remote file" Margin="5" Grid.Row="1">
             <StackPanel>
                 <Label Content="Select a file:" Margin="3"/>
                 <WrapPanel Margin="5,0">
@@ -28,7 +28,7 @@
                 </WrapPanel>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Save Path" Margin="5" Grid.Row="2">
+        <GroupBox Header="Save path" Margin="5" Grid.Row="2">
             <WrapPanel Margin="5,3">
                 <TextBox Name="txtSavePath" Width="290" Height="22" IsReadOnly="True"/>
                 <Button Name="btnSelectSavePath" Width="60" Height="22" Content="Save" Click="btnSelectSavePath_Click"/>
