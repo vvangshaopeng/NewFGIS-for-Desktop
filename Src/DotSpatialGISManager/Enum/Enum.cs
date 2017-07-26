@@ -14,6 +14,7 @@ namespace DotSpatialGISManager.Enum
         UCPoint,
         MovePoint,
         MoveFeature,
+        RotateFeature,
     }
 
     public enum SelectionMethod
