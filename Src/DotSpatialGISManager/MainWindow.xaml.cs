@@ -278,13 +278,25 @@ namespace DotSpatialGISManager
                             if (e.Button == System.Windows.Forms.MouseButtons.Right)
                             {
                                 var defaultIntance = MoveNodesDlg.GetInstance();
-                                if (defaultIntance!=null)
+                                if (defaultIntance != null)
                                 {
                                     defaultIntance.MoveNode(coord);
                                 }
                             }
                         }
                         break;
+                    case FeaType.MoveFeature:
+                        {
+                            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                            {
+                                var defaultIntance = MoveFeatureDlg.GetInstance();
+                                if (defaultIntance != null)
+                                {
+                                    defaultIntance.MoveFeature(coord);
+                                }
+                            }
+                            break;
+                        }
                 }
             }
         }

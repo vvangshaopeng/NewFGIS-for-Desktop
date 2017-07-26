@@ -13,6 +13,7 @@ namespace DotSpatialGISManager.Enum
         Polygon,
         UCPoint,
         MovePoint,
+        MoveFeature,
     }
 
     public enum SelectionMethod
