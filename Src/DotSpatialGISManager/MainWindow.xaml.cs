@@ -295,7 +295,19 @@ namespace DotSpatialGISManager
                                     defaultIntance.MoveFeature(coord);
                                 }
                             }
-                            break;
+                        }
+                        break;
+                    case FeaType.RotateFeature:
+                        {
+                            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                            {
+                                var defaultIntance = RotateFeatureDlg.GetInstance();
+                                if (defaultIntance != null)
+                                {
+                                    defaultIntance.RotateFeature(coord);
+                                }
+                            }
+                        break;
                         }
                 }
             }
