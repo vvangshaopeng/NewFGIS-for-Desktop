@@ -1,40 +1,35 @@
-﻿using DotSpatial.Data;
+﻿using DotSpatial.Controls;
+using DotSpatial.Data;
 using DotSpatial.Symbology;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using System.Data;
-using DotSpatial.Controls;
-using Microsoft.Win32;
 
 namespace DotSpatialGISManager
 {
     /// <summary>
-    /// FieldCalculatorDlg.xaml 的交互逻辑
+    /// MergeDlg.xaml 的交互逻辑
     /// </summary>
-    public partial class MergeDlg : Window, INotifyPropertyChanged
+    public partial class MergeDlg : Window
     {
         private IFeatureLayer[] m_FeaLyrList = new IFeatureLayer[] { };
-        private IFeatureLayer m_CurrentFeaLyr = null;
-        private IFeatureSet m_MergeFeaSet = null;
-        private IFeatureSet m_InputFeaSet = null;
-        private IFeatureSet m_ResultFeaset = null;
-
-        #region 绑定
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
+        private FeatureLayer m_CurrentFeaLyr = null;
+        private FeatureSet m_InputFeaSet = null;
+        private List<IMapLineLayer> m_Layers = new List<IMapLineLayer>();
+        private IFeature lFeaM = null;
 
         public MergeDlg()
         {
             InitializeComponent();
+            this.btnStartMerge.IsEnabled = false;
             this.Owner = MainWindow.m_MainWindow;
             this.DataContext = this;
-
             //获取视图中图层列表
             m_FeaLyrList = MainWindow.m_DotMap.GetFeatureLayers();
             foreach (ILayer layer in m_FeaLyrList)
@@ -51,81 +46,14 @@ namespace DotSpatialGISManager
         private void cboLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.cboLayer.SelectedIndex == -1) return;
-            m_CurrentFeaLyr = m_FeaLyrList[this.cboLayer.SelectedIndex];
-            m_InputFeaSet = (m_CurrentFeaLyr as FeatureLayer).FeatureSet;
-            MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+            m_CurrentFeaLyr = m_FeaLyrList[this.cboLayer.SelectedIndex] as FeatureLayer;
+            m_InputFeaSet = (m_CurrentFeaLyr as FeatureLayer).FeatureSet as FeatureSet;
         }
 
-        private void btnOK_Click(object sender, RoutedEventArgs e)
+        private void M_CurrentFeaLyr_SelectionChanged(object sender, EventArgs e)
         {
-            //create a new featureset
-            m_ResultFeaset = new FeatureSet(m_InputFeaSet.FeatureType);
-            foreach (DataColumn column in m_InputFeaSet.DataTable.Columns)
-            {
-                DataColumn col = new DataColumn(column.ColumnName, column.DataType);
-                m_ResultFeaset.DataTable.Columns.Add(col);
-            }
-
-            //merge
-            m_MergeFeaSet = new FeatureSet(m_InputFeaSet.FeatureType);
-            m_MergeFeaSet = m_CurrentFeaLyr.Selection.ToFeatureSet();
-            if (m_MergeFeaSet.Features.Count < 2)
-            {
-                MessageBox.Show("Please select at least two features！");
-                return;
-            }
-            IFeature MergeFea = m_MergeFeaSet.GetFeature(0);
-            for (int i = 0; i < m_MergeFeaSet.Features.Count; i++)
-            {
-                var fea = m_MergeFeaSet.GetFeature(i);
-                MergeFea = MergeFea.Union(fea.Geometry);
-                if (MergeFea == null)
-                {
-                    break;
-                }
-            }
-            IFeature lFeaM = m_ResultFeaset.AddFeature(MergeFea.Geometry);
-            for (int i = 0; i < m_MergeFeaSet.Features[0].DataRow.ItemArray.Count(); i++)
-            {
-                lFeaM.DataRow[i] = m_MergeFeaSet.Features[0].DataRow[i];
-            }
-
-            m_CurrentFeaLyr.InvertSelection();
-            IFeatureSet fs = m_CurrentFeaLyr.Selection.ToFeatureSet();
-            foreach (var fea in fs.Features)
-            {
-                IFeature lFea = m_ResultFeaset.AddFeature(fea.Geometry);
-                for (int i = 0; i < fea.DataRow.ItemArray.Count(); i++)
-                {
-                    lFea.DataRow[i] = fea.DataRow[i];
-                }
-            }
-            m_ResultFeaset.InitializeVertices();
-            MainWindow.m_DotMap.ResetBuffer();
-
-            m_ResultFeaset.Projection = MainWindow.m_DotMap.Projection;
-            m_ResultFeaset.Name = m_InputFeaSet.Name;
-            m_CurrentFeaLyr = MainWindow.m_DotMap.Layers.Add(m_ResultFeaset);
-            m_CurrentFeaLyr.LegendText = m_ResultFeaset.Name + "_copy";
-
-            MainWindow.m_DotMap.Refresh();
-            IFeatureLayer[] m_FeaLyrList = MainWindow.m_DotMap.GetFeatureLayers();
-            for (int i = 0; i < MainWindow.m_DotMap.Layers.Count; i++)
-            {
-                m_FeaLyrList[i].ClearSelection();
-            }
-            this.Close();
-        }
-        private void btnSelect_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog f = new SaveFileDialog();
-            f.AddExtension = true;
-            f.Filter = "ShapeFile(*.shp)|*.shp";
-            f.Title = "Select Save Path";
-            if (f.ShowDialog() == true)
-            {
-                this.txtPath.Text = f.FileName;
-            }
+            if (m_CurrentFeaLyr.Selection.Count < 2) return;
+            this.btnStartMerge.IsEnabled = true;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -136,6 +64,79 @@ namespace DotSpatialGISManager
         private void Window_Closed(object sender, EventArgs e)
         {
             UCControls.UCVectorDataEditing.m_MergeDlg = null;
+        }
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            //若未选择图层
+            if (this.cboLayer.Text == "")
+            {
+                MessageBox.Show("Please select a layer！");
+                return;
+            }
+            this.btnOK.IsEnabled = false;
+            //注册事件
+            m_CurrentFeaLyr.SelectionChanged += M_CurrentFeaLyr_SelectionChanged;
+
+            MainWindow.m_DotMap.FunctionMode = FunctionMode.Select;
+        }
+
+        private void btnStartMerge_Click(object sender, RoutedEventArgs e)
+        {
+            //注销事件
+            m_CurrentFeaLyr.SelectionChanged -= M_CurrentFeaLyr_SelectionChanged;
+            FeatureSet m_MergeFeaSet = new FeatureSet(m_InputFeaSet.FeatureType);
+            m_MergeFeaSet = m_CurrentFeaLyr.Selection.ToFeatureSet();
+            MergeFeature(m_MergeFeaSet);
+            btnStartMerge.IsEnabled = false;
+        }
+
+        public void MergeFeature(FeatureSet m_MergeFeaSet)
+        {
+            if (m_MergeFeaSet.Features.Count < 2 || m_CurrentFeaLyr == null) return;
+
+            //确保目标图层只选中编辑的那一个要素，因为后面会把选中要素移除
+            //m_CurrentFeaLyr.UnSelectAll();
+            //m_CurrentFeaLyr.Selection.Clear();
+
+            //merge
+            IFeature MergeFea = m_MergeFeaSet.GetFeature(0);
+            for (int i = 0; i < m_MergeFeaSet.Features.Count; i++)
+            {
+                var fea = m_MergeFeaSet.GetFeature(i);
+                MergeFea = MergeFea.Union(fea.Geometry);
+                if (MergeFea == null)
+                {
+                    break;
+                }
+            }
+            lFeaM = m_InputFeaSet.AddFeature(MergeFea.Geometry);
+            m_CurrentFeaLyr.RemoveSelectedFeatures();
+
+            MainWindow.m_DotMap.ResetBuffer();
+            MainWindow.m_DotMap.Refresh();
+
+
+            if (MessageBox.Show("Save edit?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                m_CurrentFeaLyr.FeatureSet.Save();
+                MessageBox.Show("Save successfully!");
+            }
+            //移除图层重新加载，因为底层bug 移动节点之后选择要素会报错。
+            MainWindow.m_AddFeaType = Enum.FeaType.None;
+            MainWindow.m_DotMap.FunctionMode = FunctionMode.None;
+            MainWindow.m_DotMap.Cursor = System.Windows.Forms.Cursors.Default;
+            string shpPath = m_CurrentFeaLyr.FeatureSet.FilePath;
+            string name = m_CurrentFeaLyr.LegendText;
+            var symbol = m_CurrentFeaLyr.Symbolizer;
+            var extent = m_CurrentFeaLyr.Extent;
+            IFeatureSet s = Shapefile.Open(shpPath);
+            MainWindow.m_DotMap.Layers.Remove(m_CurrentFeaLyr as IMapLayer);
+            var result = MainWindow.m_DotMap.Layers.Add(s);
+            result.Symbolizer = symbol;
+            result.Projection = MainWindow.m_DotMap.Projection;
+            result.LegendText = name;
+            //result.Select((result as FeatureLayer).FeatureSet.Features[(result as FeatureLayer).FeatureSet.Features.Count - 1]);
+            this.Close();
         }
     }
 }

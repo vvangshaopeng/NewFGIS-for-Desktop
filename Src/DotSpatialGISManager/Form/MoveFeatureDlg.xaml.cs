@@ -76,6 +76,7 @@ namespace DotSpatialGISManager
         public MoveFeatureDlg()
         {
             InitializeComponent();
+            this.btnStartMoveFeature.IsEnabled = false;
             this.Owner = MainWindow.m_MainWindow;
             this.DataContext = this;
             _defaultIntance = this;
@@ -245,7 +246,7 @@ namespace DotSpatialGISManager
             result.Symbolizer = symbol;
             result.Projection = MainWindow.m_DotMap.Projection;
             result.LegendText = name;
-            result.Select((result as FeatureLayer).FeatureSet.Features[(result as FeatureLayer).FeatureSet.Features.Count - 1]);
+            //result.Select((result as FeatureLayer).FeatureSet.Features[(result as FeatureLayer).FeatureSet.Features.Count - 1]);
             this.Close();
         }
     }
