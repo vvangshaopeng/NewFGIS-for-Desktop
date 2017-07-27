@@ -7,30 +7,21 @@
         xmlns:Common="clr-namespace:Common.Converters;assembly=Common"
         xmlns:control="clr-namespace:Common.Helper;assembly=Common"
         mc:Ignorable="d"
-        Title="Merge" Height="266.156" SizeToContent="Height" Width="318.012" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
-    <Window.Resources>
-        <Common:Bool2Visibility x:Key="bool2visibility"/>
-    </Window.Resources>
+        Title="Merge" Height="Auto" Width="310" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
             <StackPanel Orientation="Horizontal">
-                <ComboBox Margin="10,24,10,22" Height="22" Width="257" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
+                <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Save Path:" Grid.Row="1" Margin="3" Name="groupPath">
-            <StackPanel Orientation="Horizontal">
-                <TextBox Margin="10,0,0,0" Height="22" Width="218" Name="txtPath" IsReadOnly="True"/>
-                <Button Name="btnSelect" Content="Select" Height="22" Click="btnSelect_Click"/>
-            </StackPanel>
-        </GroupBox>
-        <Grid Grid.Row="2" >
-            <Button Name="btnOK" Content="OK" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,80,0" Click="btnOK_Click"/>
-            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,20,0" Click="btnCancel_Click"/>
+        <Grid Grid.Row="1">
+            <Button Name="btnOK" Content="Select Feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,200,0" Click="btnOK_Click"/>
+            <Button Name="btnStartMerge" Content="Merge" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,95,0" Click="btnStartMerge_Click" />
+            <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,20,0" Click="btnCancel_Click" />
         </Grid>
     </Grid>
 </Window>
