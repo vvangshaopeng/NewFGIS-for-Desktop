@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Export ShapeFile" Height="160" Width="350"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
+        Title="Export shapefile" Height="160" Width="350"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -13,7 +13,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label Content="Export Layer:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <Label Content="Export layer:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10,0,0,0"/>
             <ComboBox Name="cboLayer" Width="200" Height="22" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="115,0,0,0" SelectionChanged="cboLayer_SelectionChanged" />
         </Grid>
         <Grid Grid.Row="1">
@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="55"/>
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Save Path:" Grid.Column="1" VerticalAlignment="Center"/>
+            <Label Content="Save path:" Grid.Column="1" VerticalAlignment="Center"/>
             <TextBox Name="txtPath" Grid.Column="2" Height="22" VerticalAlignment="Center" IsReadOnly="True"/>
             <Button Name="btnSelect" Content="Select" Height="22" Grid.Column="3" Click="btnSelect_Click"/>
         </Grid>

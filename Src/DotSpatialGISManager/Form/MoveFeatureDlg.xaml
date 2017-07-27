@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Move Feature" Height="Auto" Width="310" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+        Title="Move feature" Height="Auto" Width="310" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
+        <GroupBox Header="Select a layer:" Grid.Row="0" Margin="3" Name="groupLayer">
             <StackPanel Orientation="Horizontal">
                 <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
             </StackPanel>
         </GroupBox>
         <Grid Grid.Row="1">
-            <Button Name="btnOK" Content="Select Feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,200,0" Click="btnOK_Click"/>
-            <Button Name="btnStartMoveFeature" Content="Move Feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,95,0" Click="btnStartMoveFeature_Click" />
+            <Button Name="btnOK" Content="Select feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,200,0" Click="btnOK_Click"/>
+            <Button Name="btnStartMoveFeature" Content="Move feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,95,0" Click="btnStartMoveFeature_Click" />
             <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,20,0" Click="btnCancel_Click" />
         </Grid>
     </Grid>

@@ -13,7 +13,7 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
+        <GroupBox Header="Select a layer:" Grid.Row="0" Margin="3" Name="groupLayer">
             <StackPanel Orientation="Horizontal">
                 <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
             </StackPanel>
