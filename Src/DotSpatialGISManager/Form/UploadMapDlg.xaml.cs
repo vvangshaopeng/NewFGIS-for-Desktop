@@ -60,6 +60,7 @@ namespace DotSpatialGISManager
             string url = "";
             string name = "";
             string pwd = "";
+            string label = this.txtName.Text;
             //string url = "http://139.129.166.245:8069/uploadMap";
             //string name = "name";
             //string pwd = "sddsdsf";
@@ -120,6 +121,7 @@ namespace DotSpatialGISManager
             //构建文件流字段
             //string modelIdStr = "--"+boundary+Enter+"Content-Disposition: form-data; name=\"modelId\""+Enter+Enter+modelId+Enter;
             string fileContentStr = "--" + boundary + Enter+ "Content-Type:application/octet-stream" + Enter + "Content-Disposition: form-data; name=\"img\"; filename=\"" + fileName + "\"" + Enter + Enter;
+            string labelStr = Enter + "--" + boundary + Enter + "Content-Disposition: form-data; name=\"label\"" + Enter + Enter + label + Enter + "--" + boundary;
             //string updateTimeStr = Enter + "--" + boundary + Enter+ "Content-Disposition: form-data; name=\"updateTime\"" + Enter + Enter+ updateTime;
             //string encryptStr = Enter + "--" + boundary + Enter+ "Content-Disposition: form-data; name=\"encrypt\"" + Enter + Enter+ encrypt + Enter + "--" + boundary;
             string nameStr = Enter + "--" + boundary + Enter + "Content-Disposition: form-data; name=\"name\"" + Enter + Enter + name + Enter + "--" + boundary;
@@ -128,6 +130,7 @@ namespace DotSpatialGISManager
             //文件流转二进制
             //var modelIdStrByte = Encoding.UTF8.GetBytes(modelIdStr);//modelId所有字符串二进制
             var fileContentStrByte = Encoding.UTF8.GetBytes(fileContentStr);//fileContent一些名称等信息的二进制（不包含文件本身）
+            var labelStrByte = Encoding.UTF8.GetBytes(labelStr);
             //var updateTimeStrByte = Encoding.UTF8.GetBytes(updateTimeStr);//updateTime所有字符串二进制
             //var encryptStrByte = Encoding.UTF8.GetBytes(encryptStr);//encrypt所有字符串二进制
             var nameStrByte = Encoding.UTF8.GetBytes(nameStr);
@@ -150,6 +153,7 @@ namespace DotSpatialGISManager
             //myRequestStream.Write(updateTimeStrByte, 0, updateTimeStrByte.Length);
             //myRequestStream.Write(encryptStrByte, 0, encryptStrByte.Length);
             myRequestStream.Write(nameStrByte, 0 , nameStrByte.Length);
+            myRequestStream.Write(labelStrByte, 0, labelStrByte.Length);
             myRequestStream.Write(pwdStrByte, 0, pwdStrByte.Length);
 
             #endregion
@@ -168,7 +172,10 @@ namespace DotSpatialGISManager
             StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
 
             string retString = myStreamReader.ReadToEnd();
-
+            if (retString == "ok")
+            {
+                MessageBox.Show("Uploading map succeed!");
+            }
 
             myStreamReader.Close();
             myResponseStream.Close();
