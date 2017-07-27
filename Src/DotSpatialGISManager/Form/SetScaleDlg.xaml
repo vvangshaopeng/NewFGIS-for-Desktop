@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Set Scale"  Height="110" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+        Title="Set scale"  Height="110" Width="300"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Content="Set Scale:       1 : "/>
+            <Label  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Content="Set scale:       1 : "/>
             <ComboBox HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="22" Margin="120,0,0,0" Width="150" IsEditable="True" Name="cboScale"/>
         </Grid>
         <Grid Grid.Row="1">

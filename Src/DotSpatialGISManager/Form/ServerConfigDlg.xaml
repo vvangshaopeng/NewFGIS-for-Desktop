@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="ServerConfigDlg" Width="300" Height="Auto" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
+        Title="Server configuration" Width="300" Height="Auto" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Move Node" Height="Auto" Width="310" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+        Title="Move node" Height="Auto" Width="310" SizeToContent="Height" Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Select a Layer:" Grid.Row="0" Margin="3" Name="groupLayer">
+        <GroupBox Header="Select a layer:" Grid.Row="0" Margin="3" Name="groupLayer">
             <StackPanel Orientation="Horizontal">
                 <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
             </StackPanel>
@@ -27,7 +27,7 @@
             </DataGrid>
         </Grid>
         <Grid Grid.Row="2">
-            <Button Name="btnOK" Content="Select Feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,200,0" Click="btnOK_Click"/>
+            <Button Name="btnOK" Content="Select feature" Width="90" Height="22" HorizontalAlignment="Right" Margin="0,0,200,0" Click="btnOK_Click"/>
             <Button Name="btnStartEditNode" Content="Select editing node" Width="120" Height="22" HorizontalAlignment="Right" Margin="0,0,75,0" Click="btnStartEditNode_Click" />
             <Button Name="btnCancel" Content="Cancel" Width="60" Height="22" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnCancel_Click" />
         </Grid>

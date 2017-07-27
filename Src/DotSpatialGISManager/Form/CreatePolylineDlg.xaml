@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotSpatialGISManager"
         mc:Ignorable="d"
-        Title="Create Polyline" Height="190" Width="302"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
+        Title="Create polyline" Height="190" Width="302"  Style="{StaticResource CustomWindowChromeNoMax}"  WindowStartupLocation="CenterScreen" Closed="Window_Closed" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -17,7 +17,7 @@
                 <ComboBox Margin="10,0" Height="22" Width="255" Name="cboLayer" SelectionChanged="cboLayer_SelectionChanged"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Save Path:" Grid.Row="1" Margin="3" Name="groupPath">
+        <GroupBox Header="Save path:" Grid.Row="1" Margin="3" Name="groupPath">
             <StackPanel Orientation="Horizontal">
                 <TextBox Margin="10,0,0,0" Height="22" Width="218" Name="txtPath" IsReadOnly="True"/>
                 <Button Name="btnSelect" Content="Select" Height="22" Click="btnSelect_Click"/>
