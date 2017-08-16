@@ -194,6 +194,8 @@ namespace DotSpatialGISManager
             }
             ranRadian = ranAngle * Math.PI / 180;
             selectFea.Rotate(center, ranRadian);
+            IFeature rotateFea = m_InputFeaSet.AddFeature(selectFea.Geometry);
+            m_CurrentFeaLyr.RemoveSelectedFeatures();
 
             MainWindow.m_DotMap.ResetBuffer();
             MainWindow.m_DotMap.Refresh();
