@@ -36,8 +36,8 @@
         <GroupBox Header="Buffer distance" Margin="5" Grid.Row="2">
             <StackPanel>
                 <WrapPanel Margin="5">
-                    <TextBox Name="txtBufferDis" Width="179" Height="22" />
-                    <Label Content="   spatial reference unit" Height="30" Width="160"/>
+                    <TextBox Name="txtBufferDis" Width="275" Height="22" />
+                    <Label Content="   Meters" Height="30" Width="63"/>
                 </WrapPanel>
             </StackPanel>
         </GroupBox>

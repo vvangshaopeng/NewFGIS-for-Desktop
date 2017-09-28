@@ -102,6 +102,11 @@ namespace DotSpatialGISManager
                 return;
             }
             if (m_PointFeaSet.Features.Count != 2) return;
+            //如果是经纬度坐标，转换缓冲距离为米
+            if (m_CurrentFeaset.Features[1].Geometry.Coordinates[0].Y < 90)
+            {
+                bufferDistance = bufferDistance/111;
+            }
             Dictionary<int,IFeature> StartLines = new Dictionary<int,IFeature>();
             Dictionary<int,IFeature> EndLines = new Dictionary<int,IFeature>();
             //生成起终点缓冲区

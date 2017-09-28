@@ -117,7 +117,7 @@ namespace DotSpatialGISManager
             }
             FeatureSet resultFeatures = new FeatureSet(); // the resulting featureset
             resultFeatures.CopyTableSchema(targetFeatures); // set up the data table in the new feature set
-            ProgressBox p = new ProgressBox(0, 100, "Self intersection check progress");
+            ProgressBox p = new ProgressBox(0, 100, "Uinon check progress");
             p.ShowPregress();
             p.SetProgressValue(0);
             p.SetProgressDescription("Overlay Union...");
