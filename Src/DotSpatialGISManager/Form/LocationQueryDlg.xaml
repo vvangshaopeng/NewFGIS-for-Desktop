@@ -40,7 +40,7 @@
             </ListBox>
         </StackPanel>
         <StackPanel Grid.Row="3">
-            <Label Content="Target layer(s):"/>
+            <Label Content="Source layer(s):"/>
             <ComboBox Name="cboSourceLayer" Margin="3" ItemsSource="{Binding SourceLayers}" SelectedItem="{Binding SelectedSourceLayer}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

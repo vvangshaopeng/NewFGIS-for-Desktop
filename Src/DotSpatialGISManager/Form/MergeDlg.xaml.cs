@@ -111,9 +111,16 @@ namespace DotSpatialGISManager
             }
             lFeaM = m_InputFeaSet.AddFeature(MergeFea.Geometry);
             m_CurrentFeaLyr.RemoveSelectedFeatures();
-
-            MainWindow.m_DotMap.ResetBuffer();
-            MainWindow.m_DotMap.Refresh();
+            try
+            {
+                MainWindow.m_DotMap.ResetBuffer();
+                MainWindow.m_DotMap.Refresh();
+            }
+            catch
+            {
+                
+            }
+            
 
 
             if (MessageBox.Show("Save edit?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)

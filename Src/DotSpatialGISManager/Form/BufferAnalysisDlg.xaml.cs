@@ -108,7 +108,11 @@ namespace DotSpatialGISManager
             {
                 MessageBox.Show("input a number");
             }
-
+            //如果是经纬度坐标，转换缓冲距离为米
+            if (m_InputFeaSet.Features[1].Geometry.Coordinates[0].Y < 90)
+            {
+                bufferDistance = bufferDistance / 111;
+            }
             DotSpatial.Analysis.Buffer.AddBuffer(m_InputFeaSet, bufferDistance, m_OutputFeaSet, cancelProgressHandler);
 
             //dissolve

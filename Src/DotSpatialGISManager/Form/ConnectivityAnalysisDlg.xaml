@@ -20,7 +20,7 @@
         <GroupBox Header="Select point buffer distance:" Grid.Row="1" Margin="3" Name="groupBuffer">
             <StackPanel Orientation="Horizontal">
                 <TextBox Margin="10,0" Height="22" Width="200" Name="txtbuffer"/>
-                <Label Content="unit"/>
+                <Label Content="Meters"/>
             </StackPanel>
         </GroupBox>
         <Grid Grid.Row="2">
